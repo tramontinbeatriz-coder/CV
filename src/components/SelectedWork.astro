@@ -12,7 +12,7 @@ const [lead, ...rest] = projects.filter((p) => p.slug !== 'across-borders');
     <SectionHeader number={work.number} label={work.label} headline={work.headline} lede={work.lede} />
     <div class="work__list">
       <ProjectCard project={lead} variant="feature" />
-      {rest.map((p, i) => <ProjectCard project={p} variant="row" flip={i % 2 === 0} />)}
+      {rest.map((p) => <ProjectCard project={p} variant="row" />)}
     </div>
   </div>
   <AcrossBorders />
@@ -20,5 +20,5 @@ const [lead, ...rest] = projects.filter((p) => p.slug !== 'across-borders');
 
 <style>
   .work { padding-bottom: 0; }
-  .work__list { display: grid; gap: clamp(5rem, 10vw, 9rem); }
+  .work__list { display: grid; gap: clamp(4rem, 8vw, 7rem); }
 </style>

@@ -24,10 +24,9 @@ Base (layout)
 │   ├── Hero
 │   ├── About             → SectionHeader, Media
 │   ├── SelectedWork      → SectionHeader
-│   │   ├── ProjectCard   (variant: feature | row) → Media, MetricRow → Metric
+│   │   ├── ProjectCard   (variant: feature | row) → MetricRow → Metric, optional Media
 │   │   └── AcrossBorders (international visual band)
 │   ├── Pillars           (How I work)
-│   ├── BeyondWork        (Nós feature + interests) → Media, MetricRow
 │   └── Contact           → SectionHeader
 │   ── or ──
 │   └── CaseStudy         (every /work/[slug] page) → Media, MetricRow
@@ -56,11 +55,10 @@ Base (layout)
     │   ├── CaseStudy.astro
     │   ├── Metric.astro / MetricRow.astro
     │   ├── Pillars.astro
-    │   ├── BeyondWork.astro
     │   ├── Contact.astro
     │   ├── Footer.astro
     │   ├── SectionHeader.astro
-    │   └── Media.astro       real image or labelled placeholder
+    │   └── Media.astro       optional photo (rendered only when set)
     ├── pages/
     │   ├── index.astro
     │   └── work/[slug].astro case studies (generated from site.ts)
@@ -72,7 +70,7 @@ Base (layout)
 
 - `*text*` inside a string renders as the accent italic serif.
 - `[[text]]` marks a **placeholder**: it renders highlighted in the rose accent so it can't ship unnoticed. Search for `[[` to find every one.
-- **Photos:** put the file in `public/images/…` and set `src: 'images/…'` on the matching slot in `site.ts`. Until then, the slot shows a brief describing exactly which photo belongs there.
+- **Photos (optional):** the site is typographic by default. Put a file in `public/images/…` and add `cover` / `gallery` to a project (or `portrait` to `hero` / `about`) in `site.ts`, and it renders automatically. See `docs/CONCEPT.md` §11 for what each photo should show.
 - Adding a project: add an entry to `projects` in `site.ts` and its case-study page is generated automatically.
 
 ## Deploy

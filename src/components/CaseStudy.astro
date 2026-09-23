@@ -41,9 +41,11 @@ const chapters = [
     </dl>
   </header>
 
-  <div class="container case__cover">
-    <Media image={p.cover} eager />
-  </div>
+  {p.cover && (
+    <div class="container case__cover">
+      <Media image={p.cover} eager />
+    </div>
+  )}
 
   <section class="container case__metrics" aria-label="Results">
     <MetricRow metrics={p.metrics} />
@@ -74,11 +76,13 @@ const chapters = [
     </section>
   </div>
 
-  <div class="container case__gallery" data-count={p.gallery.length}>
-    {p.gallery.map((g, i) => (
-      <div data-reveal style={`--i: ${i}`}><Media image={g} /></div>
-    ))}
-  </div>
+  {p.gallery && p.gallery.length > 0 && (
+    <div class="container case__gallery" data-count={p.gallery.length}>
+      {p.gallery.map((g, i) => (
+        <div data-reveal style={`--i: ${i}`}><Media image={g} /></div>
+      ))}
+    </div>
+  )}
 
   <section class="container case__skills" data-reveal>
     <h2 class="label">Skills in play</h2>
@@ -120,7 +124,7 @@ const chapters = [
   .case__meta dd { margin-top: 0.35rem; font-size: var(--fs-small); }
 
   .case__cover { animation: rise 1.1s 0.15s var(--ease) both; }
-  .case__metrics { padding-block: clamp(3rem, 7vw, 6rem); }
+  .case__metrics { padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 7vw, 6rem); }
 
   .case__chapters { display: grid; gap: clamp(3rem, 6vw, 5rem); padding-bottom: clamp(4rem, 8vw, 7rem); }
   .chapter {

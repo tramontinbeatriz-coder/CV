@@ -15,12 +15,15 @@ export type Metric = {
   placeholder?: boolean;
 };
 
+/**
+ * Photos are optional. The site is designed to work without them;
+ * add `cover` / `gallery` to a project (or `portrait` to hero/about) and they render automatically.
+ * See docs/CONCEPT.md §11 for what each photo should show.
+ */
 export type ImageSlot = {
-  /** Path under /public, e.g. "images/innovation-tournament/stage.jpg". Leave empty to show a placeholder. */
-  src?: string;
+  /** Path under /public, e.g. "images/innovation-tournament/stage.jpg" */
+  src: string;
   alt: string;
-  /** What the photo should show — shown on the placeholder until a real image is added. */
-  brief: string;
   ratio?: '16/9' | '4/3' | '3/4' | '1/1' | '3/2' | '21/9';
 };
 
@@ -39,8 +42,8 @@ export type Project = {
   metrics: Metric[];
   skills: string[];
   pullQuote: string;
-  cover: ImageSlot;
-  gallery: ImageSlot[];
+  cover?: ImageSlot;
+  gallery?: ImageSlot[];
 };
 
 export const person = {
@@ -65,7 +68,6 @@ export const nav = [
   { href: '#about', label: 'About' },
   { href: '#work', label: 'Work' },
   { href: '#how-i-work', label: 'How I work' },
-  { href: '#beyond', label: 'Beyond work' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -85,12 +87,7 @@ export const hero = {
     { label: 'Co-leading', value: 'SAP Latin America Innovation Tournament' },
     { label: 'Based in', value: 'Porto Alegre · open to relocation' },
   ],
-  portrait: {
-    alt: 'Portrait of Beatriz Tramontin',
-    brief:
-      'Editorial portrait, natural light, soft neutral background (blush, stone or plaster). Half-body, relaxed posture, looking at camera or slightly off. No corporate backdrop, no badge.',
-    ratio: '3/4',
-  } satisfies ImageSlot,
+  portrait: undefined as ImageSlot | undefined,
 };
 
 /* ───────────────────────── 02 · ABOUT ───────────────────────── */
@@ -122,12 +119,7 @@ export const about = {
     { label: 'Based in', value: 'Porto Alegre, Brazil · open to relocation' },
     { label: 'Independent', value: 'Co-founder, Nós' },
   ],
-  portrait: {
-    alt: 'Beatriz at work',
-    brief:
-      'Candid photo of you mid-conversation — facilitating, presenting or in a working session. Shows you in action rather than posing. Landscape or portrait both work.',
-    ratio: '4/3',
-  } satisfies ImageSlot,
+  portrait: undefined as ImageSlot | undefined,
 };
 
 /* ───────────────────────── 03 · SELECTED WORK ───────────────────────── */
@@ -136,7 +128,7 @@ export const work = {
   number: '02',
   label: 'Selected work',
   headline: 'Complex things, *given structure.*',
-  lede: 'Four projects, one pattern: take something with many moving parts, give it a shape, and get people moving with it.',
+  lede: 'Five projects, one pattern: take something with many moving parts, give it a shape, and get people moving with it.',
 };
 
 export const projects: Project[] = [
@@ -148,12 +140,12 @@ export const projects: Project[] = [
     tagline: 'SAP’s Latin America innovation program — four countries, owned end to end.',
     meta: [
       { label: 'Role', value: 'Co-Lead · end-to-end execution' },
-      { label: 'Scope', value: '4 countries, Latin America' },
+      { label: 'Countries', value: 'Argentina · Brazil · Colombia · Mexico' },
       { label: 'Organisation', value: 'SAP Latin America' },
       { label: 'Since', value: 'June 2025' },
     ],
     context:
-      'The SAP Latin America Innovation Tournament is a multinational innovation program running across four countries at the same time — bringing together participants, mentors and judges around real projects, with local teams and stakeholders in each market.',
+      'The SAP Latin America Innovation Tournament is a multinational innovation program running in Argentina, Brazil, Colombia and Mexico at the same time — bringing together participants, mentors and judges around real projects, with local teams and stakeholders in each market.',
     role:
       'As co-lead, I own execution end to end: from program design and prioritisation to coordinating people across countries and running the evaluation process.',
     challenge:
@@ -175,34 +167,6 @@ export const projects: Project[] = [
     ],
     skills: ['Strategy', 'Project management', 'Innovation', 'Stakeholder management', 'International coordination', 'Evaluation & selection', 'Facilitation'],
     pullQuote: 'From the outside it looked like an event. From the inside, it was a strategy and project management problem in four countries.',
-    cover: {
-      alt: 'Innovation Tournament — participants during the program',
-      brief:
-        'Wide shot of the program in action: stage or opening moment with participants in the room. Real energy, real people. Ideally shows scale (a full room, several teams).',
-      ratio: '16/9',
-    },
-    gallery: [
-      {
-        alt: 'Mentors working with a participating team',
-        brief: 'Mentors working with a team: close, candid, hands on laptops / post-its. Shows the program as work, not just stage.',
-        ratio: '4/3',
-      },
-      {
-        alt: 'Judges evaluating projects',
-        brief: 'Judging moment or pitch: a team presenting, judges listening. Captures the 20+ projects evaluated.',
-        ratio: '4/3',
-      },
-      {
-        alt: 'Behind the scenes — planning',
-        brief: 'Behind the scenes: you coordinating (on a call, with the timeline or planning board). Blur anything confidential.',
-        ratio: '3/4',
-      },
-      {
-        alt: 'Group photo with teams from different countries',
-        brief: 'Group photo with teams/mentors from the different countries — the multinational side of the program.',
-        ratio: '3/4',
-      },
-    ],
   },
   {
     slug: 'sap-business-ai',
@@ -231,31 +195,12 @@ export const projects: Project[] = [
       'Spot process improvements that make project execution more efficient.',
     ],
     impact:
-      'The value I add is translation: making complex technology clear for the people who need to decide on it — and making business needs clear for the people who build it. [[Add one concrete result here, e.g. a client initiative that moved forward, or feedback from a workshop.]]',
+      'The value I add is translation: making complex technology clear for the people who need to decide on it — and making business needs clear for the people who build it.',
     metrics: [
       { value: '3', label: 'teams aligned — sales, product & technical' },
-      { value: '[[#]]', label: 'enterprise clients, workshops & presentations', placeholder: true },
     ],
     skills: ['AI business solutions', 'Client engagement', 'Workshop facilitation', 'Strategic recommendations', 'Cross-functional coordination', 'Risk & priority management', 'SAP ecosystem'],
     pullQuote: 'The hardest part of AI is rarely the technology. It’s the conversation around it.',
-    cover: {
-      alt: 'Beatriz facilitating an AI workshop',
-      brief:
-        'You facilitating a workshop or presenting to a room: whiteboard, post-its, people engaged. Avoid confidential slides, client logos and heavy SAP branding in frame.',
-      ratio: '16/9',
-    },
-    gallery: [
-      {
-        alt: 'Workshop materials and outputs',
-        brief: 'Detail shot of workshop outputs: sticky notes, sketched use cases, a canvas. Blur client names.',
-        ratio: '4/3',
-      },
-      {
-        alt: 'Cross-functional working session',
-        brief: 'Working session with business, product and tech colleagues — the coordination side of the role.',
-        ratio: '4/3',
-      },
-    ],
   },
   {
     slug: 'sap-open-innovation',
@@ -290,28 +235,46 @@ export const projects: Project[] = [
     ],
     skills: ['Open innovation', 'Ecosystem & partnerships', 'Market research', 'Relationship building', 'Emerging technologies'],
     pullQuote: 'Innovation is mostly introductions — the right people, at the right moment, with a reason to work together.',
-    cover: {
-      alt: 'SAP Open Innovation — startup and corporate session',
-      brief:
-        'A startup–corporate moment: a pitch, a matchmaking session or an event at an innovation hub (e.g. Cubo Itaú or Distrito). Wide, with people in frame.',
-      ratio: '16/9',
-    },
-    gallery: [
-      {
-        alt: 'Innovation hub event',
-        brief: 'You at an ecosystem event or hub — networking, on a panel or with founders.',
-        ratio: '4/3',
-      },
-      {
-        alt: 'Startup meeting',
-        brief: 'A working meeting with a startup and a corporate partner. Blur anything confidential.',
-        ratio: '4/3',
-      },
+  },
+  {
+    slug: 'nos',
+    index: '04',
+    title: 'Nós',
+    kicker: 'Independent project · Community · Brand',
+    tagline: 'A community and in-person experience for women in Porto Alegre — co-founded and built from an idea.',
+    meta: [
+      { label: 'Role', value: 'Co-founder' },
+      { label: 'Where', value: 'Porto Alegre metropolitan region' },
+      { label: 'Founded', value: 'January 2026' },
+      { label: 'Partners', value: '4 local partners' },
     ],
+    context:
+      'Nós — Portuguese for both “us” and “knots” — is a community for women in Porto Alegre, built around in-person experiences, events and the connections that come out of them.',
+    role:
+      'As co-founder I work across the whole project: the experiences, the community, partnerships, the brand and the way it communicates.',
+    challenge:
+      'Take an idea and turn it into something people actually show up for — a brand, a community and a series of experiences — as an independent project, with no company behind it.',
+    actions: [
+      'Designing in-person experiences and events, end to end.',
+      'Building and looking after the community.',
+      'Creating partnerships that make the experiences possible.',
+      'Shaping the brand: identity, tone and how Nós shows up.',
+      'Communication and content across channels.',
+      'Thinking through the audience experience — before, during and after each event.',
+    ],
+    impact:
+      'Founded in January 2026, Nós has already run four events, reached 60 women and built four partnerships across the Porto Alegre metropolitan region — an idea that became a real experience, with its own community and brand.',
+    metrics: [
+      { value: '4', label: 'events since January 2026' },
+      { value: '60', label: 'women reached' },
+      { value: '4', label: 'partners in the Porto Alegre region' },
+    ],
+    skills: ['Entrepreneurship', 'Community building', 'Brand strategy', 'Experience design', 'Partnerships', 'Content & communication'],
+    pullQuote: 'An idea only counts once people show up for it.',
   },
   {
     slug: 'across-borders',
-    index: '04',
+    index: '05',
     title: 'Across borders',
     kicker: 'International · Cross-functional · Stakeholders',
     tagline: 'Coordinating initiatives between countries, teams and cultures — mostly across Latin America and the Americas.',
@@ -328,7 +291,7 @@ export const projects: Project[] = [
     challenge:
       'Distance is the easy part. The real work is alignment: different priorities, cultures and communication styles moving on the same timeline.',
     actions: [
-      'Coordinated multi-country teams and stakeholders on the SAP Latin America Innovation Tournament (4 countries).',
+      'Coordinated multi-country teams and stakeholders on the SAP Latin America Innovation Tournament — Argentina, Brazil, Colombia and Mexico.',
       'Connected startups and corporates across Latin America in SAP’s Open Innovation program (300+ engaged).',
       'Led consulting projects on internationalization strategy for Brazilian companies at Global Jr. ESPM — market research and strategic analysis for global expansion.',
       'Worked in Portuguese, English and Spanish, adapting to different cultures, functions and audiences.',
@@ -342,24 +305,6 @@ export const projects: Project[] = [
     ],
     skills: ['International coordination', 'Stakeholder management', 'Internationalization strategy', 'Market research', 'Cross-cultural communication', 'Project management'],
     pullQuote: 'Distance is the easy part. Alignment is the work.',
-    cover: {
-      alt: 'Working session with an international team',
-      brief:
-        'In-person moment with colleagues from other countries — a working session, an offsite, a trip. If nothing fits, a clean shot of a multi-country video call (names blurred).',
-      ratio: '16/9',
-    },
-    gallery: [
-      {
-        alt: 'On location in another country',
-        brief: 'You on location during a work trip — in context, not a tourist photo (office, venue, event).',
-        ratio: '4/3',
-      },
-      {
-        alt: 'Multicultural team',
-        brief: 'Team photo with people from different countries you worked with.',
-        ratio: '4/3',
-      },
-    ],
   },
 ];
 
@@ -371,7 +316,7 @@ export const borders = {
     {
       name: 'Latin America',
       note: 'Innovation Tournament · Open Innovation',
-      places: ['[[Country 1]]', '[[Country 2]]', '[[Country 3]]', '[[Country 4]]'],
+      places: ['Argentina', 'Brazil', 'Colombia', 'Mexico'],
     },
     {
       name: 'Global',
@@ -417,93 +362,15 @@ export const howIWork = {
       n: '04',
       title: 'Execution',
       line: 'Moving projects from concept to reality.',
-      proof: 'Multiple parallel initiatives at SAP, managed for risk and priority. 20+ projects evaluated. A community built from an idea.',
+      proof: 'Multiple parallel initiatives at SAP, managed for risk and priority. Nós: from an idea to four events and 60 women in its first months.',
     },
   ],
 };
 
-/* ───────────────────────── 05 · BEYOND WORK ───────────────────────── */
-
-export const beyond = {
-  number: '04',
-  label: 'Beyond work',
-  headline: 'The things I build *on my own time.*',
-  lede: 'Same instincts, different setting: an idea, a community, and the work of making it real.',
-};
-
-export const nos: Project = {
-  slug: 'nos',
-  index: '05',
-  title: 'Nós',
-  kicker: 'Community · Brand · Experiences',
-  tagline: 'A community and in-person experience for women in Porto Alegre — co-founded and built from an idea.',
-  meta: [
-    { label: 'Role', value: 'Co-founder' },
-    { label: 'Where', value: 'Porto Alegre, Brazil' },
-    { label: 'Founded', value: '[[Year]]' },
-    { label: 'Follow', value: '[[@instagram-handle]]' },
-  ],
-  context:
-      'Nós — Portuguese for both “us” and “knots” — is a community for women in Porto Alegre, built around in-person experiences, events and the connections that come out of them.',
-  role:
-    'As co-founder I work across the whole project: the experiences, the community, partnerships, the brand and the way it communicates.',
-  challenge:
-    'Take an idea and turn it into something people actually show up for — a brand, a community and a series of experiences — as an independent project, with no company behind it.',
-  actions: [
-    'Designing in-person experiences and events, end to end.',
-    'Building and looking after the community.',
-    'Creating partnerships that make the experiences possible.',
-    'Shaping the brand: identity, tone and how Nós shows up.',
-    'Communication and content across channels.',
-    'Thinking through the audience experience — before, during and after each event.',
-  ],
-  impact:
-    'An idea that became a real, recurring experience with its own community and brand. [[Add numbers: events held, women reached, partners, community size.]]',
-  metrics: [
-    { value: '[[#]]', label: 'events & experiences', placeholder: true },
-    { value: '[[#]]', label: 'women reached', placeholder: true },
-    { value: '[[#]]', label: 'partners', placeholder: true },
-  ],
-  skills: ['Entrepreneurship', 'Community building', 'Brand strategy', 'Experience design', 'Partnerships', 'Content & communication'],
-  pullQuote: 'An idea only counts once people show up for it.',
-  cover: {
-    alt: 'A Nós event in Porto Alegre',
-    brief:
-      'The best photo of a Nós event: women together in the space, warm light, real moment. This is the hero image of the section — choose atmosphere over posed group shots.',
-    ratio: '4/3',
-  },
-  gallery: [
-    {
-      alt: 'Nós brand identity',
-      brief: 'Brand identity: logo, a few social posts or printed materials laid out together.',
-      ratio: '1/1',
-    },
-    {
-      alt: 'Event details',
-      brief: 'Detail shot from an event: table setting, welcome kit, signage — the care in the experience.',
-      ratio: '1/1',
-    },
-    {
-      alt: 'Community moment',
-      brief: 'Candid community moment: conversation, laughter, connection.',
-      ratio: '1/1',
-    },
-  ],
-};
-
-export const interests = {
-  label: 'Also on my mind',
-  items: [
-    { title: '[[Interest or creative project]]', note: '[[One line on why it matters to you.]]' },
-    { title: '[[Interest or creative project]]', note: '[[One line on why it matters to you.]]' },
-    { title: '[[Interest or creative project]]', note: '[[One line on why it matters to you.]]' },
-  ],
-};
-
-/* ───────────────────────── 06 · CONTACT ───────────────────────── */
+/* ───────────────────────── 05 · CONTACT ───────────────────────── */
 
 export const contact = {
-  number: '05',
+  number: '04',
   label: 'Contact',
   headline: 'Let’s build something *interesting.*',
   lede:

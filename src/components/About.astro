@@ -11,7 +11,7 @@ import Media from './Media.astro';
 
     <div class="about__grid grid">
       <aside class="about__side">
-        <div data-reveal><Media image={about.portrait} /></div>
+        {about.portrait && <div data-reveal><Media image={about.portrait} /></div>}
         <dl class="about__facts" data-reveal>
           {about.facts.map((f) => (
             <div>

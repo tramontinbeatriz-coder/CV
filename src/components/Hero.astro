@@ -15,9 +15,11 @@ const linkedin = person.links.linkedin;
       <span class="display hero__headline" set:html={rich(hero.headline)} />
     </h1>
 
-    <div class="hero__portrait">
-      <Media image={hero.portrait} eager />
-    </div>
+    {hero.portrait && (
+      <div class="hero__portrait">
+        <Media image={hero.portrait} eager />
+      </div>
+    )}
 
     <div class="hero__intro">
       <p class="lede">{hero.intro}</p>

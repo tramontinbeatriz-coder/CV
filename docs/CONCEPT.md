@@ -2,9 +2,11 @@
 
 Este documento reúne o conceito, a copy e as decisões de design do site. O código implementa exatamente o que está aqui. Todo o texto vive em `src/content/site.ts`.
 
-> **Fontes:** o briefing inicial e o CV atualizado (cargos, datas, idiomas, Open Innovation, Global Jr. ESPM, pós-graduação). O telefone do CV **não** aparece no site, de propósito.
+> **Fontes:** o briefing inicial, o CV atualizado e as informações complementares (países do Tournament, números do Nós) (cargos, datas, idiomas, Open Innovation, Global Jr. ESPM, pós-graduação). O telefone do CV **não** aparece no site, de propósito.
 >
-> **Regra de conteúdo:** nada foi inventado. Tudo o que você ainda não me passou aparece como placeholder `[[assim]]` no código. No site, ele aparece destacado em rosa com sublinhado tracejado, então não tem como ir ao ar sem ninguém perceber. A lista completa está no fim deste documento.
+> **Regra de conteúdo:** nada foi inventado. Neste momento o site não tem nenhum placeholder pendente. Se algum dado for adicionado sem valor, use `[[assim]]` em `site.ts`: ele aparece destacado em rosa com sublinhado tracejado, para não ir ao ar sem ninguém perceber.
+>
+> **Fotos:** por enquanto o site é 100% tipográfico, sem fotos. O layout foi pensado para funcionar assim, e as fotos entram automaticamente quando forem adicionadas (ver §11).
 
 ---
 
@@ -28,13 +30,13 @@ Este documento reúne o conceito, a copy e as decisões de design do site. O có
 ├── Hero                Nome, headline, intro, CTAs, status
 ├── 01 About            Narrativa RI → tecnologia → SAP → Business AI; fatos; linha do tempo
 ├── 02 Selected work
-│   ├── 01 Innovation Tournament   (destaque: capa grande + métricas)
-│   ├── 02 SAP Business AI         (linha editorial imagem/texto)
-│   ├── 03 SAP Open Innovation     (linha editorial, lado invertido)
-│   └── 04 Across borders          (faixa escura visual: regiões, idiomas, funções)
+│   ├── 01 Innovation Tournament   (destaque: título grande + métricas grandes)
+│   ├── 02 SAP Business AI         (linha editorial: texto | métricas + desafio)
+│   ├── 03 SAP Open Innovation     (linha editorial)
+│   ├── 04 Nós                     (linha editorial: projeto independente)
+│   └── 05 Across borders          (faixa escura visual: regiões, idiomas, funções)
 ├── 03 How I work       4 pilares com prova "In practice"
-├── 04 Beyond work      Nós em destaque (projeto independente) + outros interesses
-└── 05 Contact          "Let's build something interesting." + footer
+└── 04 Contact          "Let's build something interesting." + footer
 
 /work/innovation-tournament/   Case study completo
 /work/sap-business-ai/         Case study completo
@@ -45,7 +47,7 @@ Este documento reúne o conceito, a copy e as decisões de design do site. O có
 
 Cada case study segue a mesma estrutura: **título → contexto → meu papel → desafio → o que fiz → impacto → competências**, com métricas grandes e galeria de imagens.
 
-**Por que o Nós fica em "Beyond work" e também ganha um case completo:** na home ele aparece como um bloco editorial grande (não um card pequeno) e o link leva a um case com a mesma estrutura dos projetos da SAP e do Tournament. Assim ele aparece como projeto independente de verdade, não como hobby.
+**Por que o Nós fica em Selected Work:** sem a seção "Beyond work", o Nós entra na mesma lista e com o mesmo peso visual dos projetos da SAP (métricas grandes e case completo), marcado como *Independent project*. Assim ele aparece como projeto independente de verdade, não como hobby.
 
 ---
 
@@ -54,7 +56,7 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 *(Idioma do site: inglês, pensando em hiring managers de empresas globais.)*
 
 ### Navigation
-`Beatriz Tramontin` · About · Work · How I work · Beyond work · Contact · LinkedIn ↗
+`Beatriz Tramontin` · About · Work · How I work · Contact · LinkedIn ↗
 
 ### Hero
 - **Eyebrow:** STRATEGY · INNOVATION · COMMUNICATION · TECHNOLOGY
@@ -85,12 +87,13 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 
 ### 02 · Selected work
 - **Headline:** Complex things, *given structure.*
-- **Lede:** Four projects, one pattern: take something with many moving parts, give it a shape, and get people moving with it.
+- **Lede:** Five projects, one pattern: take something with many moving parts, give it a shape, and get people moving with it.
 
 **01 — Innovation Tournament** · *Strategy · Program management · Innovation*
 - Meta: Co-Lead · SAP Latin America · desde junho de 2025
 - Tagline: SAP's Latin America innovation program — four countries, owned end to end.
-- Context: A multinational innovation program running across four Latin American countries at the same time — bringing together participants, mentors and judges around real projects, with local teams and stakeholders in each market.
+- Countries: Argentina · Brazil · Colombia · Mexico
+- Context: The SAP Latin America Innovation Tournament is a multinational innovation program running in Argentina, Brazil, Colombia and Mexico at the same time — bringing together participants, mentors and judges around real projects, with local teams and stakeholders in each market.
 - My role: As co-lead, I own execution end to end: from program design and prioritisation to coordinating people across countries and running the evaluation process.
 - Challenge: Make a single program work in four countries at once — each with its own teams, timelines and priorities — while coordinating a large network of mentors, judges and participants and keeping the quality bar consistent across more than twenty projects.
 - What I did: coordinated mentors, judges and 20+ participants in 4 countries · aligned multi-country teams and stakeholders · designed and iterated the program with test-and-learn (improving participation and outcomes) · managed the evaluation process (20+ projects, consistent selection criteria) · facilitated collaboration between teams · drove high-impact initiatives.
@@ -103,7 +106,7 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 - Challenge: AI is complex, fast-moving and easy to overpromise. The work is making it concrete — what it means for a specific business, which problem it solves, and what it takes to get there.
 - Meta: Business AI Solution Advisor · SAP · desde janeiro de 2025
 - What I did: coordination of cross-functional projects · client-facing presentations, workshops and strategic recommendations to enterprise clients · key point of contact between clients and internal teams · multiple parallel initiatives (prioritization, risk) · work with sales, product and technical teams · process improvements.
-- Métricas: **3** teams aligned (sales, product & technical) · `[[#]]` enterprise clients, workshops & presentations
+- Métricas: **3** teams aligned (sales, product & technical). Quando tiver um número de clientes, workshops ou apresentações, é só acrescentar.
 - Pull quote: The hardest part of AI is rarely the technology. It's the conversation around it.
 
 **03 — SAP Open Innovation** · *Ecosystem · Partnerships · Innovation* (Open Innovation Intern, 2023–2025)
@@ -112,12 +115,21 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 - Métricas: **300+** startups & corporate partners · **30+** collaborations · **2** years in the LatAm ecosystem
 - Pull quote: Innovation is mostly introductions — the right people, at the right moment, with a reason to work together.
 
-**04 — Across borders** · *International · Cross-functional · Stakeholders*
+**04 — Nós** · *Independent project · Community · Brand*
+- Meta: Co-founder · Porto Alegre metropolitan region · Founded January 2026 · 4 local partners
+- Tagline: A community and in-person experience for women in Porto Alegre — co-founded and built from an idea.
+- Context: Nós — Portuguese for both "us" and "knots" — is a community for women in Porto Alegre, built around in-person experiences, events and the connections that come out of them.
+- What I do: experiences & events · community · partnerships · brand · communication & content · audience experience
+- Impact: Founded in January 2026, Nós has already run four events, reached 60 women and built four partnerships across the Porto Alegre metropolitan region.
+- Métricas: **4** events · **60** women reached · **4** partners
+- Pull quote: An idea only counts once people show up for it.
+
+**05 — Across borders** · *International · Cross-functional · Stakeholders*
 - Headline visual: Four countries. One program. *Many ways of working.*
 - Challenge: Distance is the easy part. The real work is alignment: different priorities, cultures and communication styles moving on the same timeline.
 - What I did: Tournament em 4 países · Open Innovation na América Latina · consultoria de internacionalização na Global Jr. ESPM · trabalho em português, inglês e espanhol.
 - Métricas: **4** countries in one program · **3** working languages · **300+** startups & partners
-- Visual: faixa escura com "livro-razão": Latin America (4 países `[[placeholder]]`), Global (internationalization consulting), Languages (PT/EN/ES) e as funções que você coordena (Clients, Sales, Product, Technical, Startups, Corporates, Mentors, Judges, Participants).
+- Visual: faixa escura com "livro-razão": Latin America (Argentina, Brazil, Colombia, Mexico), Global (internationalization consulting), Languages (PT/EN/ES) e as funções que você coordena (Clients, Sales, Product, Technical, Startups, Corporates, Mentors, Judges, Participants).
 
 ### 03 · How I work
 - **Headline:** Four things I bring *to any project.*
@@ -128,18 +140,9 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 | Strategy | Turning ideas into structured initiatives. | Defining priorities for a program running in four countries at once. Internationalization strategy and market research at Global Jr. ESPM. |
 | Innovation | Exploring new ways to solve problems and create value. | 300+ startups and corporate partners engaged in SAP's Open Innovation program. Test-and-learn on a live program. |
 | Communication | Connecting people, ideas and business needs. | Workshops and strategic recommendations for enterprise clients. Building the voice and brand of Nós. A postgrad in Digital Communication. |
-| Execution | Moving projects from concept to reality. | Multiple parallel initiatives at SAP, managed for risk and priority. 20+ projects evaluated. A community built from an idea. |
+| Execution | Moving projects from concept to reality. | Multiple parallel initiatives at SAP, managed for risk and priority. Nós: from an idea to four events and 60 women in its first months. |
 
-### 04 · Beyond work
-- **Headline:** The things I build *on my own time.*
-- **Lede:** Same instincts, different setting: an idea, a community, and the work of making it real.
-- **Nós** (Independent project · Co-founder): A community and in-person experience for women in Porto Alegre — co-founded and built from an idea.
-  Nós — Portuguese for both "us" and "knots" — is a community for women in Porto Alegre, built around in-person experiences, events and the connections that come out of them.
-  What I do: Experience design · Community · Events · Partnerships · Branding · Communication & content · Audience experience
-  CTAs: Read the story → · `[[@instagram]]` ↗
-- **Also on my mind:** 3 slots `[[placeholder]]` para interesses/projetos criativos.
-
-### 05 · Contact
+### 04 · Contact
 - **Headline:** Let's build something *interesting.*
 - **Lede:** I'm open to conversations about strategic projects, innovation, growth and product, brand and product marketing, communications, and international work — especially where technology and people meet. Based in Porto Alegre, open to relocation.
 - Linhas: LinkedIn (linkedin.com/in/beatriz-tramontin) → "Connect on LinkedIn ↗" · Email → tramontinbeatriz@gmail.com + botão "Copy email"
@@ -155,10 +158,9 @@ Beatriz Tramontin · Strategy, innovation & communication — across borders. ·
 |---|---|---|
 | Hero | I turn ideas into things that *happen.* | Strategy · Innovation · Communication · Technology |
 | About | A career built in the *spaces between.* | International Relations taught me how different systems learn to work together… |
-| Work | Complex things, *given structure.* | Three projects, one pattern… |
-| Across borders | Four countries. One program. *Many ways of working.* | Different markets, different rhythms, one shared outcome. |
+| Work | Complex things, *given structure.* | Five projects, one pattern… |
+| Across borders | Four countries. One program. *Many ways of working.* | Three languages, many markets, one shared outcome. |
 | How I work | Four things I bring *to any project.* | Not adjectives — habits. |
-| Beyond | The things I build *on my own time.* | Same instincts, different setting. |
 | Contact | Let's build something *interesting.* | Open to conversations about… |
 
 Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif rosa (cor de destaque)**. Vira uma assinatura visual reconhecível em todo o site.
@@ -169,24 +171,22 @@ Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif 
 |---|---|---|
 | Hero | **View my work ↓** (primário, sólido) | #work |
 | Hero | About me (contorno) | #about |
-| Hero / Nav | LinkedIn ↗ | perfil `[[placeholder]]` |
+| Hero / Nav | LinkedIn ↗ | linkedin.com/in/beatriz-tramontin |
 | Projetos | Read the case → | /work/… |
-| Nós | **Read the story →** · @instagram ↗ | /work/nos · Instagram |
 | Case study | ← All work · **Next case →** | home / próximo case |
 | Contact | Connect on LinkedIn ↗ · email → · Copy email | — |
 
 ## 5. Layout por seção (desktop, grid de 12 colunas)
 
 - **Nav:** fixa, transparente no topo. Depois de 24px de scroll ganha fundo marfim translúcido com blur. Esconde ao rolar para baixo e volta ao rolar para cima.
-- **Hero:** ocupa 100% da altura da tela. Headline serif enorme nas colunas 1–9, retrato 3:4 nas colunas 10–12. Intro + CTAs embaixo, faixa de status em 3 colunas separada por um fio fino.
+- **Hero:** ocupa 100% da altura da tela. Headline serif enorme à esquerda, com espaço em branco generoso à direita (sem foto). Intro + CTAs embaixo, faixa de status em 3 colunas separada por um fio fino.
 - **Section header (padrão):** fio fino no topo; "01 —— ABOUT" nas colunas 1–3; headline + lede nas colunas 4–12.
-- **About:** foto + ficha de fatos (1–4) | narrativa + citação com fio rosa (6–12). Linha do tempo horizontal de 5 passos no fim da seção.
-- **Work:** o projeto destaque tem capa 16:9 de ponta a ponta, título grande à esquerda e métricas à direita. Os demais vêm em linha editorial, com imagem de 7 colunas e texto de 4, alternando o lado.
+- **About:** ficha de fatos (1–4) | narrativa + citação com fio rosa (6–12). Linha do tempo horizontal de 5 passos no fim da seção.
+- **Work:** sem fotos, cada projeto é uma linha editorial separada por um fio: kicker, título, tagline e "Read the case" à esquerda (1–5); métricas grandes e o desafio à direita (7–12). O projeto destaque usa título e números maiores.
 - **Across borders:** faixa charcoal de largura total (a única mudança de ritmo do meio da página). Intro à esquerda e "livro-razão" de regiões à direita.
 - **How I work:** 4 colunas com fio no topo, que fica rosa no hover. Número, título serif, linha e "In practice" alinhados por subgrid.
-- **Beyond:** imagem do Nós (1–7) + título "Nós" gigante e texto (9–12). Métricas e galeria de 3 imagens quadradas embaixo. "Also on my mind" em 3 colunas.
 - **Contact:** fundo charcoal, headline enorme, links como linhas grandes de tabela.
-- **Case study:** cabeçalho com título display + ficha (Role/Scope/Org/Year). Capa, métricas, capítulos em 2 colunas (rótulo | texto), citação central em itálico, galeria, competências e "Next case" em tamanho display.
+- **Case study:** cabeçalho com título display + ficha (Role/Countries/Org/Since). Métricas, capítulos em 2 colunas (rótulo | texto), citação central em itálico, galeria, competências e "Next case" em tamanho display.
 
 ## 6. Direção visual
 
@@ -234,10 +234,8 @@ Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif 
 - Projetos: "Read the case →", "Challenge", "Skills"
 - Case: "← All work", "Context", "My role", "The challenge", "What I did", "Impact", "Skills in play", "Next case"
 - Pilares: "In practice"
-- Nós: "Independent project · Co-founder", "What I do", "Read the story →"
 - Contato: "Copy email" → "Copied ✓"
 - Footer: "Back to top ↑"
-- Placeholders de imagem: "PHOTO · 16:9" + descrição exata da foto
 
 ## 10. Animações e interações
 
@@ -247,7 +245,7 @@ Todas são sutis, rápidas e desligadas automaticamente com `prefers-reduced-mot
 - **Reveal no scroll:** elementos marcados com `data-reveal` sobem e aparecem com stagger de 90ms (IntersectionObserver).
 - **Contagem dos números:** +120%, 4 e 20+ contam de 0 até o valor ao entrarem na tela, com ease-out.
 - **Links:** o sublinhado cresce da esquerda para a direita. As setas se deslocam 3–4px no hover.
-- **Imagens de projeto:** zoom de 3% em 1.2s no hover.
+- **Imagens de projeto (quando houver):** zoom de 3% em 1.2s no hover.
 - **Pilares:** o fio do topo vira rosa da esquerda para a direita no hover.
 - **Nav:** some ao rolar para baixo e reaparece ao rolar para cima.
 - **Menu mobile:** tela cheia, links serif grandes entrando em cascata.
@@ -257,7 +255,7 @@ Sugestões para uma v2: cursor customizado nos cards, transição de página com
 
 ## 11. Imagens por projeto
 
-Cada slot tem um placeholder no site com a descrição exata. Diretrizes gerais: fotos **reais**, luz natural, momentos espontâneos em vez de poses. Nada de stock. Desfoque telas, logos de clientes e informação confidencial.
+**Por enquanto o site não usa fotos.** Esta tabela serve de guia para quando você quiser adicioná-las. Diretrizes gerais: fotos **reais**, luz natural, momentos espontâneos em vez de poses. Nada de stock. Desfoque telas, logos de clientes e informação confidencial.
 
 | Local | Formato | Foto ideal |
 |---|---|---|
@@ -272,13 +270,20 @@ Cada slot tem um placeholder no site com a descrição exata. Diretrizes gerais:
 | Nós: galeria | 1:1 | Identidade visual (logo, posts, impressos) · detalhe do evento (mesa, kit, sinalização) · momento espontâneo da comunidade. |
 | Social share | 1200×630 | `public/og.jpg`: retrato + nome sobre fundo marfim. |
 
-Para adicionar uma foto: coloque o arquivo em `public/images/...` e preencha `src: 'images/...'` no slot correspondente em `site.ts`. O placeholder é trocado automaticamente pela imagem.
+Para adicionar uma foto, coloque o arquivo em `public/images/...` e acrescente no projeto em `site.ts`:
+
+```ts
+cover: { src: 'images/nos/evento.jpg', alt: 'Nós event in Porto Alegre', ratio: '16/9' },
+gallery: [{ src: 'images/nos/marca.jpg', alt: 'Nós brand identity', ratio: '1/1' }],
+```
+
+`hero.portrait` e `about.portrait` funcionam do mesmo jeito. A imagem aparece automaticamente; sem ela, o layout continua tipográfico.
 
 ## 12. Desktop e mobile
 
 **Desktop (≥ 961px):** grid de 12 colunas, largura máxima de 1400px, headlines muito grandes, layouts assimétricos (texto 4–5 colunas × imagem 7).
 
-**Tablet (≤ 960px):** nav vira botão "Menu"; hero empilha (headline → intro → retrato → status); pilares em 2×2; linha do tempo em 2×2.
+**Tablet (≤ 960px):** nav vira botão "Menu"; hero empilha (headline → intro → status); pilares em 2×2; linha do tempo em 2×2.
 
 **Mobile (≤ 560–620px):**
 - Tipografia fluida com `clamp()`: a headline do hero fica em ~50px e continua sendo o elemento dominante.
@@ -287,18 +292,15 @@ Para adicionar uma foto: coloque o arquivo em `public/images/...` e preencha `sr
 - Faixa de status vira lista de pares rótulo/valor.
 - Linha do tempo vira vertical, com o fio à esquerda.
 - Métricas empilham com o número grande à esquerda.
-- Galeria do Nós: 1 imagem grande + 2 lado a lado.
 - Menu em tela cheia com links serif grandes e fechamento com Esc.
 - Animações mais curtas. O conteúdo é 100% legível sem JavaScript.
 
 ---
 
-## Placeholders a preencher
+## Pendências
 
-Busque por `[[` em `src/content/site.ts`. Depois do CV, só falta isto:
+Nenhum placeholder de texto pendente. Opcionais para uma próxima versão:
 
-- **Innovation Tournament / Across borders:** nomes dos 4 países
-- **SAP Business AI:** nº de clientes, workshops ou apresentações · 1 resultado concreto
-- **Nós:** ano de fundação · @ do Instagram · nº de eventos · mulheres alcançadas · parceiros
-- **Beyond work:** 3 interesses/projetos criativos
-- **Imagens:** todos os slots de foto + `public/og.jpg`
+- **SAP Business AI:** um número (clientes, workshops, apresentações) ou um resultado concreto
+- **Nós:** @ do Instagram, se quiser linkar
+- **Fotos:** ver §11, mais uma imagem de compartilhamento `public/og.jpg` (1200×630)

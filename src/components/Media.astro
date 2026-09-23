@@ -60,7 +60,7 @@ const ratio = image.ratio ?? '4/3';
     justify-content: space-between;
     padding: clamp(0.9rem, 2vw, 1.5rem);
     background:
-      repeating-linear-gradient(135deg, transparent 0 22px, rgb(27 26 24 / 0.035) 22px 23px),
+      repeating-linear-gradient(135deg, transparent 0 22px, rgb(43 29 35 / 0.04) 22px 23px),
       var(--paper-2);
   }
   .media__tag {
@@ -87,11 +87,11 @@ const ratio = image.ratio ?? '4/3';
   .media__corner--tl { top: 8px; right: 8px; border-top-width: 1px; border-right-width: 1px; }
   .media__corner--br { bottom: 8px; left: 8px; border-bottom-width: 1px; border-left-width: 1px; }
 
-  .media--ink { background: #2a2825; }
+  .media--ink { background: var(--ink-media); }
   .media--ink .media__ph {
     background:
       repeating-linear-gradient(135deg, transparent 0 22px, rgb(255 255 255 / 0.04) 22px 23px),
-      #2a2825;
+      var(--ink-media);
   }
   .media--ink .media__brief { color: var(--ink-muted); }
   .media--ink .media__tag,

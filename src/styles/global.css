@@ -6,22 +6,25 @@
 :root {
   color-scheme: light;
 
-  /* Palette: ivory, charcoal, neutrals + one accent (terracotta) */
-  --paper: #f4f0e8;
-  --paper-2: #ebe5d9;
-  --paper-3: #e1d9ca;
-  --ink: #1b1a18;
-  --ink-2: #3b3935;
-  --muted: #6f6a62;
-  --line: #d6cebf;
-  --accent: #a8431f;
-  --accent-soft: rgb(168 67 31 / 0.1);
+  /* Palette: blush, deep aubergine, rosy neutrals + one accent (rose) */
+  --paper: #f7edea;
+  --paper-2: #f0dfda;
+  --paper-3: #e8d0ca;
+  --ink: #2b1d23;
+  --ink-2: #4a3940;
+  --muted: #735e66;
+  --line: #e2cdc7;
+  --accent: #b23a5e;
+  --accent-soft: rgb(178 58 94 / 0.1);
+  --nav-bg: rgb(247 237 234 / 0.86);
 
   /* Inverted (contact / dark bands) */
-  --ink-paper: #efe9de;
-  --ink-muted: #a39d92;
-  --ink-line: #3a3834;
-  --accent-on-ink: #e2825c;
+  --ink-paper: #f7e7eb;
+  --ink-muted: #bba1ab;
+  --ink-line: #4a3640;
+  --ink-media: #3a2931;
+  --accent-on-ink: #f09ab2;
+  --accent-on-ink-soft: rgb(240 154 178 / 0.16);
 
   --serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
   --sans: 'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;

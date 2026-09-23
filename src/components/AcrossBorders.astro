@@ -30,7 +30,7 @@ const p = projects.find((x) => x.slug === 'across-borders')!;
         </section>
       ))}
 
-      <section class="ab__region ab__region--across" data-reveal style="--i: 2">
+      <section class="ab__region ab__region--across" data-reveal style={`--i: ${borders.regions.length}`}>
         <header>
           <h4>Across functions</h4>
           <p class="label">Who I coordinate with</p>
@@ -88,7 +88,7 @@ const p = projects.find((x) => x.slug === 'across-borders')!;
   }
   .ab__marquee li:hover { border-color: var(--accent-on-ink); color: var(--accent-on-ink); }
 
-  .ab :global(.ph) { background: rgb(226 130 92 / 0.14); color: var(--accent-on-ink); }
+  .ab :global(.ph) { background: var(--accent-on-ink-soft); color: var(--accent-on-ink); }
 
   @media (max-width: 960px) {
     .ab__intro, .ab__map { grid-column: 1 / -1; }

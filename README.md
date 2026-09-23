@@ -71,7 +71,7 @@ Base (layout)
 ## Editing content
 
 - `*text*` inside a string renders as the accent italic serif.
-- `[[text]]` marks a **placeholder**: it renders highlighted in terracotta so it can't ship unnoticed. Search for `[[` to find every one.
+- `[[text]]` marks a **placeholder**: it renders highlighted in the rose accent so it can't ship unnoticed. Search for `[[` to find every one.
 - **Photos:** put the file in `public/images/…` and set `src: 'images/…'` on the matching slot in `site.ts`. Until then, the slot shows a brief describing exactly which photo belongs there.
 - Adding a project: add an entry to `projects` in `site.ts` and its case-study page is generated automatically.
 

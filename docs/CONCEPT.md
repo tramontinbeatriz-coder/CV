@@ -2,7 +2,9 @@
 
 Este documento reúne o conceito, a copy e as decisões de design do site. O código implementa exatamente o que está aqui. Todo o texto vive em `src/content/site.ts`.
 
-> **Regra de conteúdo:** nada foi inventado. Tudo o que você ainda não me passou aparece como placeholder `[[assim]]` no código. No site, ele aparece destacado em terracota com sublinhado tracejado, então não tem como ir ao ar sem ninguém perceber. A lista completa está no fim deste documento.
+> **Fontes:** o briefing inicial e o CV atualizado (cargos, datas, idiomas, Open Innovation, Global Jr. ESPM, pós-graduação). O telefone do CV **não** aparece no site, de propósito.
+>
+> **Regra de conteúdo:** nada foi inventado. Tudo o que você ainda não me passou aparece como placeholder `[[assim]]` no código. No site, ele aparece destacado em rosa com sublinhado tracejado, então não tem como ir ao ar sem ninguém perceber. A lista completa está no fim deste documento.
 
 ---
 
@@ -28,13 +30,15 @@ Este documento reúne o conceito, a copy e as decisões de design do site. O có
 ├── 02 Selected work
 │   ├── 01 Innovation Tournament   (destaque: capa grande + métricas)
 │   ├── 02 SAP Business AI         (linha editorial imagem/texto)
-│   └── 03 Across borders          (faixa escura visual: regiões + funções)
+│   ├── 03 SAP Open Innovation     (linha editorial, lado invertido)
+│   └── 04 Across borders          (faixa escura visual: regiões, idiomas, funções)
 ├── 03 How I work       4 pilares com prova "In practice"
 ├── 04 Beyond work      Nós em destaque (projeto independente) + outros interesses
 └── 05 Contact          "Let's build something interesting." + footer
 
 /work/innovation-tournament/   Case study completo
 /work/sap-business-ai/         Case study completo
+/work/sap-open-innovation/     Case study completo
 /work/across-borders/          Case study completo
 /work/nos/                     Case study completo (o Nós tem página própria, igual aos projetos profissionais)
 ```
@@ -56,9 +60,9 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 - **Eyebrow:** STRATEGY · INNOVATION · COMMUNICATION · TECHNOLOGY
 - **Nome:** BEATRIZ TRAMONTIN
 - **Headline:** I turn ideas into things that *happen.*
-- **Intro:** I'm Beatriz — Bia, to most people. I work in Business AI and innovation at SAP, connecting technology, business and the people who need to move both forward. Trained in International Relations, I do my best work between countries, teams and disciplines.
+- **Intro:** I'm Beatriz — Bia, to most people. At SAP I work in Business AI, connecting technology, business and the people who need to move both forward. Trained in International Relations, I do my best work between countries, teams and disciplines.
 - **CTAs:** View my work ↓ · About me · LinkedIn ↗
-- **Status:** Currently: Business AI & Innovation at SAP · Working across: Latin America & the Americas · Also: Co-founder of Nós
+- **Status:** Currently: Business AI Solution Advisor, SAP · Co-leading: SAP Latin America Innovation Tournament · Based in: Porto Alegre · open to relocation
 
 **Opções de headline consideradas:**
 1. **I turn ideas into things that happen.** ← *escolhida*: é humana, direta e diz exatamente o que você quer que o recrutador pense ("ela transforma ideias em algo concreto"), sem nenhum clichê.
@@ -73,22 +77,23 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 - **Lede:** International Relations taught me how different systems learn to work together. I've been doing that ever since — with a lot more technology involved.
 - **Narrativa:**
   1. I studied International Relations at ESPM: a degree about how countries, institutions and people with different interests find common ground. It turned out to be excellent training for innovation work, where the hard part is rarely the idea — it's getting everyone to build it together.
-  2. From there my path moved into technology and innovation, and to SAP, where I work with Business AI. My days sit where strategic projects, client conversations and cross-team coordination meet: running workshops, presenting AI solutions to clients, and making sure business, product and technology teams are moving towards the same outcome.
-  3. Technology is a real part of what I do, and I enjoy it. But what I bring is the connection — translating complex ideas into decisions, turning conversations into plans, and getting people from different countries and functions to move in the same direction.
+  2. At Global Jr. ESPM I led consulting projects on internationalization strategy for Brazilian companies. Then came SAP's Open Innovation program, where I spent two years connecting startups and enterprises across Latin America — 300+ startups and corporate partners, 30+ collaborations. Today I'm a Business AI Solution Advisor at SAP: coordinating cross-functional projects, running workshops and presenting strategic recommendations to enterprise clients, and making sure sales, product and technical teams are moving towards the same outcome.
+  3. Technology is a real part of what I do, and I enjoy it. But what I bring is the connection — translating complex ideas into decisions, turning conversations into plans, and getting people from different countries and functions to move in the same direction. It's also why I'm doing a postgraduate degree in Digital Communication & Business Intelligence: the story matters as much as the data.
 - **Citação:** "Most of my work is translation — between technology and business, between teams, between countries."
-- **Linha do tempo:** 01 International Relations (ESPM) → 02 Technology & innovation → 03 SAP → 04 Business AI (Now). Os anos são placeholders.
-- **Fatos:** Education · Now · Regions · Languages `[[placeholder]]` · Independent
+- **Linha do tempo:** 01 International Relations, ESPM (2021–25) → 02 Global Jr. ESPM, Project Director (2021–22) → 03 SAP Open Innovation (2023–25) → 04 SAP Business AI + co-lead do Tournament (Now) → 05 Pós em Digital Communication & BI, ESPM (2025–27)
+- **Fatos:** Now · Education · Studying · Languages (Portuguese native · English fluent · Spanish advanced) · Based in (Porto Alegre, open to relocation) · Independent
 
 ### 02 · Selected work
 - **Headline:** Complex things, *given structure.*
-- **Lede:** Three projects, one pattern: take something with many moving parts, give it a shape, and get people moving with it.
+- **Lede:** Four projects, one pattern: take something with many moving parts, give it a shape, and get people moving with it.
 
 **01 — Innovation Tournament** · *Strategy · Program management · Innovation*
-- Tagline: One innovation program, four Latin American countries, run end to end.
+- Meta: Co-Lead · SAP Latin America · desde junho de 2025
+- Tagline: SAP's Latin America innovation program — four countries, owned end to end.
 - Context: A multinational innovation program running across four Latin American countries at the same time — bringing together participants, mentors and judges around real projects, with local teams and stakeholders in each market.
-- My role: I led execution end to end: from planning and prioritisation to coordinating people across countries and evaluating the final projects.
+- My role: As co-lead, I own execution end to end: from program design and prioritisation to coordinating people across countries and running the evaluation process.
 - Challenge: Make a single program work in four countries at once — each with its own teams, timelines and priorities — while coordinating a large network of mentors, judges and participants and keeping the quality bar consistent across more than twenty projects.
-- What I did: coordinated mentors/judges/participants em 4 países · aligned international teams and stakeholders around one timeline and shared strategic priorities · structured and improved the program with test-and-learn · facilitated collaboration across teams · evaluated 20+ projects · developed high-impact innovation initiatives.
+- What I did: coordinated mentors, judges and 20+ participants in 4 countries · aligned multi-country teams and stakeholders · designed and iterated the program with test-and-learn (improving participation and outcomes) · managed the evaluation process (20+ projects, consistent selection criteria) · facilitated collaboration between teams · drove high-impact initiatives.
 - Impact: +120% growth in acquisition and engagement — and a program format that got better while it was running, not only after it ended.
 - Métricas: **+120%** acquisition & engagement · **4** Latin American countries · **20+** projects evaluated
 - Pull quote: From the outside it looked like an event. From the inside, it was a strategy and project management problem in four countries.
@@ -96,14 +101,23 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 **02 — SAP Business AI** · *Technology · Client engagement · Strategy*
 - Tagline: Translating AI into conversations — and initiatives — that make sense for the business.
 - Challenge: AI is complex, fast-moving and easy to overpromise. The work is making it concrete — what it means for a specific business, which problem it solves, and what it takes to get there.
-- What I did: client engagement on AI solutions · workshops · client presentations · strategic projects & innovation · coordination across business, product and technology.
-- Métricas: **3** functions connected (business, product & technology) · `[[#]]` workshops · `[[#]]` presentations
+- Meta: Business AI Solution Advisor · SAP · desde janeiro de 2025
+- What I did: coordination of cross-functional projects · client-facing presentations, workshops and strategic recommendations to enterprise clients · key point of contact between clients and internal teams · multiple parallel initiatives (prioritization, risk) · work with sales, product and technical teams · process improvements.
+- Métricas: **3** teams aligned (sales, product & technical) · `[[#]]` enterprise clients, workshops & presentations
 - Pull quote: The hardest part of AI is rarely the technology. It's the conversation around it.
 
-**03 — Across borders** · *International · Cross-functional · Stakeholders*
+**03 — SAP Open Innovation** · *Ecosystem · Partnerships · Innovation* (Open Innovation Intern, 2023–2025)
+- Tagline: Connecting startups and enterprises across Latin America — and turning introductions into collaborations.
+- What I did: engaged 300+ startups and corporate partners · contributed to 30+ startup–corporate collaborations · relationships with hubs such as Cubo Itaú and Distrito.
+- Métricas: **300+** startups & corporate partners · **30+** collaborations · **2** years in the LatAm ecosystem
+- Pull quote: Innovation is mostly introductions — the right people, at the right moment, with a reason to work together.
+
+**04 — Across borders** · *International · Cross-functional · Stakeholders*
 - Headline visual: Four countries. One program. *Many ways of working.*
 - Challenge: Distance is the easy part. The real work is alignment: different priorities, cultures and communication styles moving on the same timeline.
-- Visual: faixa escura com "livro-razão" de regiões (Latin America → 4 países `[[placeholder]]`; The Americas → `[[mercados]]`) e as funções que você coordena (Business, Product, Technology, Clients, Mentors, Judges, Participants).
+- What I did: Tournament em 4 países · Open Innovation na América Latina · consultoria de internacionalização na Global Jr. ESPM · trabalho em português, inglês e espanhol.
+- Métricas: **4** countries in one program · **3** working languages · **300+** startups & partners
+- Visual: faixa escura com "livro-razão": Latin America (4 países `[[placeholder]]`), Global (internationalization consulting), Languages (PT/EN/ES) e as funções que você coordena (Clients, Sales, Product, Technical, Startups, Corporates, Mentors, Judges, Participants).
 
 ### 03 · How I work
 - **Headline:** Four things I bring *to any project.*
@@ -111,10 +125,10 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 
 | Pilar | Linha | In practice |
 |---|---|---|
-| Strategy | Turning ideas into structured initiatives. | Defining priorities and one shared timeline for a program running in four countries at once. |
-| Innovation | Exploring new ways to solve problems and create value. | Improving a live program through test-and-learn — and helping clients explore what AI can do for their business. |
-| Communication | Connecting people, ideas and business needs. | Translating AI into client workshops and presentations. Building the voice and brand of Nós. |
-| Execution | Moving projects from concept to reality. | Mentors, judges, participants and 20+ projects, delivered end to end. A community built from an idea. |
+| Strategy | Turning ideas into structured initiatives. | Defining priorities for a program running in four countries at once. Internationalization strategy and market research at Global Jr. ESPM. |
+| Innovation | Exploring new ways to solve problems and create value. | 300+ startups and corporate partners engaged in SAP's Open Innovation program. Test-and-learn on a live program. |
+| Communication | Connecting people, ideas and business needs. | Workshops and strategic recommendations for enterprise clients. Building the voice and brand of Nós. A postgrad in Digital Communication. |
+| Execution | Moving projects from concept to reality. | Multiple parallel initiatives at SAP, managed for risk and priority. 20+ projects evaluated. A community built from an idea. |
 
 ### 04 · Beyond work
 - **Headline:** The things I build *on my own time.*
@@ -127,11 +141,11 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 
 ### 05 · Contact
 - **Headline:** Let's build something *interesting.*
-- **Lede:** I'm open to conversations about strategic projects, innovation, brand and product marketing, communications, and international work — especially where technology and people meet.
-- Linhas: LinkedIn → "Connect on LinkedIn ↗" · Email → `[[seu email]]` + botão "Copy email"
+- **Lede:** I'm open to conversations about strategic projects, innovation, growth and product, brand and product marketing, communications, and international work — especially where technology and people meet. Based in Porto Alegre, open to relocation.
+- Linhas: LinkedIn (linkedin.com/in/beatriz-tramontin) → "Connect on LinkedIn ↗" · Email → tramontinbeatriz@gmail.com + botão "Copy email"
 
 ### Footer
-Beatriz Tramontin · Strategy, innovation & communication — across borders. · © ano · `[[Cidade]]` · Back to top ↑
+Beatriz Tramontin · Strategy, innovation & communication — across borders. · © ano · Porto Alegre, Brazil · Back to top ↑
 
 ---
 
@@ -147,7 +161,7 @@ Beatriz Tramontin · Strategy, innovation & communication — across borders. ·
 | Beyond | The things I build *on my own time.* | Same instincts, different setting. |
 | Contact | Let's build something *interesting.* | Open to conversations about… |
 
-Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif na cor de destaque**. Vira uma assinatura visual reconhecível em todo o site.
+Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif rosa (cor de destaque)**. Vira uma assinatura visual reconhecível em todo o site.
 
 ## 4. CTAs
 
@@ -166,10 +180,10 @@ Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif 
 - **Nav:** fixa, transparente no topo. Depois de 24px de scroll ganha fundo marfim translúcido com blur. Esconde ao rolar para baixo e volta ao rolar para cima.
 - **Hero:** ocupa 100% da altura da tela. Headline serif enorme nas colunas 1–9, retrato 3:4 nas colunas 10–12. Intro + CTAs embaixo, faixa de status em 3 colunas separada por um fio fino.
 - **Section header (padrão):** fio fino no topo; "01 —— ABOUT" nas colunas 1–3; headline + lede nas colunas 4–12.
-- **About:** foto + ficha de fatos (1–4) | narrativa + citação com fio terracota (6–12). Linha do tempo horizontal de 4 passos no fim da seção.
+- **About:** foto + ficha de fatos (1–4) | narrativa + citação com fio rosa (6–12). Linha do tempo horizontal de 5 passos no fim da seção.
 - **Work:** o projeto destaque tem capa 16:9 de ponta a ponta, título grande à esquerda e métricas à direita. Os demais vêm em linha editorial, com imagem de 7 colunas e texto de 4, alternando o lado.
 - **Across borders:** faixa charcoal de largura total (a única mudança de ritmo do meio da página). Intro à esquerda e "livro-razão" de regiões à direita.
-- **How I work:** 4 colunas com fio no topo, que fica terracota no hover. Número, título serif, linha e "In practice" alinhados por subgrid.
+- **How I work:** 4 colunas com fio no topo, que fica rosa no hover. Número, título serif, linha e "In practice" alinhados por subgrid.
 - **Beyond:** imagem do Nós (1–7) + título "Nós" gigante e texto (9–12). Métricas e galeria de 3 imagens quadradas embaixo. "Also on my mind" em 3 colunas.
 - **Contact:** fundo charcoal, headline enorme, links como linhas grandes de tabela.
 - **Case study:** cabeçalho com título display + ficha (Role/Scope/Org/Year). Capa, métricas, capítulos em 2 colunas (rótulo | texto), citação central em itálico, galeria, competências e "Next case" em tamanho display.
@@ -181,22 +195,22 @@ Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif 
 - Sem gradientes, sem sombras, sem ícones decorativos (só setas tipográficas ↗ → ↓).
 - Pouquíssimos "cards": os projetos são linhas editoriais, não uma grade de caixinhas.
 - Uma única faixa escura no meio (Across borders) e o fechamento escuro (Contact) dão ritmo.
-- O feminino aparece na serif com itálico expressivo e na cor terracota, sem rosa, sem floral.
+- O feminino aparece na paleta rosada e no itálico serif expressivo, equilibrados por muito espaço, fios finos e um berinjela escuro, sem nada floral ou infantil.
 
-## 7. Paleta
+## 7. Paleta — rosado
 
 | Token | Hex | Uso |
 |---|---|---|
-| Paper (ivory) | `#F4F0E8` | fundo principal |
-| Paper 2 (sand) | `#EBE5D9` | placeholders, hover |
-| Line | `#D6CEBF` | fios/hairlines |
-| Ink (charcoal) | `#1B1A18` | texto, faixas escuras |
-| Ink 2 | `#3B3935` | texto corrido |
-| Muted | `#6F6A62` | legendas, rótulos (contraste 4.7:1) |
-| **Accent: Terracotta** | `#A8431F` | *a única cor de destaque*: itálicos das headlines, números de seção, detalhes (contraste 5.3:1 no marfim) |
-| Accent on ink | `#E2825C` | a mesma terracota, clareada para fundos escuros |
+| Paper (blush) | `#F7EDEA` | fundo principal, um marfim rosado |
+| Paper 2 | `#F0DFDA` | placeholders, hover |
+| Line | `#E2CDC7` | fios/hairlines |
+| Ink (berinjela escuro) | `#2B1D23` | texto, faixas escuras |
+| Ink 2 | `#4A3940` | texto corrido |
+| Muted | `#735E66` | legendas, rótulos (contraste ~5:1) |
+| **Accent: Rose** | `#B23A5E` | *a única cor de destaque*: itálicos das headlines, números de seção, detalhes (contraste ~5:1 no blush) |
+| Accent on ink | `#F09AB2` | rosa claro para fundos escuros |
 
-**Por que terracota:** é quente e humana sem ser "feminina clichê", tem cara de editorial/internacional e se afasta completamente do azul corporativo de tech (e da SAP).
+**Por que esse rosado:** o fundo é um blush quase neutro, então o site continua sofisticado e editorial, sem cara de "rosa bebê". O destaque é um rosa profundo, puxado para framboesa, usado com parcimônia. O charcoal virou um berinjela bem escuro, para as faixas escuras conversarem com o rosa. Todas as cores são tokens em `src/styles/global.css`: dá para trocar a paleta inteira ali.
 
 ## 8. Tipografia
 
@@ -234,10 +248,10 @@ Todas são sutis, rápidas e desligadas automaticamente com `prefers-reduced-mot
 - **Contagem dos números:** +120%, 4 e 20+ contam de 0 até o valor ao entrarem na tela, com ease-out.
 - **Links:** o sublinhado cresce da esquerda para a direita. As setas se deslocam 3–4px no hover.
 - **Imagens de projeto:** zoom de 3% em 1.2s no hover.
-- **Pilares:** o fio do topo vira terracota da esquerda para a direita no hover.
+- **Pilares:** o fio do topo vira rosa da esquerda para a direita no hover.
 - **Nav:** some ao rolar para baixo e reaparece ao rolar para cima.
 - **Menu mobile:** tela cheia, links serif grandes entrando em cascata.
-- **Next case:** o fundo esquenta e o título fica terracota no hover.
+- **Next case:** o fundo esquenta e o título fica rosa no hover.
 
 Sugestões para uma v2: cursor customizado nos cards, transição de página com View Transitions API, marquee lento com os nomes dos países.
 
@@ -281,14 +295,10 @@ Para adicionar uma foto: coloque o arquivo em `public/images/...` e preencha `sr
 
 ## Placeholders a preencher
 
-Busque por `[[` em `src/content/site.ts`:
+Busque por `[[` em `src/content/site.ts`. Depois do CV, só falta isto:
 
-- **Links:** URL do LinkedIn · email · @ do Instagram do Nós
-- **Pessoal:** cidade/país · idiomas de trabalho
-- **Linha do tempo:** anos de cada etapa · cargo exato na SAP e ano de entrada
-- **Innovation Tournament:** organização · ano · nomes dos 4 países
-- **SAP Business AI:** nº de workshops · nº de apresentações · 1 resultado concreto
-- **Across borders:** total de países · idiomas · mercados nas Américas · 1–2 outros exemplos de iniciativas internacionais
-- **Nós:** ano de fundação · nº de eventos · mulheres alcançadas · parceiros
+- **Innovation Tournament / Across borders:** nomes dos 4 países
+- **SAP Business AI:** nº de clientes, workshops ou apresentações · 1 resultado concreto
+- **Nós:** ano de fundação · @ do Instagram · nº de eventos · mulheres alcançadas · parceiros
 - **Beyond work:** 3 interesses/projetos criativos
-- **Imagens:** todos os slots acima + `public/og.jpg`
+- **Imagens:** todos os slots de foto + `public/og.jpg`

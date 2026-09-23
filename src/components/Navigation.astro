@@ -1,0 +1,137 @@
+---
+import { nav, person } from '../content/site';
+import { safeHref, url } from '../lib/rich';
+
+interface Props {
+  /** On case-study pages, anchors must point back to the home page. */
+  onHome?: boolean;
+}
+
+const { onHome = true } = Astro.props;
+const to = (hash: string) => (onHome ? hash : url(`/${hash}`));
+const linkedin = person.links.linkedin;
+---
+
+<header class="nav" data-nav>
+  <div class="nav__inner container">
+    <a class="nav__brand" href={onHome ? '#top' : url('/')} aria-label={`${person.name} — home`}>
+      <span class="nav__mono" aria-hidden="true">{person.monogram}</span>
+      <span class="nav__name">{person.name}</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <ul>
+        {nav.map((item) => (
+          <li><a class="link" href={to(item.href)}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <a class="nav__cta link" href={safeHref(linkedin.href)} target="_blank" rel="noopener">
+      {linkedin.label} <span class="arrow arrow--diag" aria-hidden="true">↗</span>
+    </a>
+
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+      <span class="nav__toggle-open">Menu</span>
+      <span class="nav__toggle-close">Close</span>
+    </button>
+  </div>
+
+  <div class="menu" id="menu" data-menu hidden>
+    <nav class="container" aria-label="Mobile">
+      <ol>
+        {nav.map((item, i) => (
+          <li style={`--i: ${i}`}>
+            <a href={to(item.href)} data-menu-link>
+              <span class="menu__n">0{i + 1}</span>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ol>
+      <a class="menu__li link" href={safeHref(linkedin.href)} target="_blank" rel="noopener">
+        {linkedin.label} <span class="arrow arrow--diag" aria-hidden="true">↗</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    transition: transform 0.5s var(--ease), background 0.4s var(--ease), border-color 0.4s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  :global(.nav.is-scrolled) {
+    background: rgb(244 240 232 / 0.86);
+    backdrop-filter: saturate(1.2) blur(12px);
+    -webkit-backdrop-filter: saturate(1.2) blur(12px);
+    border-color: var(--line);
+  }
+  :global(.nav.is-hidden) { transform: translateY(-100%); }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 4.5rem;
+  }
+  .nav__brand { display: flex; align-items: center; gap: 0.75rem; margin-right: auto; position: relative; z-index: 2; }
+  .nav__mono {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    transition: background 0.3s var(--ease), color 0.3s var(--ease);
+  }
+  .nav__brand:hover .nav__mono { background: var(--ink); color: var(--paper); }
+  .nav__name { font-family: var(--serif); font-size: 1.3rem; letter-spacing: -0.01em; }
+
+  .nav__links ul { display: flex; gap: 2rem; }
+  .nav__links a, .nav__cta { font-size: var(--fs-small); }
+  .nav__cta { padding-left: 2rem; border-left: 1px solid var(--line); }
+
+  .nav__toggle { display: none; font-size: var(--fs-small); font-weight: 500; position: relative; z-index: 2; }
+  .nav__toggle-close { display: none; }
+  :global(.menu-open) .nav__toggle-open { display: none; }
+  :global(.menu-open) .nav__toggle-close { display: inline; }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: var(--paper);
+    padding-top: 6rem;
+    overflow-y: auto;
+  }
+  .menu ol { display: grid; gap: 0.25rem; margin-bottom: 3rem; }
+  .menu li a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.6rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: clamp(2.25rem, 10vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .menu__n { font-family: var(--sans); font-size: var(--fs-label); color: var(--accent); letter-spacing: 0.1em; }
+  :global(.menu-open) .menu li { animation: menu-in 0.6s var(--ease) both; animation-delay: calc(var(--i) * 60ms + 80ms); }
+  @keyframes menu-in { from { opacity: 0; transform: translateY(16px); } }
+
+  @media (max-width: 960px) {
+    .nav__links, .nav__cta { display: none; }
+    .nav__toggle { display: block; }
+  }
+  @media (max-width: 420px) {
+    .nav__name { font-size: 1.15rem; }
+  }
+</style>

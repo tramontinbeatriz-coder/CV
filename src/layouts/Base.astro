@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import { seo } from '../content/site';
+import { url } from '../lib/rich';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  onHome?: boolean;
+}
+
+const { title = seo.title, description = seo.description, onHome = true } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#f4f0e8" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <!-- PLACEHOLDER: add a 1200×630 share image at public/og.jpg and uncomment -->
+    <!-- <meta property="og:image" content={new URL(url('/og.jpg'), Astro.site)} /> -->
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Navigation onHome={onHome} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

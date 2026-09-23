@@ -1,0 +1,88 @@
+---
+/**
+ * Project entry on the home page.
+ *  - feature: full-width cover + big metrics (lead case)
+ *  - row: editorial two-column row, image alternates sides
+ */
+import type { Project } from '../content/site';
+import { rich, url } from '../lib/rich';
+import Media from './Media.astro';
+import MetricRow from './MetricRow.astro';
+
+interface Props {
+  project: Project;
+  variant?: 'feature' | 'row';
+  flip?: boolean;
+}
+
+const { project: p, variant = 'row', flip = false } = Astro.props;
+const href = url(`/work/${p.slug}/`);
+---
+
+<article class:list={['pc', `pc--${variant}`, { 'pc--flip': flip }]}>
+  <a class="pc__media" href={href} tabindex="-1" aria-hidden="true" data-reveal>
+    <Media image={p.cover} />
+  </a>
+
+  <div class="pc__body">
+    <p class="pc__kicker label" data-reveal><span class="pc__index">{p.index}</span> {p.kicker}</p>
+    <h3 class="h3" data-reveal>
+      <a href={href}>{p.title}</a>
+    </h3>
+    <p class="pc__tagline" data-reveal set:html={rich(p.tagline)} />
+
+    {variant === 'row' && (
+      <dl class="pc__facts" data-reveal>
+        <div><dt class="label">Challenge</dt><dd set:html={rich(p.challenge)} /></div>
+        <div><dt class="label">Skills</dt><dd>{p.skills.slice(0, 4).join(' · ')}</dd></div>
+      </dl>
+    )}
+
+    <a class="pc__more link" href={href} data-reveal>
+      Read the case <span class="arrow arrow--right" aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  {variant === 'feature' && (
+    <div class="pc__metrics">
+      <MetricRow metrics={p.metrics} />
+    </div>
+  )}
+</article>
+
+<style>
+  .pc { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(1rem, 2vw, 2rem); }
+  .pc__media { display: block; overflow: hidden; }
+  .pc__media:hover :global(img) { transform: scale(1.03); }
+  .pc__body { display: grid; gap: 1.25rem; align-content: start; }
+  .pc__kicker { display: flex; gap: 0.75rem; }
+  .pc__index { color: var(--accent); }
+  .pc h3 a { transition: color 0.3s var(--ease); }
+  .pc h3 a:hover { color: var(--accent); }
+  .pc__tagline { font-family: var(--serif); font-size: var(--fs-h4); line-height: 1.2; color: var(--ink-2); max-width: 30ch; }
+  .pc__more { justify-self: start; font-size: var(--fs-small); margin-top: 0.5rem; }
+
+  .pc__facts { display: grid; gap: 1rem; font-size: var(--fs-small); color: var(--ink-2); }
+  .pc__facts > div { display: grid; gap: 0.35rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .pc__facts dd { max-width: 52ch; }
+
+  /* Feature */
+  .pc--feature { row-gap: clamp(2rem, 4vw, 3.5rem); }
+  .pc--feature .pc__media { grid-column: 1 / -1; }
+  .pc--feature .pc__body { grid-column: 1 / span 5; }
+  .pc--feature .pc__metrics { grid-column: 7 / -1; align-self: start; }
+  .pc--feature h3 { font-size: var(--fs-h2); }
+
+  /* Row */
+  .pc--row { align-items: center; row-gap: 2rem; }
+  .pc--row .pc__media { grid-column: 1 / span 7; }
+  .pc--row .pc__body { grid-column: 9 / -1; }
+  .pc--flip .pc__media { grid-column: 6 / -1; order: 2; }
+  .pc--flip .pc__body { grid-column: 1 / span 4; grid-row: 1; }
+
+  @media (max-width: 960px) {
+    .pc--feature .pc__body, .pc--feature .pc__metrics,
+    .pc--row .pc__media, .pc--row .pc__body,
+    .pc--flip .pc__media, .pc--flip .pc__body { grid-column: 1 / -1; grid-row: auto; order: 0; }
+  }
+</style>

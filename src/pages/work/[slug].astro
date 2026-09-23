@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import CaseStudy from '../../components/CaseStudy.astro';
+import { nos, person, projects } from '../../content/site';
+import { plain } from '../../lib/rich';
+
+export function getStaticPaths() {
+  const all = [...projects, nos];
+  return all.map((project, i) => ({
+    params: { slug: project.slug },
+    props: { project, next: all[(i + 1) % all.length] },
+  }));
+}
+
+const { project, next } = Astro.props;
+---
+
+<Base title={`${project.title} — ${person.name}`} description={plain(project.tagline)} onHome={false}>
+  <CaseStudy project={project} next={next} />
+</Base>

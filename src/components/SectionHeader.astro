@@ -1,0 +1,59 @@
+---
+import { rich } from '../lib/rich';
+
+interface Props {
+  number: string;
+  label: string;
+  headline: string;
+  lede?: string;
+  tone?: 'paper' | 'ink';
+}
+
+const { number, label, headline, lede, tone = 'paper' } = Astro.props;
+---
+
+<header class:list={['sh', `sh--${tone}`]}>
+  <p class="sh__label label" data-reveal>
+    <span class="sh__num">{number}</span>
+    <span class="sh__rule" aria-hidden="true"></span>
+    <span>{label}</span>
+  </p>
+  <div class="sh__body">
+    <h2 class="h2" data-reveal set:html={rich(headline)} />
+    {lede && <p class="sh__lede lede" data-reveal style="--i: 1" set:html={rich(lede)} />}
+  </div>
+</header>
+
+<style>
+  .sh {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1rem, 2vw, 2rem);
+    row-gap: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    margin-bottom: clamp(3rem, 7vw, 6rem);
+  }
+  .sh__label {
+    grid-column: 1 / span 3;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    align-self: start;
+  }
+  .sh__num { color: var(--accent); }
+  .sh__rule { width: 2rem; height: 1px; background: currentColor; opacity: 0.5; }
+  .sh__body { grid-column: 4 / -1; display: grid; gap: 1.5rem; }
+  .sh__body h2 { max-width: 14ch; }
+  .sh__lede { max-width: 38ch; }
+
+  .sh--ink { border-color: var(--ink-line); }
+  .sh--ink .sh__label { color: var(--ink-muted); }
+  .sh--ink .sh__num { color: var(--accent-on-ink); }
+  .sh--ink .sh__lede { color: var(--ink-muted); }
+  .sh--ink :global(em) { color: var(--accent-on-ink); }
+
+  @media (max-width: 860px) {
+    .sh__label, .sh__body { grid-column: 1 / -1; }
+  }
+</style>

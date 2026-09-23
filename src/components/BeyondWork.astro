@@ -1,0 +1,110 @@
+---
+import { beyond, interests, nos } from '../content/site';
+import { rich, safeHref, url } from '../lib/rich';
+import SectionHeader from './SectionHeader.astro';
+import Media from './Media.astro';
+import MetricRow from './MetricRow.astro';
+
+const handle = nos.meta.find((m) => m.label === 'Follow')?.value ?? '';
+---
+
+<section class="section beyond" id="beyond">
+  <div class="container">
+    <SectionHeader number={beyond.number} label={beyond.label} headline={beyond.headline} lede={beyond.lede} />
+
+    <article class="nos grid">
+      <a class="nos__cover" href={url(`/work/${nos.slug}/`)} tabindex="-1" aria-hidden="true" data-reveal>
+        <Media image={nos.cover} />
+      </a>
+
+      <div class="nos__body">
+        <p class="label nos__kicker" data-reveal>Independent project · Co-founder</p>
+        <h3 class="nos__title" data-reveal>{nos.title}</h3>
+        <p class="nos__tagline" data-reveal set:html={rich(nos.tagline)} />
+        <p class="nos__context" data-reveal>{nos.context}</p>
+
+        <div class="nos__what" data-reveal>
+          <p class="label">What I do</p>
+          <p>Experience design · Community · Events · Partnerships · Branding · Communication & content · Audience experience</p>
+        </div>
+
+        <div class="nos__links" data-reveal>
+          <a class="btn btn--solid" href={url(`/work/${nos.slug}/`)}>
+            Read the story <span class="arrow arrow--right" aria-hidden="true">→</span>
+          </a>
+          <a class="link" href={safeHref(`https://instagram.com/${handle}`)} target="_blank" rel="noopener">
+            <span set:html={rich(handle)} /> <span class="arrow arrow--diag" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="nos__metrics">
+        <MetricRow metrics={nos.metrics} size="md" />
+      </div>
+
+      <div class="nos__gallery">
+        {nos.gallery.map((g, i) => (
+          <div data-reveal style={`--i: ${i}`}><Media image={g} /></div>
+        ))}
+      </div>
+    </article>
+
+    <div class="interests">
+      <p class="label" data-reveal>{interests.label}</p>
+      <ul>
+        {interests.items.map((it, i) => (
+          <li data-reveal style={`--i: ${i}`}>
+            <h4 class="h4" set:html={rich(it.title)} />
+            <p set:html={rich(it.note)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nos { row-gap: clamp(2rem, 4vw, 3.5rem); }
+  .nos__cover { grid-column: 1 / span 7; display: block; overflow: hidden; }
+  .nos__cover:hover :global(img) { transform: scale(1.03); }
+  .nos__body { grid-column: 9 / -1; display: grid; gap: 1.25rem; align-content: start; }
+  .nos__kicker { color: var(--accent); }
+  .nos__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(5rem, 12vw, 10rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+  }
+  .nos__tagline { font-family: var(--serif); font-size: var(--fs-h4); line-height: 1.2; }
+  .nos__context { color: var(--ink-2); font-size: var(--fs-small); max-width: 46ch; }
+  .nos__what { display: grid; gap: 0.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: var(--fs-small); color: var(--ink-2); }
+  .nos__links { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 0.5rem; }
+  .nos__links .link { font-size: var(--fs-small); }
+  .nos__metrics { grid-column: 1 / -1; }
+  .nos__gallery { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(0.75rem, 2vw, 2rem); }
+
+  .interests {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1rem, 2vw, 2rem);
+    row-gap: 1.5rem;
+    margin-top: clamp(5rem, 10vw, 8rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .interests > .label { grid-column: 1 / span 3; }
+  .interests ul { grid-column: 4 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+  .interests li { display: grid; gap: 0.5rem; }
+  .interests li p { font-size: var(--fs-small); color: var(--muted); }
+
+  @media (max-width: 960px) {
+    .nos__cover, .nos__body { grid-column: 1 / -1; }
+    .interests > .label, .interests ul { grid-column: 1 / -1; }
+  }
+  @media (max-width: 620px) {
+    .nos__gallery { grid-template-columns: 1fr 1fr; }
+    .nos__gallery > :first-child { grid-column: 1 / -1; }
+    .interests ul { grid-template-columns: 1fr; }
+  }
+</style>

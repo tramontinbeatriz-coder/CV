@@ -1,0 +1,24 @@
+---
+import { projects, work } from '../content/site';
+import SectionHeader from './SectionHeader.astro';
+import ProjectCard from './ProjectCard.astro';
+import AcrossBorders from './AcrossBorders.astro';
+
+const [lead, ...rest] = projects.filter((p) => p.slug !== 'across-borders');
+---
+
+<section class="section work" id="work">
+  <div class="container">
+    <SectionHeader number={work.number} label={work.label} headline={work.headline} lede={work.lede} />
+    <div class="work__list">
+      <ProjectCard project={lead} variant="feature" />
+      {rest.map((p, i) => <ProjectCard project={p} variant="row" flip={i % 2 === 0} />)}
+    </div>
+  </div>
+  <AcrossBorders />
+</section>
+
+<style>
+  .work { padding-bottom: 0; }
+  .work__list { display: grid; gap: clamp(5rem, 10vw, 9rem); }
+</style>

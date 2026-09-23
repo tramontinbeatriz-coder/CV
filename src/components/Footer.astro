@@ -1,0 +1,46 @@
+---
+import { footer, person } from '../content/site';
+import { rich } from '../lib/rich';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+    <p class="footer__name">{person.name}</p>
+    <p class="footer__line">{footer.line}</p>
+    <p class="footer__meta">
+      <span>© {year}</span>
+      <span set:html={rich(person.location)} />
+    </p>
+    <a class="footer__top link" href="#top">{footer.backToTop} <span class="arrow" aria-hidden="true">↑</span></a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ink);
+    color: var(--ink-muted);
+    font-size: var(--fs-small);
+    padding-block: 2rem 2.5rem;
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 1rem 2.5rem;
+    align-items: baseline;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--ink-line);
+  }
+  .footer__name { font-family: var(--serif); font-size: 1.35rem; color: var(--ink-paper); }
+  .footer__meta { display: flex; gap: 1.5rem; }
+  .footer__top { color: var(--ink-paper); }
+  .footer :global(.ph) { background: rgb(226 130 92 / 0.14); color: var(--accent-on-ink); }
+
+  @media (max-width: 860px) {
+    .footer__inner { grid-template-columns: 1fr; }
+    .footer__top { justify-self: start; }
+  }
+</style>

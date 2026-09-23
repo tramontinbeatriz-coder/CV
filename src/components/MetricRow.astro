@@ -1,0 +1,30 @@
+---
+import type { Metric as MetricType } from '../content/site';
+import Metric from './Metric.astro';
+
+interface Props {
+  metrics: MetricType[];
+  size?: 'lg' | 'md';
+}
+
+const { metrics, size = 'lg' } = Astro.props;
+---
+
+<div class="metric-row" style={`--n: ${metrics.length}`}>
+  {metrics.map((m, i) => (
+    <div data-reveal style={`--i: ${i}`}>
+      <Metric metric={m} size={size} />
+    </div>
+  ))}
+</div>
+
+<style>
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+  @media (max-width: 720px) {
+    .metric-row { grid-template-columns: 1fr; gap: 1.75rem; }
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import { borders, projects } from '../content/site';
+import { rich, url } from '../lib/rich';
+
+const p = projects.find((x) => x.slug === 'across-borders')!;
+---
+
+<article class="ab">
+  <div class="container ab__grid grid">
+    <div class="ab__intro">
+      <p class="label ab__kicker" data-reveal><span>{p.index}</span> {p.kicker}</p>
+      <h3 class="h3" data-reveal>{p.title}</h3>
+      <p class="ab__headline" data-reveal set:html={rich(borders.headline)} />
+      <p class="ab__body" data-reveal>{borders.body}</p>
+      <a class="link ab__more" href={url(`/work/${p.slug}/`)} data-reveal>
+        Read the case <span class="arrow arrow--right" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="ab__map">
+      {borders.regions.map((r, i) => (
+        <section class="ab__region" data-reveal style={`--i: ${i}`}>
+          <header>
+            <h4>{r.name}</h4>
+            <p class="label">{r.note}</p>
+          </header>
+          <ul>
+            {r.places.map((place) => <li set:html={rich(place)} />)}
+          </ul>
+        </section>
+      ))}
+
+      <section class="ab__region ab__region--across" data-reveal style="--i: 2">
+        <header>
+          <h4>Across functions</h4>
+          <p class="label">Who I coordinate with</p>
+        </header>
+        <ul class="ab__marquee" aria-label="Functions">
+          {borders.across.map((a) => <li>{a}</li>)}
+        </ul>
+      </section>
+    </div>
+  </div>
+</article>
+
+<style>
+  .ab {
+    background: var(--ink);
+    color: var(--ink-paper);
+    padding-block: clamp(4rem, 9vw, 8rem);
+    margin-top: clamp(5rem, 10vw, 9rem);
+  }
+  .ab__grid { row-gap: 3rem; }
+  .ab__intro { grid-column: 1 / span 5; display: grid; gap: 1.25rem; align-content: start; }
+  .ab__kicker { color: var(--ink-muted); display: flex; gap: 0.75rem; }
+  .ab__kicker span { color: var(--accent-on-ink); }
+  .ab__headline {
+    font-family: var(--serif);
+    font-size: var(--fs-h4);
+    line-height: 1.15;
+    max-width: 18ch;
+  }
+  .ab__headline :global(em) { color: var(--accent-on-ink); }
+  .ab__body { color: var(--ink-muted); max-width: 42ch; font-size: var(--fs-small); }
+  .ab__more { justify-self: start; font-size: var(--fs-small); }
+
+  .ab__map { grid-column: 7 / -1; display: grid; }
+  .ab__region {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 1.5rem;
+    padding-block: 1.75rem;
+    border-top: 1px solid var(--ink-line);
+  }
+  .ab__region:last-child { border-bottom: 1px solid var(--ink-line); }
+  .ab__region h4 { font-family: var(--serif); font-weight: 400; font-size: var(--fs-h4); line-height: 1.1; margin-bottom: 0.4rem; }
+  .ab__region .label { color: var(--ink-muted); }
+  .ab__region ul { display: grid; gap: 0.35rem; font-size: var(--fs-small); align-content: start; }
+  .ab__region li::before { content: '—'; color: var(--accent-on-ink); margin-right: 0.6rem; }
+
+  .ab__marquee { display: flex !important; flex-wrap: wrap; gap: 0.5rem !important; }
+  .ab__marquee li::before { content: none; }
+  .ab__marquee li {
+    padding: 0.3em 0.9em;
+    border: 1px solid var(--ink-line);
+    border-radius: 999px;
+    transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+  }
+  .ab__marquee li:hover { border-color: var(--accent-on-ink); color: var(--accent-on-ink); }
+
+  .ab :global(.ph) { background: rgb(226 130 92 / 0.14); color: var(--accent-on-ink); }
+
+  @media (max-width: 960px) {
+    .ab__intro, .ab__map { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .ab__region { grid-template-columns: 1fr; gap: 1rem; }
+  }
+</style>

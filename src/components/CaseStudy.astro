@@ -1,0 +1,202 @@
+---
+/**
+ * Full case study layout, shared by every project page.
+ * Structure: header → cover → metrics → context / role / challenge / what I did / impact → quote → gallery → skills → next.
+ */
+import type { Project } from '../content/site';
+import { rich, url } from '../lib/rich';
+import Media from './Media.astro';
+import MetricRow from './MetricRow.astro';
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project: p, next } = Astro.props;
+
+const chapters = [
+  { label: 'Context', body: p.context },
+  { label: 'My role', body: p.role },
+  { label: 'The challenge', body: p.challenge },
+];
+---
+
+<article class="case">
+  <header class="case__head container">
+    <a class="case__back link label" href={url('/#work')}>
+      <span class="arrow" aria-hidden="true">←</span> All work
+    </a>
+    <p class="case__kicker label"><span>{p.index}</span> {p.kicker}</p>
+    <h1 class="display case__title">{p.title}</h1>
+    <p class="case__tagline lede" set:html={rich(p.tagline)} />
+
+    <dl class="case__meta">
+      {p.meta.map((m) => (
+        <div>
+          <dt class="label">{m.label}</dt>
+          <dd set:html={rich(m.value)} />
+        </div>
+      ))}
+    </dl>
+  </header>
+
+  {p.cover && (
+    <div class="container case__cover">
+      <Media image={p.cover} eager />
+    </div>
+  )}
+
+  <section class="container case__metrics" aria-label="Results">
+    <MetricRow metrics={p.metrics} />
+  </section>
+
+  <div class="container case__chapters">
+    {chapters.map((c) => (
+      <section class="chapter" data-reveal>
+        <h2 class="label">{c.label}</h2>
+        <p class="chapter__text" set:html={rich(c.body)} />
+      </section>
+    ))}
+
+    <section class="chapter" data-reveal>
+      <h2 class="label">What I did</h2>
+      <ol class="chapter__list">
+        {p.actions.map((a, i) => (
+          <li><span class="chapter__n">{String(i + 1).padStart(2, '0')}</span><span set:html={rich(a)} /></li>
+        ))}
+      </ol>
+    </section>
+
+    <blockquote class="case__quote h2" data-reveal>{p.pullQuote}</blockquote>
+
+    <section class="chapter chapter--impact" data-reveal>
+      <h2 class="label">Impact</h2>
+      <p class="chapter__text chapter__text--lg" set:html={rich(p.impact)} />
+    </section>
+  </div>
+
+  {p.gallery && p.gallery.length > 0 && (
+    <div class="container case__gallery" data-count={p.gallery.length}>
+      {p.gallery.map((g, i) => (
+        <div data-reveal style={`--i: ${i}`}><Media image={g} /></div>
+      ))}
+    </div>
+  )}
+
+  <section class="container case__skills" data-reveal>
+    <h2 class="label">Skills in play</h2>
+    <ul>{p.skills.map((s) => <li>{s}</li>)}</ul>
+  </section>
+
+  <a class="case__next" href={url(`/work/${next.slug}/`)}>
+    <div class="container">
+      <p class="label">Next case</p>
+      <p class="case__next-title display">
+        {next.title} <span class="arrow arrow--right" aria-hidden="true">→</span>
+      </p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .case__head {
+    display: grid;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding-top: clamp(7rem, 14vh, 10rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    animation: rise 1s var(--ease) both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
+  .case__back { justify-self: start; color: var(--ink); }
+  .case__kicker { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+  .case__kicker span { color: var(--accent); }
+  .case__title { max-width: 12ch; }
+  .case__tagline { max-width: 34ch; }
+  .case__meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .case__meta dd { margin-top: 0.35rem; font-size: var(--fs-small); }
+
+  .case__cover { animation: rise 1.1s 0.15s var(--ease) both; }
+  .case__metrics { padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 7vw, 6rem); }
+
+  .case__chapters { display: grid; gap: clamp(3rem, 6vw, 5rem); padding-bottom: clamp(4rem, 8vw, 7rem); }
+  .chapter {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1rem, 2vw, 2rem);
+    row-gap: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .chapter > h2 { grid-column: 1 / span 3; color: var(--accent); }
+  .chapter__text, .chapter__list { grid-column: 4 / span 8; }
+  .chapter__text { font-size: clamp(1.1rem, 1.3vw, 1.3rem); line-height: 1.55; color: var(--ink-2); max-width: 58ch; }
+  .chapter__text--lg { font-family: var(--serif); font-size: var(--fs-h4); line-height: 1.25; color: var(--ink); max-width: 36ch; }
+  .chapter__list { display: grid; }
+  .chapter__list li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+  .chapter__list li:first-child { padding-top: 0; }
+  .chapter__n { font-family: var(--serif); color: var(--accent); }
+
+  .case__quote {
+    max-width: 22ch;
+    font-size: clamp(2.1rem, 4.4vw, 4rem);
+    margin-inline: auto;
+    text-align: center;
+    padding-block: clamp(1rem, 4vw, 3rem);
+    font-style: italic;
+  }
+
+  .case__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 2vw, 2rem);
+    align-items: start;
+  }
+  .case__gallery[data-count='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .case__gallery[data-count='4'] > :nth-child(n + 3) { margin-top: clamp(0rem, 4vw, 4rem); }
+
+  .case__skills {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1rem, 2vw, 2rem);
+    row-gap: 1rem;
+    margin-block: clamp(4rem, 8vw, 7rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .case__skills h2 { grid-column: 1 / span 3; }
+  .case__skills ul { grid-column: 4 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .case__skills li { padding: 0.4em 1em; border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-small); }
+
+  .case__next {
+    display: block;
+    padding-block: clamp(3rem, 7vw, 6rem);
+    border-top: 1px solid var(--line);
+    transition: background 0.5s var(--ease), color 0.5s var(--ease);
+  }
+  .case__next:hover { background: var(--paper-2); }
+  .case__next:hover .case__next-title { color: var(--accent); }
+  .case__next-title { margin-top: 1rem; transition: color 0.4s var(--ease); }
+  .case__next .arrow { font-family: var(--sans); font-size: 0.5em; vertical-align: middle; }
+
+  @media (max-width: 860px) {
+    .case__meta { grid-template-columns: 1fr 1fr; }
+    .chapter > h2, .chapter__text, .chapter__list, .case__skills h2, .case__skills ul { grid-column: 1 / -1; }
+    .case__gallery, .case__gallery[data-count='3'] { grid-template-columns: 1fr 1fr; }
+    .case__gallery[data-count='3'] > :first-child { grid-column: 1 / -1; }
+    .case__gallery[data-count='4'] > :nth-child(n + 3) { margin-top: 0; }
+  }
+</style>

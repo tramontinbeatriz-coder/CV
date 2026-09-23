@@ -1,0 +1,38 @@
+---
+/** Optional photo. Only rendered when an image is set in src/content/site.ts. */
+import type { ImageSlot } from '../content/site';
+import { url } from '../lib/rich';
+
+interface Props {
+  image: ImageSlot;
+  eager?: boolean;
+  class?: string;
+}
+
+const { image, eager = false, class: className = '' } = Astro.props;
+---
+
+<figure class:list={['media', className]} style={`--ratio: ${image.ratio ?? '4/3'}`}>
+  <img
+    src={url(image.src)}
+    alt={image.alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : 'auto'}
+  />
+</figure>
+
+<style>
+  .media {
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    background: var(--paper-2);
+    border-radius: 2px;
+  }
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease);
+  }
+</style>

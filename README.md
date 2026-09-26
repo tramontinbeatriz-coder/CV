@@ -1,5 +1,7 @@
 # Beatriz Tramontin — Portfolio
 
+> **nós** — o site da comunidade nós (Next.js, com painel, inscrições e pagamentos) fica em [`nos/`](nos/README.md), como um projeto independente deste portfólio.
+
 Personal portfolio: strategy, innovation, communication and technology.
 Built with [Astro](https://astro.build) as a fully static site. The pages ship no JS framework, only ~2 KB of progressive-enhancement script.
 

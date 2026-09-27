@@ -33,17 +33,17 @@ const match = !metric.placeholder ? metric.value.match(/^([^\d]*)(\d+)(.*)$/) : 
     flex-direction: column;
     gap: 0.6rem;
     padding-top: 1rem;
-    border-top: 1px solid currentColor;
-    border-color: var(--line);
+    border-top: 3px solid var(--c, var(--line));
   }
   .metric__value {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 700;
     line-height: 0.9;
     letter-spacing: -0.03em;
     font-variant-numeric: lining-nums tabular-nums;
   }
-  .metric--lg .metric__value { font-size: min(6.5rem, 38cqi); }
-  .metric--md .metric__value { font-size: min(4rem, 30cqi); }
+  .metric--lg .metric__value { font-size: min(5rem, 29cqi); }
+  .metric--md .metric__value { font-size: min(3.25rem, 24cqi); }
   .metric__label {
     max-width: 22ch;
     font-size: var(--fs-small);

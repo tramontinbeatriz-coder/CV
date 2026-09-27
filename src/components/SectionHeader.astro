@@ -44,14 +44,14 @@ const { number, label, headline, lede, tone = 'paper' } = Astro.props;
   .sh__num { color: var(--accent); }
   .sh__rule { width: 2rem; height: 1px; background: currentColor; opacity: 0.5; }
   .sh__body { grid-column: 4 / -1; display: grid; gap: 1.5rem; }
-  .sh__body h2 { max-width: 14ch; }
+  .sh__body h2 { max-width: 14ch; padding-bottom: 0.18em; }
   .sh__lede { max-width: 38ch; }
 
   .sh--ink { border-color: var(--ink-line); }
   .sh--ink .sh__label { color: var(--ink-muted); }
   .sh--ink .sh__num { color: var(--accent-on-ink); }
   .sh--ink .sh__lede { color: var(--ink-muted); }
-  .sh--ink :global(em) { color: var(--accent-on-ink); }
+  .sh--ink :global(em) { color: var(--accent-on-ink); background: none; }
 
   @media (max-width: 860px) {
     .sh__label, .sh__body { grid-column: 1 / -1; }

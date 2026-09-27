@@ -24,6 +24,9 @@ const { metrics, size = 'lg' } = Astro.props;
     grid-template-columns: repeat(var(--n), minmax(0, 1fr));
     gap: clamp(1rem, 3vw, 2.5rem);
   }
+  .metric-row > :nth-child(3n + 1) { --c: var(--pink); }
+  .metric-row > :nth-child(3n + 2) { --c: var(--orange); }
+  .metric-row > :nth-child(3n + 3) { --c: var(--mint); }
   @media (max-width: 720px) {
     .metric-row { grid-template-columns: 1fr; gap: 1.75rem; }
   }

@@ -24,7 +24,11 @@ export type ImageSlot = {
   /** Path under /public, e.g. "images/innovation-tournament/stage.jpg" */
   src: string;
   alt: string;
-  ratio?: '16/9' | '4/3' | '3/4' | '1/1' | '3/2' | '21/9';
+  ratio?: '16/9' | '4/3' | '3/4' | '4/5' | '1/1' | '3/2' | '21/9';
+  /** Which part of the photo stays in frame when it is cropped (CSS object-position), e.g. '44% center'. */
+  position?: string;
+  /** Short caption shown under the photo. */
+  caption?: string;
 };
 
 export type Project = {
@@ -44,7 +48,11 @@ export type Project = {
   pullQuote: string;
   cover?: ImageSlot;
   gallery?: ImageSlot[];
+  /** Named clients. Drop a logo at public/images/clients/<slug>.svg (or .png / .webp) and it replaces the name automatically. */
+  clients?: { label: string; items: Client[] };
 };
+
+export type Client = { name: string; slug: string };
 
 export const person = {
   name: 'Beatriz Tramontin',
@@ -119,7 +127,13 @@ export const about = {
     { label: 'Based in', value: 'Porto Alegre, Brazil · open to relocation' },
     { label: 'Independent', value: 'Co-founder, Nós' },
   ],
-  portrait: undefined as ImageSlot | undefined,
+  portrait: {
+    src: 'images/about-graduation.jpg',
+    alt: 'Beatriz celebrating on stage at her International Relations graduation at ESPM',
+    ratio: '4/5',
+    position: '44% center',
+    caption: 'Graduation day — International Relations, ESPM.',
+  } as ImageSlot | undefined,
 };
 
 /* ───────────────────────── 03 · SELECTED WORK ───────────────────────── */
@@ -167,6 +181,21 @@ export const projects: Project[] = [
     ],
     skills: ['Strategy', 'Project management', 'Innovation', 'Stakeholder management', 'International coordination', 'Evaluation & selection', 'Facilitation'],
     pullQuote: 'From the outside it looked like an event. From the inside, it was a strategy and project management problem in four countries.',
+    cover: {
+      src: 'images/tournament-americas-2026.jpg',
+      alt: 'Winning team and organisers at the Innovation Tournament Americas, Agentic Edition 2026',
+      ratio: '16/9',
+      position: 'center 40%',
+      caption: 'Innovation Tournament Americas — Agentic Edition 2026.',
+    },
+    gallery: [
+      {
+        src: 'images/tournament-final-2025.jpg',
+        alt: 'Beatriz presenting the Grand Final of the SAP Latin America Innovation Tournament, AI Edition 2025',
+        ratio: '16/9',
+        caption: 'Presenting the Grand Final livestream — AI Edition 2025.',
+      },
+    ],
   },
   {
     slug: 'sap-business-ai',
@@ -177,7 +206,7 @@ export const projects: Project[] = [
     meta: [
       { label: 'Role', value: 'Business AI Solution Advisor' },
       { label: 'Company', value: 'SAP' },
-      { label: 'Clients', value: 'Enterprise, Latin America' },
+      { label: 'Clients', value: '10+ enterprises, Latin America' },
       { label: 'Since', value: 'January 2025' },
     ],
     context:
@@ -187,6 +216,7 @@ export const projects: Project[] = [
     challenge:
       'AI is complex, fast-moving and easy to overpromise. The work is making it concrete — what it means for a specific business, which problem it solves, and what it takes to get there.',
     actions: [
+      'Served 10+ Latin American clients — including Hypera Pharma, Sicredi and Randoncorp — generating new demand and sales opportunities.',
       'Lead the coordination of cross-functional projects, aligning business objectives, stakeholders and delivery timelines.',
       'Deliver client-facing presentations, workshops and strategic recommendations to enterprise clients.',
       'Act as a key point of contact between clients and internal teams — managing expectations and keeping everyone updated.',
@@ -195,12 +225,27 @@ export const projects: Project[] = [
       'Spot process improvements that make project execution more efficient.',
     ],
     impact:
-      'The value I add is translation: making complex technology clear for the people who need to decide on it — and making business needs clear for the people who build it.',
+      '10+ Latin American clients served, turning AI conversations into new demand and sales opportunities. The value I add is translation: making complex technology clear for the people who need to decide on it — and making business needs clear for the people who build it.',
     metrics: [
+      { value: '10+', label: 'Latin American clients served' },
       { value: '3', label: 'teams aligned — sales, product & technical' },
     ],
     skills: ['AI business solutions', 'Client engagement', 'Workshop facilitation', 'Strategic recommendations', 'Cross-functional coordination', 'Risk & priority management', 'SAP ecosystem'],
     pullQuote: 'The hardest part of AI is rarely the technology. It’s the conversation around it.',
+    cover: {
+      src: 'images/business-ai-joule-session.jpg',
+      alt: 'Beatriz presenting SAP Joule for SuccessFactors in a client session',
+      ratio: '16/9',
+      caption: 'Client session: Joule in SuccessFactors.',
+    },
+    clients: {
+      label: 'Clients include',
+      items: [
+        { name: 'Hypera Pharma', slug: 'hypera-pharma' },
+        { name: 'Sicredi', slug: 'sicredi' },
+        { name: 'Randoncorp', slug: 'randoncorp' },
+      ],
+    },
   },
   {
     slug: 'sap-open-innovation',
@@ -235,6 +280,12 @@ export const projects: Project[] = [
     ],
     skills: ['Open innovation', 'Ecosystem & partnerships', 'Market research', 'Relationship building', 'Emerging technologies'],
     pullQuote: 'Innovation is mostly introductions — the right people, at the right moment, with a reason to work together.',
+    cover: {
+      src: 'images/open-innovation-gala.jpg',
+      alt: 'Beatriz holding an award at the 100 Open Startups 2024 gala',
+      ratio: '4/5',
+      caption: '100 Open Startups Gala, 2024.',
+    },
   },
   {
     slug: 'nos',
@@ -271,6 +322,12 @@ export const projects: Project[] = [
     ],
     skills: ['Entrepreneurship', 'Community building', 'Brand strategy', 'Experience design', 'Partnerships', 'Content & communication'],
     pullQuote: 'An idea only counts once people show up for it.',
+    cover: {
+      src: 'images/nos-evento.jpg',
+      alt: 'Women holding the pieces they made at a Nós workshop in Porto Alegre',
+      ratio: '4/3',
+      caption: 'A Nós workshop night in Porto Alegre.',
+    },
   },
   {
     slug: 'across-borders',
@@ -356,7 +413,7 @@ export const howIWork = {
       n: '03',
       title: 'Communication',
       line: 'Connecting people, ideas and business needs.',
-      proof: 'Workshops and strategic recommendations for enterprise clients. Building the voice and brand of Nós. A postgrad in Digital Communication.',
+      proof: 'Workshops and strategic recommendations for 10+ enterprise clients. Building the voice and brand of Nós. A postgrad in Digital Communication.',
     },
     {
       n: '04',

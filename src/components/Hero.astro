@@ -2,6 +2,9 @@
 import { hero, person } from '../content/site';
 import { rich, safeHref } from '../lib/rich';
 import Media from './Media.astro';
+import { existing } from '../lib/media';
+
+const portrait = existing(hero.portrait);
 
 const linkedin = person.links.linkedin;
 ---
@@ -15,9 +18,9 @@ const linkedin = person.links.linkedin;
       <span class="display hero__headline" set:html={rich(hero.headline)} />
     </h1>
 
-    {hero.portrait && (
+    {portrait && (
       <div class="hero__portrait">
-        <Media image={hero.portrait} eager />
+        <Media image={portrait} eager />
       </div>
     )}
 

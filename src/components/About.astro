@@ -3,6 +3,9 @@ import { about } from '../content/site';
 import { rich } from '../lib/rich';
 import SectionHeader from './SectionHeader.astro';
 import Media from './Media.astro';
+import { existing } from '../lib/media';
+
+const portrait = existing(about.portrait);
 ---
 
 <section class="section about" id="about">
@@ -11,7 +14,7 @@ import Media from './Media.astro';
 
     <div class="about__grid grid">
       <aside class="about__side">
-        {about.portrait && <div data-reveal><Media image={about.portrait} /></div>}
+        {portrait && <div data-reveal><Media image={portrait} /></div>}
         <dl class="about__facts" data-reveal>
           {about.facts.map((f) => (
             <div>

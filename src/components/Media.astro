@@ -13,21 +13,31 @@ const { image, eager = false, class: className = '' } = Astro.props;
 ---
 
 <figure class:list={['media', className]} style={`--ratio: ${image.ratio ?? '4/3'}`}>
+  <div class="media__frame">
   <img
     src={url(image.src)}
     alt={image.alt}
     loading={eager ? 'eager' : 'lazy'}
     decoding="async"
     fetchpriority={eager ? 'high' : 'auto'}
+    style={image.position ? `object-position: ${image.position}` : undefined}
   />
+  </div>
+  {image.caption && <figcaption class="media__caption">{image.caption}</figcaption>}
 </figure>
 
 <style>
-  .media {
+  .media__frame {
     aspect-ratio: var(--ratio);
     overflow: hidden;
     background: var(--paper-2);
     border-radius: 2px;
+  }
+  .media__caption {
+    margin-top: 0.75rem;
+    font-size: var(--fs-label);
+    letter-spacing: 0.04em;
+    color: var(--muted);
   }
   .media img {
     width: 100%;

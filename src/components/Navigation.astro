@@ -86,13 +86,14 @@ const linkedin = person.links.linkedin;
     height: 2.25rem;
     border: 1px solid var(--ink);
     border-radius: 50%;
-    font-family: var(--serif);
-    font-size: 0.95rem;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 0.85rem;
     letter-spacing: 0.02em;
     transition: background 0.3s var(--ease), color 0.3s var(--ease);
   }
   .nav__brand:hover .nav__mono { background: var(--ink); color: var(--paper); }
-  .nav__name { font-family: var(--serif); font-size: 1.3rem; letter-spacing: -0.01em; }
+  .nav__name { font-family: var(--display); font-weight: 600; font-size: 1.15rem; }
 
   .nav__links ul { display: flex; gap: 2rem; }
   .nav__links a, .nav__cta { font-size: var(--fs-small); }
@@ -118,8 +119,9 @@ const linkedin = person.links.linkedin;
     gap: 1rem;
     padding-block: 0.6rem;
     border-bottom: 1px solid var(--line);
-    font-family: var(--serif);
-    font-size: clamp(2.25rem, 10vw, 3.5rem);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2rem, 9vw, 3rem);
     line-height: 1.1;
     letter-spacing: -0.02em;
   }

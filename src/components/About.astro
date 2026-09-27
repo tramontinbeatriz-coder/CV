@@ -67,7 +67,7 @@ const portrait = existing(about.portrait);
 
   .about__quote {
     padding-left: clamp(1rem, 3vw, 2rem);
-    border-left: 1px solid var(--accent);
+    border-left: 3px solid var(--pink);
     max-width: 22ch;
     color: var(--ink);
   }
@@ -90,17 +90,22 @@ const portrait = existing(about.portrait);
   .path__step::before {
     content: '';
     position: absolute;
-    top: -5px;
+    top: -6px;
     left: 0;
-    width: 9px;
-    height: 9px;
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
     background: var(--paper);
     border: 1px solid var(--ink);
   }
-  .path__step--now::before { background: var(--accent); border-color: var(--accent); }
+  .path__step:nth-child(1)::before { background: var(--mint); }
+  .path__step:nth-child(2)::before { background: var(--lime); }
+  .path__step:nth-child(3)::before { background: var(--yellow); }
+  .path__step:nth-child(4)::before { background: var(--orange); }
+  .path__step:nth-child(5)::before { background: var(--pink); }
+  .path__step--now::before { box-shadow: 0 0 0 4px var(--accent-soft); }
   .path__top { display: flex; justify-content: space-between; align-items: baseline; }
-  .path__n { font-family: var(--serif); font-size: 1.1rem; color: var(--accent); }
+  .path__n { font-family: var(--display); font-weight: 600; font-size: 1rem; color: var(--accent); }
   .path__step p { font-size: var(--fs-small); color: var(--muted); max-width: 28ch; }
 
   @media (max-width: 960px) {
@@ -112,6 +117,6 @@ const portrait = existing(about.portrait);
     .about__side { grid-template-columns: 1fr; }
     .path { grid-template-columns: 1fr; row-gap: 0; }
     .path__step { border-top: 0; border-left: 1px solid var(--ink); padding: 0 0 2rem 1.5rem; }
-    .path__step::before { top: 0.35rem; left: -5px; }
+    .path__step::before { top: 0.35rem; left: -6px; }
   }
 </style>

@@ -164,7 +164,7 @@ Beatriz Tramontin · Strategy, innovation & communication — across borders. ·
 | How I work | Four things I bring *to any project.* | Not adjectives — habits. |
 | Contact | Let's build something *interesting.* | Open to conversations about… |
 
-Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif rosa (cor de destaque)**. Vira uma assinatura visual reconhecível em todo o site.
+Padrão tipográfico: a segunda metade de cada headline vem na **script Pacifico em framboesa, com marca-texto amarelo**. Vira uma assinatura visual reconhecível em todo o site.
 
 ## 4. CTAs
 
@@ -198,34 +198,37 @@ Padrão tipográfico: a segunda metade de cada headline vem em **itálico serif 
 - Uma única faixa escura no meio (Across borders) e o fechamento escuro (Contact) dão ritmo.
 - O feminino aparece na paleta rosada e no itálico serif expressivo, equilibrados por muito espaço, fios finos e um berinjela escuro, sem nada floral ou infantil.
 
-## 7. Paleta — rosado
+## 7. Paleta — "dopamine"
 
 | Token | Hex | Uso |
 |---|---|---|
-| Paper (blush) | `#F7EDEA` | fundo principal, um marfim rosado |
-| Paper 2 | `#F0DFDA` | placeholders, hover |
-| Line | `#E2CDC7` | fios/hairlines |
+| Paper (creme-lima) | `#FBFEEC` | fundo principal |
+| Paper 2 | `#F2FBD2` | áreas de apoio, fundo de fotos carregando |
+| Lime | `#E8FFB2` | hover do "Next case" |
+| Line | `#DFE8BF` | fios/hairlines |
 | Ink (berinjela escuro) | `#2B1D23` | texto, faixas escuras |
-| Ink 2 | `#4A3940` | texto corrido |
-| Muted | `#735E66` | legendas, rótulos (contraste ~5:1) |
-| **Accent: Rose** | `#B23A5E` | *a única cor de destaque*: itálicos das headlines, números de seção, detalhes (contraste ~5:1 no blush) |
-| Accent on ink | `#F09AB2` | rosa claro para fundos escuros |
+| Muted | `#6B5A61` | legendas, rótulos |
+| **Raspberry** | `#C2527D` / texto `#B8466F` | destaque principal: palavras em script, números de seção, rótulos |
+| Orange | `#F4B63F` | pilar 02, segunda métrica, timeline |
+| Yellow | `#FED756` | marca-texto sob as palavras de destaque; destaque nas faixas escuras |
+| Mint | `#A3F0AE` | pilar 04, terceira métrica, timeline |
 
-**Por que esse rosado:** o fundo é um blush quase neutro, então o site continua sofisticado e editorial, sem cara de "rosa bebê". O destaque é um rosa profundo, puxado para framboesa, usado com parcimônia. O charcoal virou um berinjela bem escuro, para as faixas escuras conversarem com o rosa. Todas as cores são tokens em `src/styles/global.css`: dá para trocar a paleta inteira ali.
+Como o rosa original (`#C2527D`) fica um pouco abaixo do contraste mínimo em texto pequeno, o texto usa uma versão levemente mais escura (`#B8466F`). As cores vivas aparecem em barras, marca-texto e pontos, nunca como fundo de texto longo. Todas as cores são tokens em `src/styles/global.css`.
 
-## 8. Tipografia
+## 8. Tipografia — "cool and fun"
 
-- **Headlines:** *Instrument Serif* (regular + itálico). Serif editorial condensada, elegante e contemporânea. O itálico é o gesto de marca.
-- **Texto e UI:** *Instrument Sans* (variável). Sans limpa, desenhada para parear com a serif.
-- As fontes são auto-hospedadas via Fontsource (sem chamadas ao Google, carregamento rápido).
+- **Títulos:** *DynaPuff* (500–700): gordinha, arredondada e com leve balanço, na linha da "Dopamine" (Struvictory). A Dopamine é paga; a DynaPuff é gratuita (licença OFL).
+- **Palavras de destaque:** *Pacifico*: script arredondada, com marca-texto amarelo por baixo (o efeito "DOPAMINE + script").
+- **Texto, rótulos e ledes:** *Instrument Sans*, para manter a leitura confortável.
+- As fontes são auto-hospedadas via Fontsource.
 
 | Nível | Tamanho (fluido) | Uso |
 |---|---|---|
-| Display | 50 → 140px | headline do hero, títulos de case |
-| H2 | 40 → 84px | headlines de seção |
-| H3 | 30 → 48px | títulos de projeto |
-| H4 | 22 → 30px | subtítulos, taglines |
-| Lede | 21 → 27px (serif) | introduções |
+| Display | 43 → 108px, peso 700 | headline do hero, títulos de case |
+| H2 | 35 → 68px, peso 700 | headlines de seção |
+| H3 | 27 → 40px, peso 600 | títulos de projeto |
+| H4 | 20 → 25px, peso 600 | subtítulos |
+| Lede | 18 → 22px (sans) | introduções |
 | Body | 16 → 17.4px | texto corrido |
 | Label | 12px, CAPS, tracking 0.12em | rótulos e metadados |
 

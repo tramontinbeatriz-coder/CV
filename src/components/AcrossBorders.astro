@@ -55,12 +55,13 @@ const p = projects.find((x) => x.slug === 'across-borders')!;
   .ab__kicker { color: var(--ink-muted); display: flex; gap: 0.75rem; }
   .ab__kicker span { color: var(--accent-on-ink); }
   .ab__headline {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 600;
     font-size: var(--fs-h4);
     line-height: 1.15;
     max-width: 18ch;
   }
-  .ab__headline :global(em) { color: var(--accent-on-ink); }
+  .ab__headline :global(em) { font-family: var(--script); font-style: normal; font-weight: 400; color: var(--accent-on-ink); }
   .ab__body { color: var(--ink-muted); max-width: 42ch; font-size: var(--fs-small); }
   .ab__more { justify-self: start; font-size: var(--fs-small); }
 
@@ -73,7 +74,7 @@ const p = projects.find((x) => x.slug === 'across-borders')!;
     border-top: 1px solid var(--ink-line);
   }
   .ab__region:last-child { border-bottom: 1px solid var(--ink-line); }
-  .ab__region h4 { font-family: var(--serif); font-weight: 400; font-size: var(--fs-h4); line-height: 1.1; margin-bottom: 0.4rem; }
+  .ab__region h4 { font-family: var(--display); font-weight: 600; font-size: var(--fs-h4); line-height: 1.1; margin-bottom: 0.4rem; }
   .ab__region .label { color: var(--ink-muted); }
   .ab__region ul { display: grid; gap: 0.35rem; font-size: var(--fs-small); align-content: start; }
   .ab__region li::before { content: '—'; color: var(--accent-on-ink); margin-right: 0.6rem; }

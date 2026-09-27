@@ -95,7 +95,11 @@ export const hero = {
     { label: 'Co-leading', value: 'SAP Latin America Innovation Tournament' },
     { label: 'Based in', value: 'Porto Alegre · open to relocation' },
   ],
-  portrait: undefined as ImageSlot | undefined,
+  portrait: {
+    src: 'images/hero-portrait.jpg',
+    alt: 'Beatriz Tramontin smiling at an outdoor café table',
+    ratio: '4/5',
+  } as ImageSlot | undefined,
 };
 
 /* ───────────────────────── 02 · ABOUT ───────────────────────── */

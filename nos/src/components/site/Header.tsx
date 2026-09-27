@@ -84,7 +84,7 @@ export function Header({ instagramHandle, instagramHref }: { instagramHandle: st
       {/* Menu mobile em tela cheia */}
       <div
         id="menu-mobile"
-        className={`fixed inset-0 z-40 flex flex-col justify-between bg-green px-5 pb-10 pt-28 text-cream transition-[clip-path] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden ${
+        className={`fixed inset-0 z-[45] flex flex-col justify-between bg-green px-5 pb-10 pt-28 text-cream transition-[clip-path] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden ${
           open ? "[clip-path:inset(0_0_0_0)]" : "pointer-events-none [clip-path:inset(0_0_100%_0)]"
         }`}
       >

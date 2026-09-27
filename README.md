@@ -73,7 +73,7 @@ Base (layout)
 - `[[text]]` marks a **placeholder**: it renders highlighted in the rose accent so it can't ship unnoticed. Search for `[[` to find every one.
 - **Photos (optional):** the site is typographic by default. Put a file in `public/images/…` and add `cover` / `gallery` to a project (or `portrait` to `hero` / `about`) in `site.ts`, and it renders automatically. See `docs/CONCEPT.md` §11 for what each photo should show.
 - **Photo slots already wired** (each appears as soon as the file exists in `public/images/`):
-  `about-graduation.jpg` ✓ · `tournament-americas-2026.jpg` · `tournament-final-2025.jpg` · `business-ai-joule-session.jpg` · `open-innovation-gala.jpg` · `nos-evento.jpg`.
+  `about-graduation.jpg` ✓ · `tournament-final-2025.jpg` ✓ · `tournament-americas-venue.jpg` ✓ · `business-ai-joule-session.jpg` ✓ · `nos-evento.jpg` ✓ · `tournament-americas-2026.jpg` (pending) · `open-innovation-gala.jpg` (pending).
   Optional fields: `caption` (text under the photo) and `position` (which part stays in frame when cropped, e.g. `'44% center'`).
 - **Client logos:** put `hypera-pharma.svg`, `sicredi.svg` and `randoncorp.svg` (or `.png` / `.webp`) in `public/images/clients/`. Each file replaces the client's name automatically; the filename must match the client's `slug` in `site.ts`.
 - Adding a project: add an entry to `projects` in `site.ts` and its case-study page is generated automatically.

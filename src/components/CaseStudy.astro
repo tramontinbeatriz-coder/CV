@@ -186,7 +186,8 @@ const chapters = [
     row-gap: 1rem;
     margin-block: clamp(4rem, 8vw, 7rem);
     padding-top: 1.25rem;
-    border-top: 1px solid var(--line);
+    /* hairline limited to the content width (a border would run into the page gutters) */
+    background: linear-gradient(var(--line), var(--line)) no-repeat var(--gutter) 0 / calc(100% - 2 * var(--gutter)) 1px;
   }
   .case__skills h2 { grid-column: 1 / span 3; }
   .case__skills ul { grid-column: 4 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; }

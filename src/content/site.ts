@@ -193,17 +193,16 @@ export const projects: Project[] = [
     },
     gallery: [
       {
+        src: 'images/tournament-americas-2026.jpg',
+        alt: 'Winning team and organisers at the Innovation Tournament Americas, Agentic Edition 2026',
+        ratio: '3/2',
+        caption: 'Innovation Tournament Americas — Agentic Edition 2026.',
+      },
+      {
         src: 'images/tournament-americas-venue.jpg',
         alt: 'Venue ready for the Innovation Tournament Americas',
         ratio: '4/5',
         caption: 'Innovation Tournament Americas, on site.',
-      },
-      {
-        src: 'images/tournament-americas-2026.jpg',
-        alt: 'Winning team and organisers at the Innovation Tournament Americas, Agentic Edition 2026',
-        ratio: '4/5',
-        position: '60% center',
-        caption: 'Innovation Tournament Americas — Agentic Edition 2026.',
       },
     ],
   },

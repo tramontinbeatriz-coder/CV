@@ -86,7 +86,11 @@ const chapters = [
   </div>
 
   {gallery.length > 0 && (
-    <div class="container case__gallery" data-count={gallery.length}>
+    <div
+      class="container case__gallery"
+      data-count={gallery.length}
+      data-mixed={gallery.length === 2 && !isPortrait(gallery[0]) && isPortrait(gallery[1]) ? '' : undefined}
+    >
       {gallery.map((g, i) => (
         <div data-reveal style={`--i: ${i}`}><Media image={g} /></div>
       ))}
@@ -177,6 +181,8 @@ const chapters = [
     align-items: start;
   }
   .case__gallery[data-count='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* landscape 3:2 + portrait 4:5 side by side: 1.9fr / 1fr gives both photos about the same height */
+  .case__gallery[data-mixed] { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); }
   .case__gallery[data-count='4'] > :nth-child(n + 3) { margin-top: clamp(0rem, 4vw, 4rem); }
 
   .case__skills {
@@ -186,7 +192,8 @@ const chapters = [
     row-gap: 1rem;
     margin-block: clamp(4rem, 8vw, 7rem);
     padding-top: 1.25rem;
-    border-top: 1px solid var(--line);
+    /* hairline limited to the content width (a border would run into the page gutters) */
+    background: linear-gradient(var(--line), var(--line)) no-repeat var(--gutter) 0 / calc(100% - 2 * var(--gutter)) 1px;
   }
   .case__skills h2 { grid-column: 1 / span 3; }
   .case__skills ul { grid-column: 4 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; }

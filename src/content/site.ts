@@ -95,7 +95,11 @@ export const hero = {
     { label: 'Co-leading', value: 'SAP Latin America Innovation Tournament' },
     { label: 'Based in', value: 'Porto Alegre · open to relocation' },
   ],
-  portrait: undefined as ImageSlot | undefined,
+  portrait: {
+    src: 'images/hero-portrait.jpg',
+    alt: 'Beatriz Tramontin smiling at an outdoor café table',
+    ratio: '4/5',
+  } as ImageSlot | undefined,
 };
 
 /* ───────────────────────── 02 · ABOUT ───────────────────────── */
@@ -182,18 +186,23 @@ export const projects: Project[] = [
     skills: ['Strategy', 'Project management', 'Innovation', 'Stakeholder management', 'International coordination', 'Evaluation & selection', 'Facilitation'],
     pullQuote: 'From the outside it looked like an event. From the inside, it was a strategy and project management problem in four countries.',
     cover: {
-      src: 'images/tournament-americas-2026.jpg',
-      alt: 'Winning team and organisers at the Innovation Tournament Americas, Agentic Edition 2026',
+      src: 'images/tournament-final-2025.jpg',
+      alt: 'Beatriz presenting the Grand Final of the SAP Latin America Innovation Tournament, AI Edition 2025',
       ratio: '16/9',
-      position: 'center 40%',
-      caption: 'Innovation Tournament Americas — Agentic Edition 2026.',
+      caption: 'Presenting the Grand Final livestream — AI Edition 2025.',
     },
     gallery: [
       {
-        src: 'images/tournament-final-2025.jpg',
-        alt: 'Beatriz presenting the Grand Final of the SAP Latin America Innovation Tournament, AI Edition 2025',
-        ratio: '16/9',
-        caption: 'Presenting the Grand Final livestream — AI Edition 2025.',
+        src: 'images/tournament-americas-2026.jpg',
+        alt: 'Winning team and organisers at the Innovation Tournament Americas, Agentic Edition 2026',
+        ratio: '3/2',
+        caption: 'Innovation Tournament Americas — Agentic Edition 2026.',
+      },
+      {
+        src: 'images/tournament-americas-venue.jpg',
+        alt: 'Venue ready for the Innovation Tournament Americas',
+        ratio: '4/5',
+        caption: 'Innovation Tournament Americas, on site.',
       },
     ],
   },
@@ -236,6 +245,7 @@ export const projects: Project[] = [
       src: 'images/business-ai-joule-session.jpg',
       alt: 'Beatriz presenting SAP Joule for SuccessFactors in a client session',
       ratio: '16/9',
+      position: 'right center',
       caption: 'Client session: Joule in SuccessFactors.',
     },
     clients: {

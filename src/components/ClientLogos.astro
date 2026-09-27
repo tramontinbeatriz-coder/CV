@@ -1,0 +1,61 @@
+---
+/**
+ * Client strip. For each client, uses public/images/clients/<slug>.(svg|png|webp) if the file exists;
+ * otherwise falls back to the client's name set as a wordmark.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import type { Client } from '../content/site';
+import { url } from '../lib/rich';
+
+interface Props {
+  label: string;
+  items: Client[];
+}
+
+const { label, items } = Astro.props;
+const dir = path.join(process.cwd(), 'public', 'images', 'clients');
+
+const clients = items.map((c) => {
+  const file = ['svg', 'png', 'webp'].map((ext) => `${c.slug}.${ext}`).find((f) => fs.existsSync(path.join(dir, f)));
+  return { ...c, logo: file ? url(`/images/clients/${file}`) : null };
+});
+---
+
+<div class="clients" data-reveal>
+  <p class="label">{label}</p>
+  <ul>
+    {clients.map((c) => (
+      <li>
+        {c.logo ? (
+          <img src={c.logo} alt={c.name} loading="lazy" decoding="async" />
+        ) : (
+          <span class="clients__name">{c.name}</span>
+        )}
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .clients { display: grid; gap: 1rem; }
+  .clients ul { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem clamp(1.5rem, 3vw, 2.75rem); }
+  .clients li { display: flex; align-items: center; min-height: 2.5rem; }
+  .clients img {
+    height: 1.75rem;
+    width: auto;
+    max-width: 9rem;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.75;
+    transition: filter 0.4s var(--ease), opacity 0.4s var(--ease);
+  }
+  .clients li:hover img { filter: none; opacity: 1; }
+  .clients__name {
+    font-family: var(--serif);
+    font-size: clamp(1.35rem, 1.8vw, 1.65rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--ink-2);
+  }
+</style>

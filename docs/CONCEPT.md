@@ -106,7 +106,8 @@ Cada case study segue a mesma estrutura: **título → contexto → meu papel �
 - Challenge: AI is complex, fast-moving and easy to overpromise. The work is making it concrete — what it means for a specific business, which problem it solves, and what it takes to get there.
 - Meta: Business AI Solution Advisor · SAP · desde janeiro de 2025
 - What I did: coordination of cross-functional projects · client-facing presentations, workshops and strategic recommendations to enterprise clients · key point of contact between clients and internal teams · multiple parallel initiatives (prioritization, risk) · work with sales, product and technical teams · process improvements.
-- Métricas: **3** teams aligned (sales, product & technical). Quando tiver um número de clientes, workshops ou apresentações, é só acrescentar.
+- Métricas: **10+** Latin American clients served · **3** teams aligned (sales, product & technical)
+- Clientes em destaque: Hypera Pharma · Sicredi · Randoncorp, com demanda e oportunidades de venda geradas. As logos entram quando os arquivos forem colocados em `public/images/clients/`; até lá, os nomes aparecem em serif.
 - Pull quote: The hardest part of AI is rarely the technology. It's the conversation around it.
 
 **03 — SAP Open Innovation** · *Ecosystem · Partnerships · Innovation* (Open Innovation Intern, 2023–2025)
@@ -301,6 +302,6 @@ gallery: [{ src: 'images/nos/marca.jpg', alt: 'Nós brand identity', ratio: '1/1
 
 Nenhum placeholder de texto pendente. Opcionais para uma próxima versão:
 
-- **SAP Business AI:** um número (clientes, workshops, apresentações) ou um resultado concreto
+- **Logos dos clientes:** `hypera-pharma.svg`, `sicredi.svg`, `randoncorp.svg` em `public/images/clients/`
 - **Nós:** @ do Instagram, se quiser linkar
 - **Fotos:** ver §11, mais uma imagem de compartilhamento `public/og.jpg` (1200×630)

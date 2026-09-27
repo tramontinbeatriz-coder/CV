@@ -8,6 +8,7 @@ import type { Project } from '../content/site';
 import { rich, url } from '../lib/rich';
 import Media from './Media.astro';
 import MetricRow from './MetricRow.astro';
+import ClientLogos from './ClientLogos.astro';
 
 interface Props {
   project: Project;
@@ -38,6 +39,7 @@ const href = url(`/work/${p.slug}/`);
 
   <div class="pc__aside">
     <MetricRow metrics={p.metrics} size={variant === 'feature' ? 'lg' : 'md'} />
+    {p.clients && <ClientLogos label={p.clients.label} items={p.clients.items} />}
     {variant === 'row' && (
       <dl class="pc__facts" data-reveal>
         <div><dt class="label">Challenge</dt><dd set:html={rich(p.challenge)} /></div>

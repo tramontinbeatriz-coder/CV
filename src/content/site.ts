@@ -44,7 +44,11 @@ export type Project = {
   pullQuote: string;
   cover?: ImageSlot;
   gallery?: ImageSlot[];
+  /** Named clients. Drop a logo at public/images/clients/<slug>.svg (or .png / .webp) and it replaces the name automatically. */
+  clients?: { label: string; items: Client[] };
 };
+
+export type Client = { name: string; slug: string };
 
 export const person = {
   name: 'Beatriz Tramontin',
@@ -177,7 +181,7 @@ export const projects: Project[] = [
     meta: [
       { label: 'Role', value: 'Business AI Solution Advisor' },
       { label: 'Company', value: 'SAP' },
-      { label: 'Clients', value: 'Enterprise, Latin America' },
+      { label: 'Clients', value: '10+ enterprises, Latin America' },
       { label: 'Since', value: 'January 2025' },
     ],
     context:
@@ -187,6 +191,7 @@ export const projects: Project[] = [
     challenge:
       'AI is complex, fast-moving and easy to overpromise. The work is making it concrete — what it means for a specific business, which problem it solves, and what it takes to get there.',
     actions: [
+      'Served 10+ Latin American clients — including Hypera Pharma, Sicredi and Randoncorp — generating new demand and sales opportunities.',
       'Lead the coordination of cross-functional projects, aligning business objectives, stakeholders and delivery timelines.',
       'Deliver client-facing presentations, workshops and strategic recommendations to enterprise clients.',
       'Act as a key point of contact between clients and internal teams — managing expectations and keeping everyone updated.',
@@ -195,12 +200,21 @@ export const projects: Project[] = [
       'Spot process improvements that make project execution more efficient.',
     ],
     impact:
-      'The value I add is translation: making complex technology clear for the people who need to decide on it — and making business needs clear for the people who build it.',
+      '10+ Latin American clients served, turning AI conversations into new demand and sales opportunities. The value I add is translation: making complex technology clear for the people who need to decide on it — and making business needs clear for the people who build it.',
     metrics: [
+      { value: '10+', label: 'Latin American clients served' },
       { value: '3', label: 'teams aligned — sales, product & technical' },
     ],
     skills: ['AI business solutions', 'Client engagement', 'Workshop facilitation', 'Strategic recommendations', 'Cross-functional coordination', 'Risk & priority management', 'SAP ecosystem'],
     pullQuote: 'The hardest part of AI is rarely the technology. It’s the conversation around it.',
+    clients: {
+      label: 'Clients include',
+      items: [
+        { name: 'Hypera Pharma', slug: 'hypera-pharma' },
+        { name: 'Sicredi', slug: 'sicredi' },
+        { name: 'Randoncorp', slug: 'randoncorp' },
+      ],
+    },
   },
   {
     slug: 'sap-open-innovation',
@@ -356,7 +370,7 @@ export const howIWork = {
       n: '03',
       title: 'Communication',
       line: 'Connecting people, ideas and business needs.',
-      proof: 'Workshops and strategic recommendations for enterprise clients. Building the voice and brand of Nós. A postgrad in Digital Communication.',
+      proof: 'Workshops and strategic recommendations for 10+ enterprise clients. Building the voice and brand of Nós. A postgrad in Digital Communication.',
     },
     {
       n: '04',

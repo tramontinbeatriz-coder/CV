@@ -7,6 +7,7 @@ import type { Project } from '../content/site';
 import { rich, url } from '../lib/rich';
 import Media from './Media.astro';
 import MetricRow from './MetricRow.astro';
+import ClientLogos from './ClientLogos.astro';
 
 interface Props {
   project: Project;
@@ -49,6 +50,11 @@ const chapters = [
 
   <section class="container case__metrics" aria-label="Results">
     <MetricRow metrics={p.metrics} />
+    {p.clients && (
+      <div class="case__clients">
+        <ClientLogos label={p.clients.label} items={p.clients.items} />
+      </div>
+    )}
   </section>
 
   <div class="container case__chapters">
@@ -123,6 +129,7 @@ const chapters = [
   }
   .case__meta dd { margin-top: 0.35rem; font-size: var(--fs-small); }
 
+  .case__clients { margin-top: clamp(2rem, 4vw, 3rem); padding-top: 1.25rem; border-top: 1px solid var(--line); }
   .case__cover { animation: rise 1.1s 0.15s var(--ease) both; }
   .case__metrics { padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 7vw, 6rem); }
 

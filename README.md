@@ -24,7 +24,7 @@ Base (layout)
 │   ├── Hero
 │   ├── About             → SectionHeader, Media
 │   ├── SelectedWork      → SectionHeader
-│   │   ├── ProjectCard   (variant: feature | row) → MetricRow → Metric, optional Media
+│   │   ├── ProjectCard   (variant: feature | row) → MetricRow → Metric, ClientLogos, optional Media
 │   │   └── AcrossBorders (international visual band)
 │   ├── Pillars           (How I work)
 │   └── Contact           → SectionHeader
@@ -54,6 +54,7 @@ Base (layout)
     │   ├── AcrossBorders.astro
     │   ├── CaseStudy.astro
     │   ├── Metric.astro / MetricRow.astro
+    │   ├── ClientLogos.astro  client logos (falls back to names)
     │   ├── Pillars.astro
     │   ├── Contact.astro
     │   ├── Footer.astro
@@ -71,6 +72,7 @@ Base (layout)
 - `*text*` inside a string renders as the accent italic serif.
 - `[[text]]` marks a **placeholder**: it renders highlighted in the rose accent so it can't ship unnoticed. Search for `[[` to find every one.
 - **Photos (optional):** the site is typographic by default. Put a file in `public/images/…` and add `cover` / `gallery` to a project (or `portrait` to `hero` / `about`) in `site.ts`, and it renders automatically. See `docs/CONCEPT.md` §11 for what each photo should show.
+- **Client logos:** put `hypera-pharma.svg`, `sicredi.svg` and `randoncorp.svg` (or `.png` / `.webp`) in `public/images/clients/`. Each file replaces the client's name automatically; the filename must match the client's `slug` in `site.ts`.
 - Adding a project: add an entry to `projects` in `site.ts` and its case-study page is generated automatically.
 
 ## Deploy

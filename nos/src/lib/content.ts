@@ -33,7 +33,7 @@ export const CONTENT_FIELDS = {
   hero_image: { group: "home", type: "image", label: "foto de fundo do topo", help: "foto horizontal, de preferência com pessoas e luz natural", default: "/samples/amostra-01.jpg" },
   hero_video: { group: "home", type: "url", label: "vídeo de fundo (opcional)", help: "link direto para um .mp4 curto e leve. se preenchido, aparece no lugar da foto", default: "" },
   hero_cta: { group: "home", type: "text", label: "botão principal", default: "ver próximos encontros" },
-  intro_title: { group: "home", type: "text", label: "título “o que é a nós?”", default: "o que é a nós?" },
+  intro_title: { group: "home", type: "text", label: "título da apresentação", default: "sobre nós" },
   intro_text: {
     group: "home",
     type: "textarea",

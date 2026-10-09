@@ -58,7 +58,7 @@ export default async function HomePage() {
       </div>
 
       {/* O QUE É A NÓS ---------------------------------------------------- */}
-      <section className="mx-auto max-w-[1400px] px-5 py-14 md:px-10 md:py-24">
+      <section className="mx-auto max-w-[1400px] px-5 pb-14 pt-8 md:px-10 md:pb-24 md:pt-12">
         <div className="grid gap-14 md:grid-cols-12">
           <div className="md:col-span-5">
             <SectionHeading kicker="sobre" title={c.intro_title} className="text-green" />

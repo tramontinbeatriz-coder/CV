@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Knot, Lockup } from "@/components/brand/Logo";
+import { Knot, Lockup, Logo } from "@/components/brand/Logo";
 import { EventCalendar } from "@/components/site/EventCalendar";
 import { Marquee, Photo, RotatingBadge, SectionHeading } from "@/components/site/ui";
 import { InstagramSection } from "@/components/site/InstagramSection";
@@ -64,14 +64,14 @@ export default async function HomePage() {
         </div>
         <div className="sobre-texto">
           <p className="label dash dash-pink reveal">sobre nós</p>
-          <h2 id="sobre-titulo" className="display reveal">
-            {c.intro_title.endsWith("entre nós") ? (
+          <h2 id="sobre-titulo" className="reveal">
+            {/\snós$/.test(c.intro_title) ? (
               <>
-                {c.intro_title.slice(0, -"entre nós".length)}
-                <span>entre nós</span>
+                <span className="italic-serif sobre-frase">{c.intro_title.replace(/\s+nós$/, "")}</span>
+                <Logo className="sobre-logo" />
               </>
             ) : (
-              c.intro_title
+              <span className="italic-serif sobre-frase">{c.intro_title}</span>
             )}
           </h2>
           <p className="sobre-corpo reveal">{c.intro_text}</p>

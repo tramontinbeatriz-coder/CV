@@ -14,7 +14,7 @@ export default async function HomePage() {
   return (
     <>
       {/* HERO ------------------------------------------------------------ */}
-      <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-green text-cream">
+      <section className="relative flex flex-col overflow-hidden bg-green text-cream">
         <div className="absolute inset-0">
           {c.hero_video ? (
             <video className="h-full w-full object-cover" src={c.hero_video} autoPlay muted loop playsInline poster={c.hero_image} />
@@ -26,10 +26,10 @@ export default async function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-t from-green via-green/30 to-green/10" />
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-5 pb-10 pt-28 md:px-10 md:pb-14 md:pt-36">
+        <div className="relative mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-5 pb-10 pt-28 md:px-10 md:pb-14 md:pt-32">
           <p className="label rise max-w-xs text-cream/90 md:max-w-none">{c.hero_kicker}</p>
 
-          <div className="mt-auto grid items-end gap-10 md:grid-cols-12">
+          <div className="mt-10 grid items-end gap-10 md:mt-20 md:grid-cols-12">
             <div className="md:col-span-8">
               <h1 className="rise text-[34vw] leading-none md:text-[19vw] lg:text-[15.5rem]" style={{ ["--delay" as string]: "120ms" }}>
                 <Lockup entre className="text-cream" />

@@ -58,7 +58,7 @@ export default async function HomePage() {
       </div>
 
       {/* O QUE É A NÓS ---------------------------------------------------- */}
-      <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-10 md:py-40">
+      <section className="mx-auto max-w-[1400px] px-5 py-14 md:px-10 md:py-24">
         <div className="grid gap-14 md:grid-cols-12">
           <div className="md:col-span-5">
             <SectionHeading kicker="sobre" title={c.intro_title} className="text-green" />
@@ -67,7 +67,7 @@ export default async function HomePage() {
               <Photo src={c.about_image_2} alt="" sizes="20vw" className="absolute -bottom-16 right-0 aspect-square w-1/2 rotate-3 border-8 border-cream" />
             </div>
           </div>
-          <div className="md:col-span-6 md:col-start-7 md:pt-24">
+          <div className="md:col-span-6 md:col-start-7 md:pt-10">
             <p className="reveal text-2xl leading-snug md:text-[2.1rem] md:leading-[1.25]">{c.intro_text}</p>
             <p className="reveal script mt-10 -rotate-3 text-6xl text-pink md:text-7xl" style={{ ["--delay" as string]: "200ms" }}>
               {c.intro_note}

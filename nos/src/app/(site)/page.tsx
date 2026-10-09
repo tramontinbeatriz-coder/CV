@@ -57,33 +57,28 @@ export default async function HomePage() {
         <Marquee words={words} />
       </div>
 
-      {/* O QUE É A NÓS ---------------------------------------------------- */}
-      <section className="mx-auto max-w-[1400px] px-5 pb-14 pt-8 md:px-10 md:pb-24 md:pt-12">
-        <div className="grid gap-14 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <SectionHeading kicker="sobre" title={c.intro_title} className="text-green" />
-            <div className="reveal relative mt-14 hidden md:block" style={{ ["--delay" as string]: "150ms" }}>
-              <Photo src={c.about_image_1} alt="" sizes="30vw" className="aspect-[4/5] w-3/4 -rotate-2" />
-              <Photo src={c.about_image_2} alt="" sizes="20vw" className="absolute -bottom-16 right-0 aspect-square w-1/2 rotate-3 border-8 border-cream" />
-            </div>
-          </div>
-          <div className="md:col-span-6 md:col-start-7 md:pt-10">
-            <p className="reveal text-xl leading-relaxed text-green md:text-[1.5rem] md:leading-[1.45]">{c.intro_text}</p>
-            {c.intro_note && (
-              <p className="reveal script mt-10 -rotate-3 text-6xl text-pink md:text-7xl" style={{ ["--delay" as string]: "200ms" }}>
-                {c.intro_note}
-              </p>
+      {/* SOBRE NÓS: dividida ao meio — foto grande à esquerda, texto à direita */}
+      <section className="sobre-split" aria-labelledby="sobre-titulo">
+        <div className="sobre-foto">
+          <Photo src={c.intro_image} alt="" sizes="(min-width: 768px) 50vw, 100vw" className="h-full w-full" />
+        </div>
+        <div className="sobre-texto">
+          <p className="label dash dash-pink reveal">sobre nós</p>
+          <h2 id="sobre-titulo" className="display reveal">
+            {c.intro_title.endsWith("entre nós") ? (
+              <>
+                {c.intro_title.slice(0, -"entre nós".length)}
+                <span>entre nós</span>
+              </>
+            ) : (
+              c.intro_title
             )}
-            <div className="reveal mt-12 flex gap-6" style={{ ["--delay" as string]: "300ms" }}>
-              <Link href="/sobre" className="btn btn-outline text-green">
-                conheça a nós
-              </Link>
-            </div>
-            <div className="reveal relative mt-14 md:hidden">
-              <Photo src={c.about_image_1} alt="" sizes="75vw" className="aspect-[4/5] w-3/4 -rotate-2" />
-              <Photo src={c.about_image_2} alt="" sizes="50vw" className="absolute -bottom-10 right-0 aspect-square w-1/2 rotate-3 border-8 border-cream" />
-            </div>
-          </div>
+          </h2>
+          <p className="sobre-corpo reveal">{c.intro_text}</p>
+          {c.intro_note && <p className="script -rotate-3 text-5xl text-pink">{c.intro_note}</p>}
+          <Link href="/sobre" className="btn btn-green reveal">
+            conheça mais sobre a nós <span aria-hidden>→</span>
+          </Link>
         </div>
       </section>
 

@@ -572,3 +572,18 @@ a.cal-dia--evento:focus-visible { box-shadow: 0 0 0 3px var(--green), 0 0 0 5px 
   font-family: var(--font-script); color: var(--pink); text-transform: lowercase;
   font-size: clamp(3.2rem, 5.2vw, 4.4rem); line-height: 0; vertical-align: baseline; margin-left: .12em;
 }
+
+/* "sobre nós" na home: dividida ao meio — foto grande à esquerda, texto à direita */
+.sobre-split { display: grid; background: var(--cream); color: var(--green); }
+.sobre-foto { position: relative; min-height: 70vw; }
+.sobre-foto > div { position: absolute; inset: 0; }
+.sobre-texto { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.5rem; padding: clamp(3rem, 6vw, 6rem) 20px; }
+.sobre-texto h2 { margin: 0; font-size: clamp(3rem, 6vw, 5.5rem); text-wrap: balance; }
+.sobre-texto h2 span { color: var(--pink); }
+.sobre-corpo { margin: 0; max-width: 34rem; font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.6; }
+.sobre-texto .btn { margin-top: .5rem; }
+@media (min-width: 768px) {
+  .sobre-split { grid-template-columns: 1fr 1fr; min-height: min(90vh, 860px); }
+  .sobre-foto { min-height: 0; }
+  .sobre-texto { padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem); }
+}

@@ -51,6 +51,11 @@ async function withViews(list: Event[]) {
   return list.map((e) => toView(e, holds.get(e.id) ?? 0));
 }
 
+/** Só o que o calendário da agenda precisa. */
+export function toCalendarEvent(e: Pick<Event, "slug" | "title" | "date" | "time">) {
+  return { slug: e.slug, title: e.title, date: e.date, time: e.time };
+}
+
 /** Próximos encontros publicados (hoje em diante). */
 export async function getUpcomingEvents(limit?: number) {
   const q = db

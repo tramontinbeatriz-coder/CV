@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { Knot, Lockup } from "@/components/brand/Logo";
-import { EventCard, Marquee, Photo, RotatingBadge, SectionHeading } from "@/components/site/ui";
+import { Lockup } from "@/components/brand/Logo";
+import { EventCalendar } from "@/components/site/EventCalendar";
+import { Marquee, Photo, RotatingBadge, SectionHeading } from "@/components/site/ui";
 import { InstagramSection } from "@/components/site/InstagramSection";
-import { getContent, instagramUrl } from "@/lib/content";
-import { getUpcomingEvents } from "@/lib/events";
+import { getContent } from "@/lib/content";
+import { getUpcomingEvents, toCalendarEvent } from "@/lib/events";
+import { todayISO } from "@/lib/format";
 import { getFeaturedPhotos } from "@/lib/gallery";
 
 export default async function HomePage() {
-  const [c, events, featured] = await Promise.all([getContent(), getUpcomingEvents(5), getFeaturedPhotos(7)]);
-  const [first, ...rest] = events;
+  const [c, events, featured] = await Promise.all([getContent(), getUpcomingEvents(), getFeaturedPhotos(7)]);
+  const calendarEvents = events.map(toCalendarEvent);
   const words = c.marquee_words.split(",").map((w) => w.trim()).filter(Boolean);
 
   return (
@@ -85,30 +87,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* PRÓXIMOS ENCONTROS ----------------------------------------------- */}
-      <section id="encontros" className="bg-mist py-24 md:py-36">
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-          <div className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">
-            <SectionHeading kicker="agenda" title={c.events_title} className="text-green" />
-            <Link href="/eventos" className="label link reveal text-green">ver agenda completa →</Link>
-          </div>
-
-          {first ? (
-            <>
-              <EventCard event={first} variant="feature" />
-              {rest.length > 0 && (
-                <div className="mt-28 grid gap-16 md:grid-cols-2 md:gap-x-16">
-                  {rest.map((e, i) => (
-                    <EventCard key={e.id} event={e} index={i} />
-                  ))}
-                </div>
-              )}
-            </>
-          ) : (
-            <EmptyAgenda handle={c.instagram_handle} />
-          )}
-        </div>
-      </section>
+      {/* PRÓXIMOS EVENTOS (calendário) --------------------------------- */}
+      <EventCalendar id="encontros" events={calendarEvents} today={todayISO()} title={c.events_title} />
 
       {/* NÓS EM FOTOS ----------------------------------------------------- */}
       {featured.length > 0 && (
@@ -151,16 +131,3 @@ export default async function HomePage() {
   );
 }
 
-function EmptyAgenda({ handle }: { handle: string }) {
-  return (
-    <div className="reveal flex flex-col items-start gap-6 border-t border-line pt-12 text-green md:flex-row md:items-center md:justify-between">
-      <div className="flex items-center gap-5">
-        <Knot className="w-14 text-pink wobble" />
-        <p className="italic-serif text-3xl md:text-4xl">os próximos encontros estão sendo preparados.</p>
-      </div>
-      <a href={instagramUrl(handle)} target="_blank" rel="noreferrer" className="btn btn-green">
-        acompanhe no instagram
-      </a>
-    </div>
-  );
-}

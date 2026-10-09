@@ -17,7 +17,7 @@ export function Header({ instagramHandle, instagramHref }: { instagramHandle: st
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   // No topo da home, o header fica claro sobre a foto
-  const overHero = pathname === "/" && !scrolled && !open;
+  const overHero = (pathname === "/" || pathname === "/eventos") && !scrolled && !open;
 
   useEffect(() => setOpen(false), [pathname]);
 

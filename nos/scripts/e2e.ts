@@ -376,6 +376,15 @@ async function main() {
       const overflow = await visitor.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       assert(overflow <= 1, `home tem rolagem horizontal no celular (${overflow}px)`);
     });
+
+    await step("calendário: dia com evento abre a página do evento", async () => {
+      await visitor.goto(BASE);
+      const cta = await visitor.locator("#encontros .cal-cta").getAttribute("href");
+      assert(cta?.endsWith("#inscricao"), `comprar ingresso aponta para ${cta}`);
+      await visitor.locator("#encontros a.cal-dia--evento").first().click();
+      await visitor.waitForURL(/\/eventos\/[^/]+$/);
+      await visitor.locator("#inscricao").waitFor();
+    });
   } finally {
     await browser?.close();
     server.kill();

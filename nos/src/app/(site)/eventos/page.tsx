@@ -3,8 +3,9 @@ import Link from "next/link";
 import { Knot } from "@/components/brand/Logo";
 import { EventCta, Photo, SampleBadge, SpotsLine, StatusTag } from "@/components/site/ui";
 import { getContent, instagramUrl } from "@/lib/content";
-import { getUpcomingEvents } from "@/lib/events";
-import { formatDayMonth, formatPrice, formatShortDate, formatTime, weekdayOf } from "@/lib/format";
+import { getUpcomingEvents, toCalendarEvent } from "@/lib/events";
+import { EventCalendar } from "@/components/site/EventCalendar";
+import { formatDayMonth, formatPrice, formatShortDate, formatTime, todayISO, weekdayOf } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "próximos encontros",
@@ -16,19 +17,7 @@ export default async function EventsPage() {
 
   return (
     <>
-      <section className="bg-green pb-16 pt-32 text-cream md:pb-24 md:pt-44">
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-          <p className="label dash dash-lime rise">agenda</p>
-          <h1 className="display rise mt-6 text-[17vw] md:text-[10rem]" style={{ ["--delay" as string]: "100ms" }}>
-            próximos
-            <br />
-            <span className="text-lime">encontros</span>
-          </h1>
-          <p className="italic-serif rise mt-8 max-w-xl text-2xl" style={{ ["--delay" as string]: "250ms" }}>
-            escolha um encontro, garanta seu lugar e venha como estiver. sozinha também vale.
-          </p>
-        </div>
-      </section>
+      <EventCalendar id="calendario" events={events.map(toCalendarEvent)} today={todayISO()} title={c.events_title} className="cal-sec--topo" />
 
       <section className="mx-auto max-w-[1400px] px-5 py-16 md:px-10 md:py-28">
         {events.length === 0 ? (

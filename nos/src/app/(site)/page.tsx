@@ -39,7 +39,8 @@ export default async function HomePage() {
               </h1>
             </div>
             <div className="md:col-span-4 md:pb-8">
-              <div className="rise flex flex-wrap items-center gap-6" style={{ ["--delay" as string]: "450ms" }}>
+              <HeroTagline text={c.hero_title} />
+              <div className="rise mt-8 flex flex-wrap items-center gap-6" style={{ ["--delay" as string]: "450ms" }}>
                 <Link href="#encontros" className="btn btn-lime">
                   {c.hero_cta} <span aria-hidden>↓</span>
                 </Link>
@@ -50,9 +51,6 @@ export default async function HomePage() {
 
         <RotatingBadge text="próximos encontros" href="#encontros" className="absolute right-6 top-28 hidden text-lime md:grid lg:right-12 lg:top-32" />
       </section>
-
-      {/* FRASE ------------------------------------------------------------ */}
-      <Tagline text={c.hero_title} />
 
       {/* FAIXA ------------------------------------------------------------ */}
       <div className="border-b border-line bg-cream py-6 text-green md:py-8">
@@ -132,16 +130,14 @@ export default async function HomePage() {
 }
 
 /** "um novo jeito de se encontrar." → caixa alta em Sanchez + última palavra em script rosa. */
-function Tagline({ text }: { text: string }) {
+/** Frase do topo: Sanchez em caixa alta + a última palavra em script rosa. */
+function HeroTagline({ text }: { text: string }) {
   const words = text.trim().replace(/[.!]+$/, "").split(/\s+/);
   const last = words.length > 1 ? words.pop() : undefined;
   return (
-    <section className="tagline">
-      <Knot className="tagline-rabisco" />
-      <h2 className="reveal">
-        <span className="tagline-caps">{words.join(" ")}</span>
-        {last && <span className="tagline-script">{last}</span>}
-      </h2>
-    </section>
+    <p className="rise hero-tagline" style={{ ["--delay" as string]: "300ms" }}>
+      <span className="hero-tagline-caps">{words.join(" ")}</span>
+      {last && <span className="hero-tagline-script">{last}</span>}
+    </p>
   );
 }

@@ -39,7 +39,7 @@ export const CONTENT_FIELDS = {
     type: "textarea",
     label: "texto “o que é a nós?”",
     default:
-      "a nós é uma comunidade de experiências presenciais para mulheres em porto alegre. encontros pequenos, pensados com carinho, para conhecer gente nova, sair da rotina, experimentar coisas e simplesmente estar junto.",
+      "a nós nasceu da vontade de tornar a vida adulta mais leve, divertida e cheia de novas possibilidades. criamos experiências que queríamos viver. acreditamos que a vida fica muito mais interessante quando nos permitimos sair do automático, conhecer novas pessoas e colecionar histórias. mais do que eventos, queremos criar conexões, desatar nós e viver momentos que fazem tudo valer a pena. afinal, a vida acontece entre nós.",
   },
   intro_note: { group: "home", type: "text", label: "frase de apoio", default: "pode vir sozinha. a ideia é justamente essa." },
   marquee_words: { group: "home", type: "text", label: "palavras da faixa animada", help: "separe por vírgula", default: "encontros, conversas, conexão, pertencer, experiências, mulheres, independência" },

@@ -28,7 +28,7 @@ export type ContentGroup = keyof typeof CONTENT_GROUPS;
 
 export const CONTENT_FIELDS = {
   // HOME
-  hero_title: { group: "home", type: "text", label: "frase principal", default: "experiências para encontrar, conversar e estar." },
+  hero_title: { group: "home", type: "text", label: "frase principal", default: "um novo jeito de se encontrar." },
   hero_kicker: { group: "home", type: "text", label: "linha pequena acima do nome", default: "encontros presenciais para mulheres · porto alegre" },
   hero_image: { group: "home", type: "image", label: "foto de fundo do topo", help: "foto horizontal, de preferência com pessoas e luz natural", default: "/samples/amostra-01.jpg" },
   hero_video: { group: "home", type: "url", label: "vídeo de fundo (opcional)", help: "link direto para um .mp4 curto e leve. se preenchido, aparece no lugar da foto", default: "" },

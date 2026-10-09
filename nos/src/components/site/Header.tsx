@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Knot, Logo } from "../brand/Logo";
 
 const NAV = [
-  { href: "/eventos", label: "encontros" },
+  { href: "/eventos", label: "próximos encontros" },
   { href: "/sobre", label: "sobre a nós" },
   { href: "/passados", label: "eventos passados" },
 ];

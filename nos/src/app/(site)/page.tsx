@@ -68,7 +68,10 @@ export default async function HomePage() {
             {/\snós$/.test(c.intro_title) ? (
               <>
                 <span className="italic-serif sobre-frase">{c.intro_title.replace(/\s+nós$/, "")}</span>
-                <Logo className="sobre-logo" />
+                <span className="sobre-logo-wrap">
+                  <Logo className="sobre-logo" />
+                  <Knot className="sobre-no" />
+                </span>
               </>
             ) : (
               <span className="italic-serif sobre-frase">{c.intro_title}</span>

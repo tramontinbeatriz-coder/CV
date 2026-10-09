@@ -563,12 +563,12 @@ a.cal-dia--evento:focus-visible { box-shadow: 0 0 0 3px var(--green), 0 0 0 5px 
 /* ------------------------------------------------------------------
    FRASE DA HOME — "um novo jeito de se encontrar"
    ------------------------------------------------------------------ */
-.hero-tagline { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .45em; }
+.hero-tagline { margin: 0; line-height: 1.25; }
 .hero-tagline-caps {
   font-family: var(--font-slab); text-transform: uppercase;
   font-size: clamp(1.35rem, 2.2vw, 1.85rem); letter-spacing: .12em; line-height: 1.2;
 }
 .hero-tagline-script {
   font-family: var(--font-script); color: var(--pink); text-transform: lowercase;
-  font-size: clamp(3.2rem, 5.2vw, 4.4rem); line-height: .7;
+  font-size: clamp(3.2rem, 5.2vw, 4.4rem); line-height: 0; vertical-align: baseline; margin-left: .12em;
 }

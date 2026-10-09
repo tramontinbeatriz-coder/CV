@@ -129,15 +129,14 @@ export default async function HomePage() {
   );
 }
 
-/** "um novo jeito de se encontrar." → caixa alta em Sanchez + última palavra em script rosa. */
 /** Frase do topo: Sanchez em caixa alta + a última palavra em script rosa. */
 function HeroTagline({ text }: { text: string }) {
   const words = text.trim().replace(/[.!]+$/, "").split(/\s+/);
   const last = words.length > 1 ? words.pop() : undefined;
   return (
-    <p className="rise hero-tagline" style={{ ["--delay" as string]: "300ms" }}>
+    <p className="rise hero-tagline" style={{ ["--delay" as string]: "300ms" }} aria-label={text}>
       <span className="hero-tagline-caps">{words.join(" ")}</span>
-      {last && <span className="hero-tagline-script">{last}</span>}
+      {last && <> <span className="hero-tagline-script">{last}</span></>}
     </p>
   );
 }

@@ -42,7 +42,7 @@ export const CONTENT_FIELDS = {
       "a nós é uma comunidade de experiências presenciais para mulheres em porto alegre. encontros pequenos, pensados com carinho, para conhecer gente nova, sair da rotina, experimentar coisas e simplesmente estar junto.",
   },
   intro_note: { group: "home", type: "text", label: "frase de apoio", default: "pode vir sozinha. a ideia é justamente essa." },
-  marquee_words: { group: "home", type: "text", label: "palavras da faixa animada", help: "separe por vírgula", default: "encontrar, conversar, conexão, pertencer, experimentar, chegar sozinha, sair acompanhada" },
+  marquee_words: { group: "home", type: "text", label: "palavras da faixa animada", help: "separe por vírgula", default: "encontrar, conversar, conexão, pertencer, experiências, chegar sozinha, sair acompanhada" },
   events_title: { group: "home", type: "text", label: "título do calendário de eventos", help: "a primeira palavra aparece em letra de forma e o resto em itálico", default: "próximos eventos" },
   gallery_title: { group: "home", type: "text", label: "título da seleção de fotos", default: "nós em fotos" },
   instagram_title: { group: "home", type: "text", label: "chamada do instagram", default: "o que acontece por aqui, aparece por lá." },

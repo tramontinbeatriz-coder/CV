@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Lockup } from "@/components/brand/Logo";
+import { Knot, Lockup } from "@/components/brand/Logo";
 import { EventCalendar } from "@/components/site/EventCalendar";
 import { Marquee, Photo, RotatingBadge, SectionHeading } from "@/components/site/ui";
 import { InstagramSection } from "@/components/site/InstagramSection";
@@ -39,10 +39,7 @@ export default async function HomePage() {
               </h1>
             </div>
             <div className="md:col-span-4 md:pb-8">
-              <p className="rise italic-serif text-3xl leading-[1.1] md:text-4xl" style={{ ["--delay" as string]: "300ms" }}>
-                {c.hero_title}
-              </p>
-              <div className="rise mt-8 flex flex-wrap items-center gap-6" style={{ ["--delay" as string]: "450ms" }}>
+              <div className="rise flex flex-wrap items-center gap-6" style={{ ["--delay" as string]: "450ms" }}>
                 <Link href="#encontros" className="btn btn-lime">
                   {c.hero_cta} <span aria-hidden>↓</span>
                 </Link>
@@ -53,6 +50,9 @@ export default async function HomePage() {
 
         <RotatingBadge text="próximos encontros" href="#encontros" className="absolute right-6 top-28 hidden text-lime md:grid lg:right-12 lg:top-32" />
       </section>
+
+      {/* FRASE ------------------------------------------------------------ */}
+      <Tagline text={c.hero_title} />
 
       {/* FAIXA ------------------------------------------------------------ */}
       <div className="border-b border-line bg-cream py-6 text-green md:py-8">
@@ -131,3 +131,17 @@ export default async function HomePage() {
   );
 }
 
+/** "um novo jeito de se encontrar." → caixa alta em Sanchez + última palavra em script rosa. */
+function Tagline({ text }: { text: string }) {
+  const words = text.trim().replace(/[.!]+$/, "").split(/\s+/);
+  const last = words.length > 1 ? words.pop() : undefined;
+  return (
+    <section className="tagline">
+      <Knot className="tagline-rabisco" />
+      <h2 className="reveal">
+        <span className="tagline-caps">{words.join(" ")}</span>
+        {last && <span className="tagline-script">{last}</span>}
+      </h2>
+    </section>
+  );
+}

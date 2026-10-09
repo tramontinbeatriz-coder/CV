@@ -76,7 +76,7 @@ export default async function HomePage() {
           </h2>
           <p className="sobre-corpo reveal">{c.intro_text}</p>
           {c.intro_note && <p className="script -rotate-3 text-5xl text-pink">{c.intro_note}</p>}
-          <Link href="/sobre" className="btn btn-green reveal">
+          <Link href="/sobre" className="btn btn-outline text-green reveal">
             conheça mais sobre a nós <span aria-hidden>→</span>
           </Link>
         </div>

@@ -69,9 +69,11 @@ export default async function HomePage() {
           </div>
           <div className="md:col-span-6 md:col-start-7 md:pt-10">
             <p className="reveal text-xl leading-relaxed text-green md:text-[1.5rem] md:leading-[1.45]">{c.intro_text}</p>
-            <p className="reveal script mt-10 -rotate-3 text-6xl text-pink md:text-7xl" style={{ ["--delay" as string]: "200ms" }}>
-              {c.intro_note}
-            </p>
+            {c.intro_note && (
+              <p className="reveal script mt-10 -rotate-3 text-6xl text-pink md:text-7xl" style={{ ["--delay" as string]: "200ms" }}>
+                {c.intro_note}
+              </p>
+            )}
             <div className="reveal mt-12 flex gap-6" style={{ ["--delay" as string]: "300ms" }}>
               <Link href="/sobre" className="btn btn-outline text-green">
                 conheça a nós

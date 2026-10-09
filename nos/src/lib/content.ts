@@ -41,7 +41,7 @@ export const CONTENT_FIELDS = {
     default:
       "a nós nasceu da vontade de tornar a vida adulta mais leve, divertida e cheia de novas possibilidades. criamos experiências que queríamos viver. acreditamos que a vida fica muito mais interessante quando nos permitimos sair do automático, conhecer novas pessoas e colecionar histórias. mais do que eventos, queremos criar conexões, desatar nós e viver momentos que fazem tudo valer a pena. afinal, a vida acontece entre nós.",
   },
-  intro_note: { group: "home", type: "text", label: "frase de apoio", default: "pode vir sozinha. a ideia é justamente essa." },
+  intro_note: { group: "home", type: "text", label: "frase de apoio (manuscrita)", help: "opcional: deixe vazio para não mostrar", default: "" },
   marquee_words: { group: "home", type: "text", label: "palavras da faixa animada", help: "separe por vírgula", default: "encontros, conversas, conexão, pertencer, experiências, mulheres, independência" },
   events_title: { group: "home", type: "text", label: "título do calendário de eventos", help: "a primeira palavra aparece em letra de forma e o resto em itálico", default: "próximos eventos" },
   gallery_title: { group: "home", type: "text", label: "título da seleção de fotos", default: "nós em fotos" },

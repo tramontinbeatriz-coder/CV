@@ -475,7 +475,7 @@ textarea.a-input {
 }
 
 /* título */
-.cal-title { position: relative; justify-self: center; align-self: center; padding-top: clamp(3.2rem, 6.5vw, 6rem); text-align: center; }
+.cal-title { position: relative; justify-self: center; align-self: center; padding-top: calc(clamp(56px, 6vw, 84px) * .95 + 1.1rem); text-align: center; }
 .cal-title h2 { margin: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .cal-t1 {
   font-family: var(--font-slab); text-transform: uppercase;

@@ -95,6 +95,9 @@ export function RegistrationForm({
           <input id="city" name="city" className="field" autoComplete="address-level2" defaultValue={v.city ?? "Porto Alegre"} />
         </Field>
       </div>
+      <Field name="dietaryRestrictions" label="tem alguma restrição alimentar?" optional>
+        <input id="dietaryRestrictions" name="dietaryRestrictions" className="field" placeholder="ex.: vegetariana, sem lactose, alergia a amendoim" maxLength={300} defaultValue={v.dietaryRestrictions} />
+      </Field>
       <Field name="discoverySource" label="como conheceu a nós?" optional>
         <select id="discoverySource" name="discoverySource" className="field appearance-none" defaultValue={v.discoverySource ?? ""}>
           <option value="">escolha uma opção</option>

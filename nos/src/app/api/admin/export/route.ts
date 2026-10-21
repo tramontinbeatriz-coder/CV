@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 
   const rows = await listRegistrations({ eventId, status: p.get("status") || undefined, q: p.get("q") || undefined });
   const csv = toCsv([
-    ["nome", "e-mail", "telefone", "instagram", "cidade", "como conheceu", "encontro", "data do encontro", "status do pagamento", "valor", "data da inscrição", "pago em", "provedor", "referência"],
+    ["nome", "e-mail", "telefone", "instagram", "cidade", "como conheceu", "restrição alimentar", "encontro", "data do encontro", "status do pagamento", "valor", "data da inscrição", "pago em", "provedor", "referência"],
     ...rows.map(({ r, eventTitle, eventDate }) => [
       r.name,
       r.email,
@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
       r.instagram,
       r.city,
       r.discoverySource,
+      r.dietaryRestrictions,
       eventTitle,
       eventDate,
       PAYMENT_LABEL[paymentDisplay(r)],

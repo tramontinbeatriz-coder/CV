@@ -99,6 +99,9 @@ async function RegistrationsTable({ filters }: { filters: { eventId?: string; st
                     <span className="block text-xs font-normal text-muted">
                       {[r.instagram && `@${r.instagram}`, r.city, r.discoverySource].filter(Boolean).join(" · ")}
                     </span>
+                    {r.dietaryRestrictions && (
+                      <span className="mt-1 block text-xs font-normal text-green">🍽 {r.dietaryRestrictions}</span>
+                    )}
                   </td>
                   <td><a className="underline" href={`mailto:${r.email}`}>{r.email}</a></td>
                   <td className="whitespace-nowrap">

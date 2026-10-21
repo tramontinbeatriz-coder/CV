@@ -74,6 +74,7 @@ export const registrations = sqliteTable(
     instagram: text("instagram"),
     city: text("city"),
     discoverySource: text("discovery_source"),
+    dietaryRestrictions: text("dietary_restrictions"),
     acceptedTermsAt: text("accepted_terms_at").notNull(),
     paymentStatus: text("payment_status", { enum: PAYMENT_STATUSES }).notNull().default("pending"),
     paymentProvider: text("payment_provider"),

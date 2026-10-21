@@ -21,6 +21,7 @@ const registrationSchema = z.object({
   instagram: z.string().trim().max(60).optional(),
   city: z.string().trim().min(2, "de qual cidade você é?").max(80),
   discoverySource: z.string().trim().max(80).optional(),
+  dietaryRestrictions: z.string().trim().max(300).optional(),
   terms: z.literal("on", { error: "é preciso aceitar para continuar" }),
 });
 

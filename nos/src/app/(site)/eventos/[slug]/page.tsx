@@ -128,7 +128,6 @@ export default async function EventPage({ params }: Props) {
               <h2 className="display mt-5 text-5xl text-green md:text-6xl">
                 {event.effective === "sold_out" ? "lista de espera" : "garanta seu lugar"}
               </h2>
-              <p className="script mt-6 -rotate-3 text-5xl text-pink">até lá!</p>
             </div>
             <div className="md:col-span-7 md:col-start-6">
               <RegistrationBlock event={event} termsText={c.terms_text} />

@@ -1,0 +1,1 @@
+ALTER TABLE `registrations` ADD `dietary_restrictions` text;

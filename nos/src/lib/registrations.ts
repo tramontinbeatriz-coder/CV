@@ -15,6 +15,7 @@ export type RegistrationInput = {
   instagram?: string | null;
   city?: string | null;
   discoverySource?: string | null;
+  dietaryRestrictions?: string | null;
 };
 
 export class RegistrationError extends Error {
@@ -73,6 +74,7 @@ export async function startRegistration(eventSlug: string, input: RegistrationIn
           instagram: input.instagram?.trim() || null,
           city: input.city?.trim() || null,
           discoverySource: input.discoverySource?.trim() || null,
+          dietaryRestrictions: input.dietaryRestrictions?.trim() || null,
           holdExpiresAt: holdUntil,
           updatedAt: now.toISOString(),
         })
@@ -98,6 +100,7 @@ export async function startRegistration(eventSlug: string, input: RegistrationIn
         instagram: input.instagram?.trim() || null,
         city: input.city?.trim() || null,
         discoverySource: input.discoverySource?.trim() || null,
+        dietaryRestrictions: input.dietaryRestrictions?.trim() || null,
         acceptedTermsAt: now.toISOString(),
         amountCents: event.priceCents,
         paymentProvider: event.priceCents > 0 ? config.paymentProvider : "gratuito",
@@ -268,7 +271,7 @@ export async function getRegistrationByToken(token: string) {
   return row ?? null;
 }
 
-export async function joinWaitlist(eventSlug: string, input: Omit<RegistrationInput, "city" | "discoverySource">) {
+export async function joinWaitlist(eventSlug: string, input: Omit<RegistrationInput, "city" | "discoverySource" | "dietaryRestrictions">) {
   const [event] = await db.select().from(events).where(eq(events.slug, eventSlug)).limit(1);
   if (!event || !event.published) throw new RegistrationError("not_found", "encontro não encontrado");
   const email = input.email.trim().toLowerCase();

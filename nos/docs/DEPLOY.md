@@ -54,6 +54,16 @@ Nesse caso dá para usar `DATABASE_URL=file:./data/nos.db` e `STORAGE_PROVIDER=l
 
 ## Instagram automático (opcional)
 
-Para a home mostrar os últimos posts de @thenos.club, gere um token da *Instagram API with Instagram
-Login* (conta profissional) e coloque em `INSTAGRAM_ACCESS_TOKEN`. O token vale 60 dias e precisa ser
-renovado. Sem token, a seção usa as fotos em destaque da galeria.
+Para a home mostrar os últimos posts de @thenos.club (a seção do Instagram, perto do rodapé):
+
+1. No app do Instagram, deixe a @thenos.club como **conta profissional** (criadora de conteúdo ou empresa).
+2. Em https://developers.facebook.com crie um app (tipo *Empresa*) e adicione o produto **Instagram** →
+   *API do Instagram com login do Instagram*.
+3. Em **Gerar tokens de acesso**, adicione a conta @thenos.club, entre com o login dela e clique em
+   **Gerar token**. Copie o token (é de longa duração, vale 60 dias).
+4. Coloque o token na variável `INSTAGRAM_ACCESS_TOKEN` (na Vercel: Settings → Environment Variables) e
+   faça um novo deploy.
+
+O site **renova o token sozinho** a cada 7 dias e guarda o novo no banco — não precisa repetir o passo 3,
+desde que o site receba visitas pelo menos uma vez a cada ~50 dias. Os posts são atualizados de hora em hora.
+Sem token (ou se o Instagram falhar), a seção mostra as fotos em destaque da galeria.

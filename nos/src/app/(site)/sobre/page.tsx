@@ -48,12 +48,11 @@ export default async function AboutPage() {
       {/* destaque */}
       <section className="relative overflow-hidden bg-green py-24 text-cream md:py-36">
         <div className="mx-auto max-w-[1100px] px-5 md:px-10">
-          <p className="italic-serif reveal text-3xl leading-[1.2] md:text-6xl">
+          <p className="italic-serif reveal text-2xl leading-[1.3] md:text-4xl">
             <span className="text-lime">“</span>
             {c.about_highlight}
             <span className="text-lime">”</span>
           </p>
-          <p className="script reveal mt-10 -rotate-2 text-right text-6xl text-pink md:text-7xl">pode vir sozinha</p>
         </div>
       </section>
 

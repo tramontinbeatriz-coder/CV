@@ -103,7 +103,7 @@ export const CONTENT_FIELDS = {
     type: "textarea",
     label: "regras de cancelamento",
     help: "aparece na página de cada encontro",
-    default: "[placeholder] defina aqui a política de cancelamento e reembolso.",
+    default: "sabemos que imprevistos acontecem! caso precise cancelar sua participação, o reembolso poderá ser solicitado com até 3 dias de antecedência do evento." ,
   },
 
   // CORES (identidade visual: letras & logos & cores)

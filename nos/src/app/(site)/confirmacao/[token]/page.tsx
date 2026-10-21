@@ -25,7 +25,6 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
     const first = registration.name.split(" ")[0];
     return (
       <section className="relative overflow-hidden bg-green pb-24 pt-32 text-cream md:pb-32 md:pt-44">
-        <Knot className="absolute -right-10 top-24 w-64 text-pink/25 spin-slow md:w-96" />
         <div className="relative mx-auto max-w-[1100px] px-5 md:px-10">
           <p className="label dash dash-lime rise">inscrição confirmada</p>
           <h1 className="display rise mt-6 text-[16vw] leading-[0.9] md:text-[8.5rem]" style={{ ["--delay" as string]: "100ms" }}>

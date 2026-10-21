@@ -54,9 +54,10 @@ export const CONTENT_FIELDS = {
   about_lead: {
     group: "sobre",
     type: "textarea",
-    label: "texto de abertura",
+    label: "história da nós",
+    help: "parágrafos separados por linha em branco; o 1º vira uma chamada pequena e o 2º fica em destaque",
     default:
-      "a nós nasceu para criar espaços onde mulheres possam se encontrar de verdade.\n\nqueremos criar experiências que aproximem pessoas, estimulem conversas e façam com que cada mulher se sinta confortável para chegar sozinha, conhecer novas pessoas e fazer parte daquele momento.",
+      "conheça mais sobre a nós\n\nantes de sermos a nós, éramos só nós duas.\n\nhá cinco anos, nos conhecemos por uma daquelas coincidências bonitas da vida, viemos de cidades diferentes para porto alegre e acabamos morando juntas. o que não imaginávamos era que dividir o mesmo teto seria o começo de uma das partes mais especiais da nossa história.\n\ndesde então, nos tornamos melhores amigas, compartilhamos a vida e colecionamos memórias. mas, quando chegamos à cidade, nenhuma de nós tinha um grupo de amigas formado por aqui. sentíamos falta de ter com quem compartilhar novas experiências, conhecer lugares e viver coisas diferentes.\n\nfoi daí que nasceu a nós: da vontade de criar aquilo que gostaríamos de encontrar. um espaço para conhecer mulheres, construir conexões genuínas e transformar encontros em memórias especiais.\n\nno fundo, a nós é um pedacinho daquilo que construímos juntas e da vontade de proporcionar a outras mulheres experiências que também gostaríamos de viver.\n\ncriamos experiências que queríamos viver. e queremos vivê-las com vocês. ♡",
   },
   about_highlight: {
     group: "sobre",

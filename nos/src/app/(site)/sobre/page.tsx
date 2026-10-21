@@ -33,7 +33,7 @@ export default async function AboutPage() {
           <Photo src={c.about_image_1} alt="" sizes="(min-width: 768px) 40vw, 100vw" className="aspect-[4/5]" />
         </div>
         <div className="flex flex-col justify-between gap-12 md:col-span-6 md:col-start-7">
-          <div className="reveal space-y-6 text-xl leading-relaxed md:text-2xl">
+          <div className="reveal historia">
             {paragraphs(c.about_lead).map((p, i) => (
               <p key={i}>{p}</p>
             ))}

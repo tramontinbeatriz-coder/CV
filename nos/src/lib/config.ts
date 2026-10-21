@@ -4,8 +4,8 @@
  */
 export const config = {
   siteUrl: (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
-  /** mock | mercadopago | stripe */
-  paymentProvider: (process.env.PAYMENT_PROVIDER ?? "mock") as "mock" | "mercadopago" | "stripe",
+  /** mock | mercadopago | stripe | asaas */
+  paymentProvider: (process.env.PAYMENT_PROVIDER ?? "mock") as "mock" | "mercadopago" | "stripe" | "asaas",
   /** Minutos que uma vaga fica reservada enquanto a pessoa paga. */
   spotHoldMinutes: Number(process.env.SPOT_HOLD_MINUTES ?? 30),
   /** Abaixo (ou igual) deste número de vagas, o status automático vira "últimas vagas". */

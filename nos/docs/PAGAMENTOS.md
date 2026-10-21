@@ -9,6 +9,7 @@ Escolha o provedor com uma variável:
 PAYMENT_PROVIDER=mock         # modo teste (padrão)
 PAYMENT_PROVIDER=mercadopago  # recomendado no Brasil: Pix + cartão + boleto
 PAYMENT_PROVIDER=stripe       # cartão (e Pix, se ativado na conta)
+PAYMENT_PROVIDER=asaas        # Pix + cartão, pelo checkout do Asaas
 ```
 
 ## modo teste (`mock`)
@@ -53,7 +54,34 @@ direto (não depende só do webhook).
 3. `PAYMENT_PROVIDER=stripe`. Métodos de pagamento (cartão, Pix) são ativados no dashboard da Stripe.
 4. Localmente, dá para testar webhooks com `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
 
-## outro provedor (Asaas, Pagar.me, PagBank…)
+## Asaas
+
+O site usa o **Checkout do Asaas**: a pessoa paga com Pix ou cartão numa página do próprio Asaas,
+onde ela mesma preenche CPF e dados de pagamento. O formulário do site não muda.
+
+1. Teste primeiro numa conta de testes: crie em https://sandbox.asaas.com.
+2. No Asaas, vá em **Integrações → Chaves de API**, gere uma chave e copie (começa com `$aact_`).
+   Ela aparece uma vez só. Guarde como `ASAAS_API_KEY`.
+3. Invente um token secreto para o webhook (uma frase longa e aleatória). Ele vai em dois lugares:
+   no Asaas e em `ASAAS_WEBHOOK_TOKEN`.
+4. Em **Integrações → Webhooks → adicionar**:
+   - URL: `https://SEU-SITE/api/webhooks/asaas`
+   - token de autenticação: o mesmo de `ASAAS_WEBHOOK_TOKEN`
+   - versão da API: v3, envio **sequencial**, webhook **ativado**
+   - eventos: `CHECKOUT_PAID`, `CHECKOUT_CANCELED`, `CHECKOUT_EXPIRED`
+5. Variáveis do site:
+   ```env
+   PAYMENT_PROVIDER=asaas
+   ASAAS_API_KEY=$aact_...
+   ASAAS_WEBHOOK_TOKEN=seu-token-secreto
+   ASAAS_SANDBOX=true
+   ```
+6. Faça uma inscrição de teste. Tudo certo? Gere uma chave na conta de verdade (asaas.com),
+   troque `ASAAS_API_KEY`, cadastre o webhook lá também e use `ASAAS_SANDBOX=false`.
+
+O dinheiro cai no saldo da conta Asaas, e de lá você transfere para o seu banco pelo app do Asaas.
+
+## outro provedor (Pagar.me, PagBank…)
 
 Crie `src/lib/payments/<provedor>.ts` implementando a interface `PaymentProvider`
 (`src/lib/payments/types.ts`):
@@ -63,7 +91,6 @@ Crie `src/lib/payments/<provedor>.ts` implementando a interface `PaymentProvider
 - `fetchStatus(registration)` (opcional) → consulta o status quando a pessoa volta.
 
 Registre em `src/lib/payments/index.ts`. O webhook fica automaticamente em `/api/webhooks/<provedor>`.
-(Obs.: o Asaas exige CPF do cliente — seria preciso adicionar esse campo ao formulário.)
 
 ## confirmações por e-mail e WhatsApp
 

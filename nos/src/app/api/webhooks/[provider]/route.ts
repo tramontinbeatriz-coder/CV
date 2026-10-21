@@ -5,6 +5,7 @@ import { applyPaymentUpdate } from "@/lib/registrations";
  * Avisos (webhooks) dos provedores de pagamento:
  *   /api/webhooks/mercadopago
  *   /api/webhooks/stripe
+ *   /api/webhooks/asaas
  * A assinatura é validada dentro de cada provedor antes de qualquer alteração.
  */
 export async function POST(request: Request, ctx: { params: Promise<{ provider: string }> }) {

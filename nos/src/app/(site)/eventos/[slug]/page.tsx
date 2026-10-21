@@ -64,7 +64,7 @@ export default async function EventPage({ params }: Props) {
           <p className="label dash dash-pink rise mt-10 text-green" style={{ ["--delay" as string]: "80ms" }}>
             {weekdayOf(event.date)} · {formatDayMonth(event.date)} · {formatTime(event.time)}
           </p>
-          <h1 className="display rise mt-5 max-w-5xl text-[15vw] text-green md:text-[7.5rem]" style={{ ["--delay" as string]: "150ms" }}>
+          <h1 className="display rise mt-5 max-w-5xl text-[10vw] text-green md:text-[4.75rem]" style={{ ["--delay" as string]: "150ms" }}>
             {event.title}
           </h1>
           {event.tagline && (

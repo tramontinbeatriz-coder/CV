@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const c = await getContent();
-  const beliefs = lines(c.beliefs_text);
   const experiences = lines(c.experiences_text).map((l) => {
     const [title, ...rest] = l.split(":");
     return rest.length ? { title: title.trim(), text: rest.join(":").trim() } : { title: l, text: "" };
@@ -53,28 +52,6 @@ export default async function AboutPage() {
             {c.about_highlight}
             <span className="text-lime">”</span>
           </p>
-        </div>
-      </section>
-
-      {/* essência + crenças */}
-      <section className="mx-auto grid max-w-[1400px] gap-16 px-5 py-24 md:grid-cols-12 md:px-10 md:py-36">
-        <div className="md:col-span-5">
-          <p className="label dash dash-pink reveal text-green">nossa essência</p>
-          <p className="italic-serif reveal mt-8 text-3xl leading-snug text-green md:text-4xl">{c.essence_text}</p>
-          <div className="reveal mt-12 hidden md:block">
-            <Photo src={c.about_image_3} alt="" sizes="35vw" className="aspect-[4/3] -rotate-1" />
-          </div>
-        </div>
-        <div className="md:col-span-6 md:col-start-7">
-          <p className="label dash dash-pink reveal text-green">o que acreditamos</p>
-          <ol className="mt-8">
-            {beliefs.map((b, i) => (
-              <li key={b} className="reveal flex items-baseline gap-6 border-b border-line py-6" style={{ ["--delay" as string]: `${i * 80}ms` }}>
-                <span className="display w-10 shrink-0 text-3xl text-pink">{String(i + 1).padStart(2, "0")}</span>
-                <span className="display text-3xl text-green md:text-4xl">{b}</span>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 

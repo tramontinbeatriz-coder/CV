@@ -67,21 +67,6 @@ export const CONTENT_FIELDS = {
   },
   about_image_1: { group: "sobre", type: "image", label: "foto 1", default: "/samples/amostra-04.jpg" },
   about_image_2: { group: "sobre", type: "image", label: "foto 2", default: "/samples/amostra-07.jpg" },
-  about_image_3: { group: "sobre", type: "image", label: "foto 3", default: "/samples/amostra-10.jpg" },
-  essence_text: {
-    group: "sobre",
-    type: "textarea",
-    label: "nossa essência",
-    default: "encontros pequenos, gente de verdade, conversa boa. sem pressa, sem pose, sem precisar conhecer ninguém antes.",
-  },
-  beliefs_text: {
-    group: "sobre",
-    type: "textarea",
-    label: "o que acreditamos",
-    help: "um item por linha",
-    default:
-      "amizade se faz em qualquer fase da vida.\nestar junto é um jeito de cuidar de si.\ncuriosidade aproxima mais do que afinidade.\nninguém precisa chegar pronta.",
-  },
   experiences_text: {
     group: "sobre",
     type: "textarea",

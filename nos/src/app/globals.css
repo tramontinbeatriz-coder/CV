@@ -590,3 +590,6 @@ a.cal-dia--evento:focus-visible { box-shadow: 0 0 0 3px var(--green), 0 0 0 5px 
   .sobre-foto { min-height: 0; }
   .sobre-texto { padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem); }
 }
+
+/* destaque de marca-texto: trechos entre **asteriscos** nos textos editáveis */
+mark.destaque { background: linear-gradient(transparent 52%, var(--lime) 52%, var(--lime) 92%, transparent 92%); color: inherit; font-family: var(--font-display); font-style: italic; padding: 0 .12em; }

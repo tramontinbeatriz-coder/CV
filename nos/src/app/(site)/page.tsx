@@ -77,7 +77,7 @@ export default async function HomePage() {
               <span className="italic-serif sobre-frase">{c.intro_title}</span>
             )}
           </h2>
-          <p className="sobre-corpo reveal">{c.intro_text}</p>
+          <p className="sobre-corpo reveal">{withHighlights(c.intro_text)}</p>
           {c.intro_note && <p className="script -rotate-3 text-5xl text-pink">{c.intro_note}</p>}
           <Link href="/sobre" className="btn btn-outline text-green reveal">
             conheça mais sobre a nós <span aria-hidden>→</span>
@@ -138,5 +138,18 @@ function HeroTagline({ text }: { text: string }) {
       <span className="hero-tagline-caps">{words.join(" ")}</span>
       {last && <> <span className="hero-tagline-script">{last}</span></>}
     </p>
+  );
+}
+
+/** Trechos entre **asteriscos duplos** viram destaque de marca-texto. */
+function withHighlights(text: string) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    i % 2 ? (
+      <mark key={i} className="destaque">
+        {part}
+      </mark>
+    ) : (
+      part
+    ),
   );
 }

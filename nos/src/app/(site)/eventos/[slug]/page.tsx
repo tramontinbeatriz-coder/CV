@@ -69,7 +69,7 @@ export default async function EventPage({ params }: Props) {
           </h1>
           {event.tagline && (
             <p className="italic-serif rise mt-8 max-w-2xl text-2xl leading-snug md:text-4xl" style={{ ["--delay" as string]: "260ms" }}>
-              “{event.tagline}”
+              {event.tagline}
             </p>
           )}
         </header>

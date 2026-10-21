@@ -94,7 +94,6 @@ export default async function HomePage() {
           <div className="mx-auto max-w-[1400px] px-5 md:px-10">
             <div className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">
               <SectionHeading kicker="memórias" title={c.gallery_title} dashClass="dash-lime" />
-              <p className="italic-serif reveal text-3xl text-lime md:text-4xl">foi assim…</p>
             </div>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-5">
               {featured.map((p, i) => {

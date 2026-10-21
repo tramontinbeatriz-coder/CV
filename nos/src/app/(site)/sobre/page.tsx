@@ -23,7 +23,7 @@ export default async function AboutPage() {
       {/* abertura */}
       <section className="mx-auto max-w-[1400px] px-5 pb-16 pt-32 md:px-10 md:pb-24 md:pt-44">
         <p className="label dash dash-pink rise text-green">sobre a nós</p>
-        <h1 className="display rise mt-6 max-w-5xl text-[14vw] text-green md:text-[8rem]" style={{ ["--delay" as string]: "100ms" }}>
+        <h1 className="display rise mt-6 max-w-5xl text-[9vw] text-green md:text-[5.5rem]" style={{ ["--delay" as string]: "100ms" }}>
           {c.about_title}
         </h1>
       </section>

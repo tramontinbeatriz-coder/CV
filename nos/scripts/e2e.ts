@@ -95,8 +95,9 @@ async function register(page: Page, slug: string, who: { name: string; email: st
 
 async function spots(slug: string) {
   const html = await (await fetch(`${BASE}/eventos/${slug}`)).text();
-  const m = html.match(/(\d+)<!-- --> <!-- -->vagas? restantes?/) ?? html.match(/(\d+) vagas? restantes?/);
-  return { html, available: m ? Number(m[1]) : null, soldOut: html.includes("vagas esgotadas") };
+  // o número de vagas não aparece mais na página; vem dos atributos data-* do <article>
+  const m = html.match(/data-vagas="(\d+)"/);
+  return { html, available: m ? Number(m[1]) : null, soldOut: html.includes('data-status="sold_out"') };
 }
 
 async function main() {

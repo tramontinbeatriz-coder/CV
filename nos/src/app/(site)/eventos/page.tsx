@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Knot } from "@/components/brand/Logo";
-import { EventCta, Photo, SampleBadge, SpotsLine, StatusTag } from "@/components/site/ui";
+import { EventCta, Photo, SampleBadge, StatusTag } from "@/components/site/ui";
 import { getContent, instagramUrl } from "@/lib/content";
 import { getUpcomingEvents, toCalendarEvent } from "@/lib/events";
 import { EventCalendar } from "@/components/site/EventCalendar";
@@ -65,12 +65,6 @@ export default async function EventsPage() {
                       <div>
                         <dt className="label text-muted">valor</dt>
                         <dd>{formatPrice(event.priceCents)}</dd>
-                      </div>
-                      <div>
-                        <dt className="label text-muted">vagas</dt>
-                        <dd>
-                          <SpotsLine event={event} />
-                        </dd>
                       </div>
                     </dl>
                     <div className="mt-7 flex flex-wrap items-center gap-5">

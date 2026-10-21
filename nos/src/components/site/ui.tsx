@@ -127,12 +127,6 @@ export function EventCard({ event, variant = "grid", index = 0 }: { event: Event
         <dt className="label text-muted">valor</dt>
         <dd>{formatPrice(event.priceCents)}</dd>
       </div>
-      <div>
-        <dt className="label text-muted">vagas</dt>
-        <dd>
-          <SpotsLine event={event} />
-        </dd>
-      </div>
     </dl>
   );
 

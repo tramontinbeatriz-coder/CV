@@ -1,6 +1,5 @@
 import type { EventView } from "@/lib/events";
 import { formatLongDate, formatPrice, formatTime } from "@/lib/format";
-import { SpotsLine } from "./ui";
 
 /** Ficha técnica do encontro (data, horário, local, duração, valor, vagas). */
 export function EventFacts({ event }: { event: EventView }) {
@@ -21,7 +20,6 @@ export function EventFacts({ event }: { event: EventView }) {
     ],
     ...(event.duration ? ([["duração", event.duration]] as [string, React.ReactNode][]) : []),
     ["valor", formatPrice(event.priceCents)],
-    ["vagas", <SpotsLine key="v" event={event} />],
   ];
   return (
     <dl className="divide-y divide-line border-y border-line">

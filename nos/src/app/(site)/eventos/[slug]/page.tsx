@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Knot } from "@/components/brand/Logo";
 import { Lightbox } from "@/components/site/Lightbox";
 import { RegistrationBlock } from "@/components/site/RegistrationBlock";
-import { EventCta, Photo, SampleBadge, SpotsLine, StatusTag } from "@/components/site/ui";
+import { EventCta, Photo, SampleBadge, StatusTag } from "@/components/site/ui";
 import { EventFacts } from "@/components/site/EventFacts";
 import { getSession } from "@/lib/auth";
 import { getContent } from "@/lib/content";
@@ -52,7 +52,7 @@ export default async function EventPage({ params }: Props) {
         </div>
       )}
 
-      <article>
+      <article data-vagas={event.available} data-status={event.effective}>
         {/* Abertura */}
         <header className="mx-auto max-w-[1400px] px-5 pb-10 pt-32 md:px-10 md:pb-14 md:pt-44">
           <div className="rise flex flex-wrap items-center gap-3">
@@ -142,7 +142,6 @@ export default async function EventPage({ params }: Props) {
         <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-cream/95 px-5 py-3 backdrop-blur md:hidden">
           <div className="text-sm leading-tight">
             <p className="font-semibold text-green">{formatPrice(event.priceCents)}</p>
-            <p className="text-muted"><SpotsLine event={event} /></p>
           </div>
           <a href="#inscricao" className="btn btn-green">
             {event.effective === "sold_out" ? "lista de espera" : "quero participar"}

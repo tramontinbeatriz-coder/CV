@@ -67,14 +67,6 @@ export const CONTENT_FIELDS = {
   },
   about_image_1: { group: "sobre", type: "image", label: "foto 1", default: "/samples/amostra-04.jpg" },
   about_image_2: { group: "sobre", type: "image", label: "foto 2", default: "/samples/amostra-07.jpg" },
-  experiences_text: {
-    group: "sobre",
-    type: "textarea",
-    label: "como são nossas experiências",
-    help: "um item por linha — use “título: descrição”",
-    default:
-      "pequenas: grupos reduzidos, para dar tempo de conversar com todo mundo.\npresenciais: nada de tela. é olho no olho, mão na massa.\ndiferentes: cada encontro tem uma proposta — aprender, provar, se movimentar, criar.\nacolhedoras: tem sempre alguém da nós te esperando na porta.",
-  },
 
   // CONTATO
   instagram_handle: { group: "contato", type: "text", label: "instagram (sem @)", default: "thenos.club" },

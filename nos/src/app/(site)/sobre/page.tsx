@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Knot, Lockup } from "@/components/brand/Logo";
 import { Photo } from "@/components/site/ui";
 import { getContent } from "@/lib/content";
-import { lines, paragraphs } from "@/lib/format";
+import { paragraphs } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "sobre a nós",
@@ -12,10 +12,6 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const c = await getContent();
-  const experiences = lines(c.experiences_text).map((l) => {
-    const [title, ...rest] = l.split(":");
-    return rest.length ? { title: title.trim(), text: rest.join(":").trim() } : { title: l, text: "" };
-  });
 
   return (
     <>
@@ -52,22 +48,6 @@ export default async function AboutPage() {
             {c.about_highlight}
             <span className="text-lime">”</span>
           </p>
-        </div>
-      </section>
-
-      {/* experiências */}
-      <section className="bg-mist py-24 md:py-36">
-        <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-          <p className="label dash dash-pink reveal text-green">como são nossas experiências</p>
-          <div className="mt-12 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-4">
-            {experiences.map((e, i) => (
-              <div key={e.title} className={`reveal ${i % 2 ? "lg:mt-20" : ""}`} style={{ ["--delay" as string]: `${i * 100}ms` }}>
-                <Knot className={`w-10 ${["text-pink", "text-green", "text-lime", "text-pink"][i % 4]}`} />
-                <h3 className="display mt-5 text-4xl text-green">{e.title}</h3>
-                {e.text && <p className="mt-3 text-ink/80">{e.text}</p>}
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -7,11 +7,15 @@ import * as schema from "./schema";
  * - Local: arquivo em ./data/nos.db (DATABASE_URL=file:./data/nos.db)
  * - Produção: Turso (DATABASE_URL=libsql://... + DATABASE_AUTH_TOKEN)
  */
+/** DATABASE_URL, ou TURSO_DATABASE_URL (criada pela integração Turso da Vercel). */
+export function databaseUrl() {
+  return process.env.DATABASE_URL || process.env.TURSO_DATABASE_URL || "file:./data/nos.db";
+}
+
 const globalForDb = globalThis as unknown as { __nosClient?: Client };
 
 function makeClient() {
-  const url = process.env.DATABASE_URL ?? "file:./data/nos.db";
-  return createClient({ url, authToken: process.env.DATABASE_AUTH_TOKEN });
+  return createClient({ url: databaseUrl(), authToken: process.env.DATABASE_AUTH_TOKEN || process.env.TURSO_AUTH_TOKEN });
 }
 
 export const client = globalForDb.__nosClient ?? makeClient();

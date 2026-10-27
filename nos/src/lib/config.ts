@@ -3,7 +3,7 @@
  * Nenhum segredo fica no código: veja .env.example.
  */
 export const config = {
-  siteUrl: (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
+  siteUrl: siteUrl(),
   /** mock | mercadopago | stripe | asaas */
   paymentProvider: (process.env.PAYMENT_PROVIDER ?? "mock") as "mock" | "mercadopago" | "stripe" | "asaas",
   /** Minutos que uma vaga fica reservada enquanto a pessoa paga. */
@@ -14,4 +14,11 @@ export const config = {
 
 export function isProduction() {
   return process.env.NODE_ENV === "production";
+}
+
+/** SITE_URL, ou o endereço que a Vercel dá ao projeto quando SITE_URL não foi definida. */
+function siteUrl() {
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  const url = process.env.SITE_URL || (vercel ? `https://${vercel}` : "http://localhost:3000");
+  return url.replace(/\/$/, "");
 }

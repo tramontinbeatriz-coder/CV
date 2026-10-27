@@ -30,7 +30,8 @@ export async function saveImage(file: File, folder = "fotos"): Promise<StoredIma
     .toBuffer({ resolveWithObject: true });
 
   const name = `${folder}/${Date.now()}-${crypto.randomUUID().slice(0, 8)}.webp`;
-  const provider = process.env.STORAGE_PROVIDER ?? "local";
+  // Com o Blob da Vercel conectado (BLOB_READ_WRITE_TOKEN), usa ele mesmo sem STORAGE_PROVIDER.
+  const provider = process.env.STORAGE_PROVIDER || (process.env.BLOB_READ_WRITE_TOKEN ? "vercel-blob" : "local");
 
   if (provider === "vercel-blob") {
     const { put } = await import("@vercel/blob");

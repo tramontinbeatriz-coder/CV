@@ -1,5 +1,27 @@
 # colocar no ar
 
+## jeito mais simples (tudo pelo site da Vercel, sem terminal)
+
+1. Em https://vercel.com/new, importe o repositório `CV`. Em **Root Directory** escolha `nos`.
+   Se o primeiro deploy falhar, tudo bem: siga para o passo 2.
+2. **Settings → Git → Production Branch**: coloque `claude/great-hypatia-f8pjx8` (a branch do site da nós).
+3. **Storage**: crie um banco **Turso** e um **Blob** e conecte os dois ao projeto.
+   Eles criam sozinhos as variáveis do banco e das fotos.
+4. **Settings → Environment Variables**:
+
+   | variável | valor |
+   | --- | --- |
+   | `AUTH_SECRET` | uma frase longa e aleatória (40+ caracteres) |
+   | `ADMIN_EMAIL`, `ADMIN_PASSWORD` | seu login do painel (senha com 8+ caracteres) |
+   | `PAYMENT_PROVIDER` + credenciais | veja `PAGAMENTOS.md` (para testar: Asaas com `ASAAS_SANDBOX=true`) |
+
+5. **Deployments → Redeploy**. O build cria as tabelas e o seu acesso ao painel sozinho.
+   O site fica em `https://<projeto>.vercel.app` até você ligar um domínio.
+
+`SITE_URL` é opcional: sem ela, o site usa o endereço `.vercel.app`. Defina quando ligar o domínio.
+
+## jeito manual
+
 Recomendado: **Vercel** (site) + **Turso** (banco) + **Vercel Blob** (fotos) + **Mercado Pago** + **Resend**.
 Todos têm plano gratuito suficiente para começar.
 

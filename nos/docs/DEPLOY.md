@@ -89,3 +89,11 @@ Para a home mostrar os últimos posts de @thenos.club (a seção do Instagram, p
 O site **renova o token sozinho** a cada 7 dias e guarda o novo no banco — não precisa repetir o passo 3,
 desde que o site receba visitas pelo menos uma vez a cada ~50 dias. Os posts são atualizados de hora em hora.
 Sem token (ou se o Instagram falhar), a seção mostra as fotos em destaque da galeria.
+
+**Se a Meta só oferecer "API setup with Facebook login"** (acontece em algumas contas), também funciona:
+a @thenos.club precisa estar ligada a uma Página do Facebook. Em **Tools → Graph API Explorer**, escolha o app,
+adicione as permissões `instagram_basic`, `pages_show_list` e `pages_read_engagement` e clique em
+**Generate Access Token**. Depois, no ícone ⓘ do token → **Open in Access Token Tool** → **Extend Access Token**,
+e use esse token longo (começa com `EAA`) em `INSTAGRAM_ACCESS_TOKEN`. O site troca sozinho pelo token da
+Página, que não expira.
+

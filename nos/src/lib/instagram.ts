@@ -5,8 +5,9 @@ import { settings } from "./db/schema";
 /**
  * Últimos posts do Instagram (@thenos.club) na home.
  *
- * Se INSTAGRAM_ACCESS_TOKEN estiver definido (Instagram API com login do Instagram,
- * conta profissional), a home mostra os últimos posts. Sem token, a seção usa as fotos
+ * Se INSTAGRAM_ACCESS_TOKEN estiver definido, a home mostra os últimos posts. Aceita os dois
+ * tipos de token da Meta: "API do Instagram com login do Instagram" (começa com IG) ou
+ * "com login do Facebook" (começa com EAA; a conta precisa estar ligada a uma Página do Facebook). Sem token, a seção usa as fotos
  * em destaque da galeria — nada quebra.
  *
  * O token de longa duração vale 60 dias. O site renova sozinho a cada 7 dias e guarda o
@@ -61,28 +62,101 @@ async function refreshIfNeeded(envToken: string, token: string, refreshedAt: num
   }
 }
 
+type RawMedia = { id: string; media_type: string; media_url: string; thumbnail_url?: string; permalink: string; caption?: string };
+const MEDIA_FIELDS = "id,media_type,media_url,thumbnail_url,permalink,caption";
+
+function toPosts(data: RawMedia[]): InstagramPost[] {
+  return data.map((m) => ({
+    id: m.id,
+    imageUrl: m.media_type === "VIDEO" ? (m.thumbnail_url ?? m.media_url) : m.media_url,
+    permalink: m.permalink,
+    caption: m.caption,
+  }));
+}
+
+/** Tokens do Facebook (começam com "EAA") vêm da "API do Instagram com login do Facebook". */
+export function isFacebookToken(token: string) {
+  return token.startsWith("EAA");
+}
+
+const FB = "https://graph.facebook.com/v21.0";
+const KEY_FB_PAGE_TOKEN = "_instagram_fb_page_token";
+const KEY_FB_IG_ID = "_instagram_fb_ig_id";
+
+type FbPage = { access_token?: string; instagram_business_account?: { id: string } };
+
+/**
+ * Login do Facebook: a conta do Instagram precisa estar ligada a uma Página do Facebook.
+ * Com um token de usuário de longa duração, o token da Página que vem de /me/accounts
+ * não expira — ele é guardado no banco e usado dali em diante.
+ */
+async function facebookPosts(envToken: string, limit: number): Promise<InstagramPost[] | null> {
+  const [source, savedPageToken, savedIgId] = await Promise.all([
+    readSetting(KEY_SOURCE),
+    readSetting(KEY_FB_PAGE_TOKEN),
+    readSetting(KEY_FB_IG_ID),
+  ]);
+  let pageToken = source === envToken ? savedPageToken : null;
+  let igId = source === envToken ? savedIgId : null;
+
+  if (!pageToken || !igId) {
+    const url = new URL(`${FB}/me/accounts`);
+    url.searchParams.set("fields", "access_token,instagram_business_account{id}");
+    url.searchParams.set("access_token", envToken);
+    const res = await fetch(url, { cache: "no-store" });
+    if (res.ok) {
+      const json = (await res.json()) as { data?: FbPage[] };
+      const page = json.data?.find((p) => p.instagram_business_account?.id);
+      if (page?.instagram_business_account && page.access_token) {
+        pageToken = page.access_token;
+        igId = page.instagram_business_account.id;
+      }
+    }
+    if (!pageToken || !igId) {
+      // Pode ser um token de Página: pergunta a conta do Instagram ligada a ela.
+      const me = new URL(`${FB}/me`);
+      me.searchParams.set("fields", "instagram_business_account{id}");
+      me.searchParams.set("access_token", envToken);
+      const r = await fetch(me, { cache: "no-store" });
+      if (!r.ok) return null;
+      const j = (await r.json()) as FbPage;
+      if (!j.instagram_business_account) return null;
+      pageToken = envToken;
+      igId = j.instagram_business_account.id;
+    }
+    await Promise.all([
+      writeSetting(KEY_FB_PAGE_TOKEN, pageToken),
+      writeSetting(KEY_FB_IG_ID, igId),
+      writeSetting(KEY_SOURCE, envToken),
+    ]);
+  }
+
+  const url = new URL(`${FB}/${igId}/media`);
+  url.searchParams.set("fields", MEDIA_FIELDS);
+  url.searchParams.set("limit", String(limit));
+  url.searchParams.set("access_token", pageToken);
+  const res = await fetch(url, { next: { revalidate: 3600 } });
+  if (!res.ok) return null;
+  const json = (await res.json()) as { data: RawMedia[] };
+  return toPosts(json.data);
+}
+
 export async function getInstagramPosts(limit = 6): Promise<InstagramPost[] | null> {
-  const envToken = process.env.INSTAGRAM_ACCESS_TOKEN;
+  const envToken = process.env.INSTAGRAM_ACCESS_TOKEN?.trim();
   if (!envToken) return null;
   try {
+    if (isFacebookToken(envToken)) return await facebookPosts(envToken, limit);
     const current = await currentToken(envToken);
     const token = await refreshIfNeeded(envToken, current.token, current.refreshedAt);
 
     const url = new URL("https://graph.instagram.com/me/media");
-    url.searchParams.set("fields", "id,media_type,media_url,thumbnail_url,permalink,caption");
+    url.searchParams.set("fields", MEDIA_FIELDS);
     url.searchParams.set("limit", String(limit));
     url.searchParams.set("access_token", token);
     const res = await fetch(url, { next: { revalidate: 3600 } });
     if (!res.ok) return null;
-    const json = (await res.json()) as {
-      data: { id: string; media_type: string; media_url: string; thumbnail_url?: string; permalink: string; caption?: string }[];
-    };
-    return json.data.map((m) => ({
-      id: m.id,
-      imageUrl: m.media_type === "VIDEO" ? (m.thumbnail_url ?? m.media_url) : m.media_url,
-      permalink: m.permalink,
-      caption: m.caption,
-    }));
+    const json = (await res.json()) as { data: RawMedia[] };
+    return toPosts(json.data);
   } catch {
     return null;
   }

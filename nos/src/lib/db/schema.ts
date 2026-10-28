@@ -113,6 +113,19 @@ export const waitlistEntries = sqliteTable(
   (t) => [index("waitlist_event_idx").on(t.eventId)],
 );
 
+/** Pedidos de evento em parceria (página /parcerias). */
+export const partnershipRequests = sqliteTable("partnership_requests", {
+  id: id(),
+  name: text("name").notNull(),
+  company: text("company"), // marca, empresa ou espaço
+  email: text("email").notNull(),
+  phone: text("phone"),
+  instagram: text("instagram"),
+  idea: text("idea").notNull(),
+  answered: integer("answered", { mode: "boolean" }).notNull().default(false),
+  createdAt: createdAt(),
+});
+
 export const pastEvents = sqliteTable("past_events", {
   id: id(),
   title: text("title").notNull(),
@@ -173,3 +186,4 @@ export type Registration = typeof registrations.$inferSelect;
 export type PastEvent = typeof pastEvents.$inferSelect;
 export type Photo = typeof photos.$inferSelect;
 export type WaitlistEntry = typeof waitlistEntries.$inferSelect;
+export type PartnershipRequest = typeof partnershipRequests.$inferSelect;

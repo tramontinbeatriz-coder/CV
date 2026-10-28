@@ -19,6 +19,7 @@ type FieldDef = {
 export const CONTENT_GROUPS = {
   home: "home",
   sobre: "sobre a nós",
+  parcerias: "parcerias",
   contato: "contato e redes",
   seo: "compartilhamento e google",
   legal: "política de privacidade e termos",
@@ -67,6 +68,18 @@ export const CONTENT_FIELDS = {
   },
   about_image_1: { group: "sobre", type: "image", label: "foto 1", default: "/samples/amostra-04.jpg" },
   about_image_2: { group: "sobre", type: "image", label: "foto 2", default: "/samples/amostra-07.jpg" },
+
+  // PARCERIAS
+  partner_title: { group: "parcerias", type: "text", label: "título da página de parcerias", default: "vamos criar um encontro juntas?" },
+  partner_text: {
+    group: "parcerias",
+    type: "textarea",
+    label: "texto da página de parcerias",
+    help: "parágrafos separados por linha em branco",
+    default:
+      "tem uma marca, um espaço ou uma ideia de experiência que combina com a nós? a gente adora criar encontros em parceria.\n\nconta um pouco sobre você e sobre a ideia — a gente lê tudo e responde por e-mail ou whatsapp.",
+  },
+  partner_footer: { group: "parcerias", type: "text", label: "chamada no rodapé", default: "quer fazer um evento em parceria com a nós?" },
 
   // CONTATO
   instagram_handle: { group: "contato", type: "text", label: "instagram (sem @)", default: "thenos.club" },

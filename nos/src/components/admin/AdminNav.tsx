@@ -10,6 +10,7 @@ const ITEMS = [
   { href: "/admin", label: "início", exact: true },
   { href: "/admin/eventos", label: "encontros" },
   { href: "/admin/inscricoes", label: "inscrições" },
+  { href: "/admin/parcerias", label: "parcerias" },
   { href: "/admin/galeria", label: "eventos passados & fotos" },
   { href: "/admin/conteudo", label: "textos, contato e cores" },
   { href: "/admin/conta", label: "minha conta" },

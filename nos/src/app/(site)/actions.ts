@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { RegistrationError, confirmRegistration, getRegistrationByToken, joinWaitlist, setPaymentStatus, startRegistration } from "@/lib/registrations";
 import { isTestMode } from "@/lib/payments";
+import { createPartnershipRequest } from "@/lib/partnerships";
 
 export type FormState = {
   ok?: boolean;
@@ -91,4 +92,30 @@ export async function mockPayAction(token: string, outcome: "approve" | "decline
   }
   await setPaymentStatus(row.registration.id, "failed");
   redirect(`/confirmacao/${token}?falhou=1`);
+}
+
+const partnershipSchema = z.object({
+  name: z.string().trim().min(2, "como você se chama?").max(120),
+  company: z.string().trim().max(120).optional(),
+  email: z.string().trim().email("confere o e-mail?").max(160),
+  phone: z.string().trim().max(30).optional(),
+  instagram: z.string().trim().max(60).optional(),
+  idea: z.string().trim().min(10, "conta um pouquinho mais sobre a ideia").max(3000),
+});
+
+/** Formulário da página /parcerias. */
+export async function partnershipAction(_prev: FormState, formData: FormData): Promise<FormState> {
+  const values = collect(formData);
+  if (values.website) return { ok: false, error: "algo deu errado." }; // honeypot anti-spam
+  const parsed = partnershipSchema.safeParse(values);
+  if (!parsed.success) {
+    return { ok: false, fieldErrors: fieldErrors(parsed.error), values, error: "falta pouquinho — confere os campos marcados." };
+  }
+  try {
+    await createPartnershipRequest(parsed.data);
+    return { ok: true };
+  } catch (err) {
+    console.error(err);
+    return { ok: false, error: "não conseguimos enviar agora. tenta de novo em instantes?", values };
+  }
 }

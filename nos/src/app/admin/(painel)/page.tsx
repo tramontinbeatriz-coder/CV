@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { desc, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { events, registrations, waitlistEntries } from "@/lib/db/schema";
+import { events, partnershipRequests, registrations, waitlistEntries } from "@/lib/db/schema";
 import { getContent, isPlaceholder, CONTENT_FIELDS, type ContentKey } from "@/lib/content";
 import { getUpcomingEvents } from "@/lib/events";
 import { formatDateTime, formatDayMonth, formatPrice, formatTime } from "@/lib/format";
@@ -9,7 +9,7 @@ import { config } from "@/lib/config";
 import { PaymentPill, SpotsBar, StatusPill } from "@/components/admin/ui";
 
 export default async function Dashboard() {
-  const [upcoming, content, recent, [totals], [wait]] = await Promise.all([
+  const [upcoming, content, recent, [totals], [wait], [partners]] = await Promise.all([
     getUpcomingEvents(),
     getContent(),
     db
@@ -25,6 +25,7 @@ export default async function Dashboard() {
       })
       .from(registrations),
     db.select({ n: sql<number>`count(*)` }).from(waitlistEntries),
+    db.select({ n: sql<number>`count(*)` }).from(partnershipRequests).where(eq(partnershipRequests.answered, false)),
   ]);
   const placeholders = (Object.keys(CONTENT_FIELDS) as ContentKey[]).filter((k) => isPlaceholder(content[k]));
 
@@ -47,6 +48,16 @@ export default async function Dashboard() {
           <p className="mt-1 text-sm">
             ninguém é cobrado de verdade enquanto <code>PAYMENT_PROVIDER=mock</code>. para receber pagamentos, siga o passo a passo em
             <code> docs/PAGAMENTOS.md</code>.
+          </p>
+        </div>
+      )}
+      {Number(partners?.n ?? 0) > 0 && (
+        <div className="a-card border-pink bg-pink/15">
+          <p className="font-semibold text-green">
+            {partners.n} {Number(partners.n) === 1 ? "pedido de parceria aguardando resposta" : "pedidos de parceria aguardando resposta"}
+          </p>
+          <p className="mt-1 text-sm">
+            <Link className="underline" href="/admin/parcerias">ver parcerias</Link>
           </p>
         </div>
       )}

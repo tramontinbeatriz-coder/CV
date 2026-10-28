@@ -127,7 +127,7 @@ async function main() {
   let browser: Browser | undefined;
   try {
     await waitForServer();
-    browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
+    browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "/opt/pw-browsers/chromium" });
     const admin = await browser.newPage({ viewport: { width: 1360, height: 900 } });
     const slug = "teste-e2e-oficina";
 
@@ -307,6 +307,20 @@ async function main() {
       assert(s.available === 1, `esperado 1 vaga liberada, veio ${s.available}`);
     });
 
+    await step("parcerias: formulário envia e aparece no painel", async () => {
+      await visitor.goto(`${BASE}/parcerias`);
+      await visitor.fill("#name", "Ana Parceira");
+      await visitor.fill("#company", "Marca de Teste");
+      await visitor.fill("#email", "parceria@example.com");
+      await visitor.fill("#idea", "um encontro de teste com a nossa marca, para umas 20 pessoas.");
+      await visitor.click('button[type="submit"]');
+      await visitor.getByText("recebemos!").waitFor();
+      await admin.goto(`${BASE}/admin/parcerias`);
+      await admin.getByText("Marca de Teste").waitFor();
+      await admin.getByRole("button", { name: /marcar como respondido/ }).first().click();
+      await admin.getByRole("button", { name: /marcar como não respondido/ }).first().waitFor();
+    });
+
     await step("duplicar encontro cria rascunho", async () => {
       await admin.goto(editUrl);
       await admin.getByRole("button", { name: "duplicar" }).click();
@@ -357,7 +371,7 @@ async function main() {
     console.log("\nvisual");
     await step("páginas públicas no celular e desktop", async () => {
       const desktop = await browser!.newPage({ viewport: { width: 1440, height: 900 } });
-      for (const [route, name] of [["/", "home"], ["/eventos", "eventos"], [`/eventos/defesa-pessoal-com-fran`, "evento"], ["/passados", "passados"], ["/sobre", "sobre"]]) {
+      for (const [route, name] of [["/", "home"], ["/eventos", "eventos"], [`/eventos/defesa-pessoal-com-fran`, "evento"], ["/passados", "passados"], ["/parcerias", "parcerias"], ["/sobre", "sobre"]]) {
         for (const [p, label] of [[visitor, "mobile"], [desktop, "desktop"]] as const) {
           const r = await p.goto(`${BASE}${route}`);
           assert(r?.ok(), `${route} respondeu ${r?.status()}`);

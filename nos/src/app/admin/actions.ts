@@ -8,9 +8,10 @@ import { z } from "zod";
 import { changePassword, login, logout, requireAdmin } from "@/lib/auth";
 import { CONTENT_FIELDS, type ContentKey } from "@/lib/content";
 import { db } from "@/lib/db";
-import { EVENT_STATUSES, PAYMENT_STATUSES, events, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
+import { EVENT_STATUSES, PAYMENT_STATUSES, events, partnershipRequests, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
 import { parsePriceToCents, slugify } from "@/lib/format";
 import { setPaymentStatus } from "@/lib/registrations";
+import { setPartnershipAnswered } from "@/lib/partnerships";
 import { deleteImage, saveImage } from "@/lib/storage";
 
 export type ActionState = { ok?: boolean; error?: string; message?: string };
@@ -356,4 +357,16 @@ export async function resetContentKeysAction(prefix: string) {
   await requireAdmin();
   await db.delete(settings).where(like(settings.key, `${prefix}%`));
   refreshSite();
+}
+
+export async function setPartnershipAnsweredAction(id: string, answered: boolean) {
+  await requireAdmin();
+  await setPartnershipAnswered(id, answered);
+  revalidatePath("/admin/parcerias");
+}
+
+export async function deletePartnershipAction(id: string) {
+  await requireAdmin();
+  await db.delete(partnershipRequests).where(eq(partnershipRequests.id, id));
+  revalidatePath("/admin/parcerias");
 }

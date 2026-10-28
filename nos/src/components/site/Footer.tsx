@@ -18,6 +18,12 @@ export function Footer({ content: c }: { content: Content }) {
             <Link href="/eventos" className="btn btn-lime mt-10">
               ver próximos encontros <span aria-hidden>→</span>
             </Link>
+            <p className="mt-10 text-sm text-cream/80">
+              {c.partner_footer}{" "}
+              <Link href="/parcerias" className="link text-lime">
+                fale com a gente →
+              </Link>
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-10 md:col-span-5">
@@ -27,6 +33,7 @@ export function Footer({ content: c }: { content: Content }) {
                 <li><Link className="link" href="/eventos">encontros</Link></li>
                 <li><Link className="link" href="/sobre">sobre a nós</Link></li>
                 <li><Link className="link" href="/passados">eventos passados</Link></li>
+                <li><Link className="link" href="/parcerias">parcerias</Link></li>
                 <li><Link className="link" href="/privacidade">política de privacidade</Link></li>
               </ul>
             </div>

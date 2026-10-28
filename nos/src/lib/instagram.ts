@@ -21,6 +21,12 @@ const KEY_SOURCE = "_instagram_token_source"; // qual token do .env originou o s
 const KEY_REFRESHED = "_instagram_token_refreshed_at";
 const REFRESH_EVERY_MS = 7 * 24 * 60 * 60 * 1000;
 
+/** Registra no log da Vercel por que os posts não vieram (sem mostrar o token). */
+async function warn(step: string, res?: Response) {
+  const body = res ? (await res.text().catch(() => "")).slice(0, 300) : "";
+  console.warn(`[instagram] ${step}${res ? ` → ${res.status}` : ""} ${body}`);
+}
+
 async function readSetting(key: string) {
   const [row] = await db.select().from(settings).where(eq(settings.key, key)).limit(1);
   return row?.value ?? null;
@@ -111,16 +117,19 @@ async function facebookPosts(envToken: string, limit: number): Promise<Instagram
         pageToken = page.access_token;
         igId = page.instagram_business_account.id;
       }
-    }
+    } else await warn("facebook: /me/accounts", res);
     if (!pageToken || !igId) {
       // Pode ser um token de Página: pergunta a conta do Instagram ligada a ela.
       const me = new URL(`${FB}/me`);
       me.searchParams.set("fields", "instagram_business_account{id}");
       me.searchParams.set("access_token", envToken);
       const r = await fetch(me, { cache: "no-store" });
-      if (!r.ok) return null;
+      if (!r.ok) return (await warn("facebook: /me", r), null);
       const j = (await r.json()) as FbPage;
-      if (!j.instagram_business_account) return null;
+      if (!j.instagram_business_account) {
+        await warn("facebook: nenhuma conta do Instagram ligada a uma Página do Facebook deste token");
+        return null;
+      }
       pageToken = envToken;
       igId = j.instagram_business_account.id;
     }
@@ -136,7 +145,7 @@ async function facebookPosts(envToken: string, limit: number): Promise<Instagram
   url.searchParams.set("limit", String(limit));
   url.searchParams.set("access_token", pageToken);
   const res = await fetch(url, { next: { revalidate: 3600 } });
-  if (!res.ok) return null;
+  if (!res.ok) return (await warn("facebook: media", res), null);
   const json = (await res.json()) as { data: RawMedia[] };
   return toPosts(json.data);
 }
@@ -154,10 +163,11 @@ export async function getInstagramPosts(limit = 6): Promise<InstagramPost[] | nu
     url.searchParams.set("limit", String(limit));
     url.searchParams.set("access_token", token);
     const res = await fetch(url, { next: { revalidate: 3600 } });
-    if (!res.ok) return null;
+    if (!res.ok) return (await warn("instagram: media", res), null);
     const json = (await res.json()) as { data: RawMedia[] };
     return toPosts(json.data);
-  } catch {
+  } catch (e) {
+    console.warn("[instagram] erro", e instanceof Error ? e.message : e);
     return null;
   }
 }

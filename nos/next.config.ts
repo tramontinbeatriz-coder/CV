@@ -12,8 +12,8 @@ const nextConfig: NextConfig = {
     ],
     remotePatterns: [
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" }, // Vercel Blob
-      { protocol: "https", hostname: "*.cdninstagram.com" }, // posts do Instagram (opcional)
-      { protocol: "https", hostname: "*.fbcdn.net" },
+      { protocol: "https", hostname: "**.cdninstagram.com" }, // posts do Instagram (opcional)
+      { protocol: "https", hostname: "**.fbcdn.net" },
     ],
   },
   experimental: {

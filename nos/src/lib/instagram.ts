@@ -113,6 +113,7 @@ async function facebookPosts(envToken: string, limit: number): Promise<Instagram
     if (res.ok) {
       const json = (await res.json()) as { data?: FbPage[] };
       const page = json.data?.find((p) => p.instagram_business_account?.id);
+      if (!page) await warn(`facebook: o token vê ${json.data?.length ?? 0} Página(s), nenhuma com Instagram ligado`);
       if (page?.instagram_business_account && page.access_token) {
         pageToken = page.access_token;
         igId = page.instagram_business_account.id;

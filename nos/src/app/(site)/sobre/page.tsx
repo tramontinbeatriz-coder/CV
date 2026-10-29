@@ -23,17 +23,18 @@ export default async function AboutPage() {
         </h1>
       </section>
 
-      <section className="mx-auto grid max-w-[1400px] gap-12 px-5 pb-24 md:grid-cols-12 md:px-10 md:pb-36">
-        <div className="reveal md:col-span-5">
-          <Photo src={c.about_image_1} alt="" sizes="(min-width: 768px) 40vw, 100vw" className="aspect-[4/5]" />
+      {/* história: dividida ao meio como na home — foto até a margem à esquerda, texto à direita */}
+      <section className="sobre-split">
+        <div className="sobre-foto">
+          <Photo src={c.about_image_1} alt="as fundadoras da nós" sizes="(min-width: 768px) 50vw, 100vw" className="h-full w-full" />
         </div>
-        <div className="flex flex-col justify-between gap-12 md:col-span-6 md:col-start-7">
+        <div className="sobre-texto">
           <div className="reveal historia">
             {paragraphs(c.about_lead).map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </div>
-          <Knot className="reveal w-20 text-pink wobble" />
+          <Knot className="reveal w-16 text-pink wobble" />
         </div>
       </section>
 

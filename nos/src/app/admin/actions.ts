@@ -11,7 +11,7 @@ import { db } from "@/lib/db";
 import { EVENT_STATUSES, PAYMENT_STATUSES, events, partnershipRequests, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
 import { parsePriceToCents, slugify } from "@/lib/format";
 import { setPaymentStatus } from "@/lib/registrations";
-import { sendRegistrationConfirmation } from "@/lib/notifications";
+import { resendRegistrationConfirmation } from "@/lib/notifications";
 import { setPartnershipAnswered } from "@/lib/partnerships";
 import { deleteImage, saveImage } from "@/lib/storage";
 
@@ -315,6 +315,15 @@ export async function setRegistrationStatusAction(registrationId: string, fd: Fo
   refreshSite();
 }
 
+function explainEmailError(reason: string) {
+  if (/not verified|verify/i.test(reason)) return "o domínio do EMAIL_FROM ainda não foi verificado no Resend";
+  if (/only send testing emails/i.test(reason)) return "o Resend ainda está em modo de teste (só envia para o seu próprio e-mail). verifique um domínio e use ele no EMAIL_FROM";
+  if (/API key is invalid|401/i.test(reason)) return "a RESEND_API_KEY está errada";
+  if (/from/i.test(reason) && /422|invalid/i.test(reason)) return "o EMAIL_FROM está num formato inválido (use: nós <ola@seudominio.com>)";
+  if (/não configurados/.test(reason)) return "falta RESEND_API_KEY ou EMAIL_FROM na Vercel";
+  return reason.slice(0, 300);
+}
+
 /** Manda de novo o e-mail (e WhatsApp, se ligado) de confirmação de uma inscrição paga. */
 export async function resendConfirmationAction(registrationId: string): Promise<ActionState> {
   await requireAdmin();
@@ -329,8 +338,8 @@ export async function resendConfirmationAction(registrationId: string): Promise<
   if ((process.env.EMAIL_PROVIDER ?? "console") === "console") {
     return { error: "o envio de e-mails ainda está desligado (EMAIL_PROVIDER)" };
   }
-  const sent = await sendRegistrationConfirmation(row.r, row.e);
-  if (!sent) return { error: "não foi possível enviar — veja os Logs da Vercel" };
+  const sent = await resendRegistrationConfirmation(row.r, row.e);
+  if (!sent.ok) return { error: `não foi possível enviar: ${explainEmailError(sent.reason)}` };
   await db
     .update(registrations)
     .set({ confirmationSentAt: new Date().toISOString() })

@@ -120,3 +120,15 @@ export async function sendRegistrationConfirmation(registration: Registration, e
   for (const r of results) if (r.status === "rejected") console.error("[notificação]", r.reason);
   return results[0].status === "fulfilled";
 }
+
+/** Igual ao envio normal, mas devolve o motivo quando o e-mail falha (usado no painel). */
+export async function resendRegistrationConfirmation(registration: Registration, event: Event) {
+  const msg = confirmationMessage(registration, event);
+  try {
+    await sendEmail({ to: registration.email, ...msg });
+    return { ok: true as const };
+  } catch (err) {
+    console.error("[notificação]", err);
+    return { ok: false as const, reason: err instanceof Error ? err.message : String(err) };
+  }
+}

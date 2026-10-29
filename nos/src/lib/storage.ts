@@ -30,12 +30,19 @@ export async function saveImage(file: File, folder = "fotos"): Promise<StoredIma
     .toBuffer({ resolveWithObject: true });
 
   const name = `${folder}/${Date.now()}-${crypto.randomUUID().slice(0, 8)}.webp`;
-  // Com o Blob da Vercel conectado (BLOB_READ_WRITE_TOKEN), usa ele mesmo sem STORAGE_PROVIDER.
-  const provider = process.env.STORAGE_PROVIDER || (process.env.BLOB_READ_WRITE_TOKEN ? "vercel-blob" : "local");
+  // Com o Blob da Vercel conectado, usa ele mesmo sem STORAGE_PROVIDER.
+  const token = blobToken();
+  const provider = process.env.STORAGE_PROVIDER || (token ? "vercel-blob" : "local");
+
+  if (provider === "local" && process.env.VERCEL) {
+    throw new Error(
+      "as fotos ainda não têm onde ficar guardadas. na Vercel, abra Storage → Blob, conecte ao projeto 'nos' (marcando Production) e faça um Redeploy",
+    );
+  }
 
   if (provider === "vercel-blob") {
     const { put } = await import("@vercel/blob");
-    const blob = await put(name, data, { access: "public", contentType: "image/webp" });
+    const blob = await put(name, data, { access: "public", contentType: "image/webp", token });
     return { url: blob.url, width: info.width, height: info.height };
   }
 
@@ -45,6 +52,13 @@ export async function saveImage(file: File, folder = "fotos"): Promise<StoredIma
   return { url: `/media/${name}`, width: info.width, height: info.height };
 }
 
+/** Token do Blob. Ao conectar o Blob a Vercel pode dar outro prefixo ao nome (ex.: NOS_BLOB_READ_WRITE_TOKEN). */
+function blobToken() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+  const key = Object.keys(process.env).find((k) => k.endsWith("BLOB_READ_WRITE_TOKEN") && process.env[k]);
+  return key ? process.env[key] : undefined;
+}
+
 export async function deleteImage(url: string) {
   try {
     if (url.startsWith("/media/")) {
@@ -52,7 +66,7 @@ export async function deleteImage(url: string) {
       if (target.startsWith(UPLOAD_DIR)) await unlink(target);
     } else if (url.includes(".blob.vercel-storage.com")) {
       const { del } = await import("@vercel/blob");
-      await del(url);
+      await del(url, { token: blobToken() });
     }
     // fotos de exemplo (/samples) ficam no projeto e não são apagadas
   } catch (err) {

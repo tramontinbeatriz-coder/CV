@@ -82,7 +82,7 @@ export const CONTENT_FIELDS = {
 
   // CONTATO
   instagram_handle: { group: "contato", type: "text", label: "instagram (sem @)", default: "thenos.club" },
-  contact_email: { group: "contato", type: "email", label: "e-mail de contato", default: "[placeholder] contato@exemplo.com" },
+  contact_email: { group: "contato", type: "email", label: "e-mail de contato", default: "thenossclub@gmail.com" },
   contact_whatsapp: { group: "contato", type: "text", label: "whatsapp de contato", help: "com DDD, ex.: 51 99999-9999", default: "[placeholder] 51 00000-0000" },
   contact_note: { group: "contato", type: "text", label: "frase do rodapé", default: "feito com calma em porto alegre." },
 

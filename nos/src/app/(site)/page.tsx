@@ -114,11 +114,6 @@ export default async function HomePage() {
                 );
               })}
             </div>
-            <div className="mt-16 flex justify-center">
-              <Link href="/passados" className="btn btn-lime reveal">
-                ver todos os encontros <span aria-hidden>→</span>
-              </Link>
-            </div>
           </div>
         </section>
       )}

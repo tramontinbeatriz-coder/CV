@@ -32,7 +32,6 @@ export function Footer({ content: c }: { content: Content }) {
               <ul className="space-y-2 text-sm">
                 <li><Link className="link" href="/eventos">encontros</Link></li>
                 <li><Link className="link" href="/sobre">sobre a nós</Link></li>
-                <li><Link className="link" href="/passados">eventos passados</Link></li>
                 <li><Link className="link" href="/parcerias">parcerias</Link></li>
                 <li><Link className="link" href="/privacidade">política de privacidade</Link></li>
               </ul>

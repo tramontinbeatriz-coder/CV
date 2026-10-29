@@ -20,9 +20,9 @@ export function Footer({ content: c }: { content: Content }) {
             </Link>
             <p className="mt-10 text-sm text-cream/80">
               {c.partner_footer}{" "}
-              <Link href="/parcerias" className="link text-lime">
+              <a href={`mailto:${c.contact_email}?subject=${encodeURIComponent("parceria com a nós")}`} className="link text-lime">
                 fale com a gente →
-              </Link>
+              </a>
             </p>
           </div>
 

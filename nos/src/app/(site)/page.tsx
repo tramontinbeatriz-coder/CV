@@ -8,10 +8,15 @@ import { getContent } from "@/lib/content";
 import { getUpcomingEvents, toCalendarEvent } from "@/lib/events";
 import { todayISO } from "@/lib/format";
 import { getFeaturedPhotos } from "@/lib/gallery";
+import { DEFAULT_GALLERY_PHOTOS } from "@/lib/default-photos";
 
 export default async function HomePage() {
   const [c, events, featured] = await Promise.all([getContent(), getUpcomingEvents(), getFeaturedPhotos(24)]);
   const calendarEvents = events.map(toCalendarEvent);
+  // sem fotos em destaque no painel, mostra as fotos dos encontros que já vêm no site
+  const galleryPhotos = featured.length
+    ? featured.map((p) => ({ id: p.id, url: p.url, alt: p.alt ?? p.eventTitle }))
+    : DEFAULT_GALLERY_PHOTOS;
   const words = c.marquee_words.split(",").map((w) => w.trim()).filter(Boolean);
 
   return (
@@ -90,16 +95,16 @@ export default async function HomePage() {
       <EventCalendar id="encontros" events={calendarEvents} today={todayISO()} title={c.events_title} />
 
       {/* NÓS EM FOTOS ----------------------------------------------------- */}
-      {featured.length > 0 && (
+      {galleryPhotos.length > 0 && (
         <section className="overflow-hidden bg-green py-24 text-cream md:py-36">
           <div className="mx-auto max-w-[1400px] px-5 md:px-10">
             <div className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">
               <SectionHeading kicker="memórias" title={c.gallery_title} dashClass="dash-lime" />
             </div>
             <PhotoCarousel label={c.gallery_title}>
-              {featured.map((p) => (
+              {galleryPhotos.map((p) => (
                 <li key={p.id} className="photo-zoom">
-                  <Photo src={p.url} alt={p.alt ?? p.eventTitle} sizes="(min-width: 1200px) 25vw, (min-width: 768px) 30vw, 78vw" className="h-full w-full" />
+                  <Photo src={p.url} alt={p.alt} sizes="(min-width: 1200px) 25vw, (min-width: 768px) 30vw, 78vw" className="h-full w-full" />
                 </li>
               ))}
             </PhotoCarousel>

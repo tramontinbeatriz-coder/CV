@@ -2,7 +2,7 @@
 
 Site da **nós**, comunidade de experiências presenciais para mulheres em Porto Alegre.
 Divulga os próximos encontros, recebe inscrições com pagamento online, mostra a galeria
-dos encontros passados e tem um **painel administrativo** para editar tudo sem mexer em código.
+dos encontros e tem um **painel administrativo** para editar tudo sem mexer em código.
 
 | para… | leia |
 | --- | --- |
@@ -71,7 +71,7 @@ e aparecem destacados em amarelo no painel.
 nos/
 ├── src/
 │   ├── app/
-│   │   ├── (site)/            FRONTEND público: home, sobre, eventos, inscrição, confirmação, passados
+│   │   ├── (site)/            FRONTEND público: home, sobre, eventos, inscrição, confirmação, parcerias
 │   │   │   └── actions.ts     ações do servidor do site (inscrição, lista de espera, checkout teste)
 │   │   ├── admin/             PAINEL: login + (painel)/ eventos, inscrições, galeria, conteúdo, conta
 │   │   │   └── actions.ts     ações do painel (todas checam login)

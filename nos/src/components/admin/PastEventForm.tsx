@@ -21,7 +21,7 @@ export function PastEventForm({ pastEvent: p }: { pastEvent?: PastEvent | null }
         </Field>
         <label className="flex items-start gap-3 md:col-span-3">
           <input type="checkbox" name="published" defaultChecked={p?.published ?? true} className="mt-1 h-5 w-5 accent-[var(--green)]" />
-          <span><span className="font-semibold text-green">publicado no site</span><span className="a-help !mt-0">aparece em “eventos passados”</span></span>
+          <span><span className="font-semibold text-green">publicado no site</span><span className="a-help !mt-0">as fotos com ★ aparecem na home</span></span>
         </label>
         <label className="flex items-start gap-3 md:col-span-3">
           <input type="checkbox" name="isSample" defaultChecked={p?.isSample ?? false} className="mt-1 h-5 w-5 accent-[var(--green)]" />

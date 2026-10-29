@@ -14,11 +14,10 @@ export default async function EditGallery({ params, searchParams }: Props) {
   if (!pe) notFound();
   return (
     <div className="max-w-5xl space-y-6">
-      <Link href="/admin/galeria" className="text-sm underline">← eventos passados</Link>
+      <Link href="/admin/galeria" className="text-sm underline">← fotos</Link>
       <header className="flex flex-wrap items-end justify-between gap-4">
         <h1 className="display text-5xl text-green">{pe.title}</h1>
         <div className="flex gap-2">
-          <a href={`/passados#${pe.slug}`} target="_blank" className="a-btn a-btn-soft">ver no site ↗</a>
           <ConfirmButton action={deletePastEventAction.bind(null, pe.id)} message="excluir esta galeria e todas as fotos dela?">excluir galeria</ConfirmButton>
         </div>
       </header>

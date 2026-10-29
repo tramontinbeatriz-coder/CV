@@ -47,9 +47,9 @@ Mudar o status manualmente:
 Só é possível excluir encontros **sem inscrições pagas** (para não perder registros). Para tirar um
 encontro com inscrições do ar, desmarque **publicado** ou use o status **encerrado**.
 
-## fotos e eventos passados
+## fotos (nós em fotos)
 
-**eventos passados & fotos → + nova galeria** → preencha nome, data e local → **adicionar fotos**
+**fotos (nós em fotos) → + nova galeria** → preencha nome, data e local → **adicionar fotos**
 (pode arrastar várias de uma vez). Em cada foto:
 - **← →** muda a ordem;
 - **★ destacar** coloca a foto na home, na seção *nós em fotos*;

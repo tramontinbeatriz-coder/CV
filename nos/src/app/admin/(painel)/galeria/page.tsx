@@ -12,9 +12,9 @@ export default async function GalleryAdmin({ searchParams }: { searchParams: Pro
     <div className="space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="display text-5xl text-green">eventos passados & fotos</h1>
+          <h1 className="display text-5xl text-green">fotos</h1>
           <p className="mt-1 text-sm text-muted">
-            cada encontro que já aconteceu vira uma galeria. fotos com ★ aparecem também na home, em “nós em fotos”.
+            organize as fotos por encontro. as fotos marcadas com ★ aparecem na home, em “nós em fotos”.
           </p>
         </div>
         <Link href="/admin/galeria/novo" className="a-btn a-btn-primary">+ nova galeria</Link>

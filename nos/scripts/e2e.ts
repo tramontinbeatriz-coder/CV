@@ -364,14 +364,14 @@ async function main() {
       await admin.getByText("★ na home").waitFor();
       await settle(admin);
       await admin.screenshot({ path: `${SHOTS}/admin-galeria.png`, fullPage: true });
-      const html = await (await fetch(`${BASE}/passados`)).text();
-      assert(html.includes("galeria do teste") && html.includes("/media/galeria/"), "galeria não apareceu no site");
+      const html = await (await fetch(`${BASE}/`)).text();
+      assert(html.includes("/media/galeria/"), "foto destacada não apareceu na home");
     });
 
     console.log("\nvisual");
     await step("páginas públicas no celular e desktop", async () => {
       const desktop = await browser!.newPage({ viewport: { width: 1440, height: 900 } });
-      for (const [route, name] of [["/", "home"], ["/eventos", "eventos"], [`/eventos/defesa-pessoal-com-fran`, "evento"], ["/passados", "passados"], ["/parcerias", "parcerias"], ["/sobre", "sobre"]]) {
+      for (const [route, name] of [["/", "home"], ["/eventos", "eventos"], [`/eventos/defesa-pessoal-com-fran`, "evento"], ["/parcerias", "parcerias"], ["/sobre", "sobre"]]) {
         for (const [p, label] of [[visitor, "mobile"], [desktop, "desktop"]] as const) {
           const r = await p.goto(`${BASE}${route}`);
           assert(r?.ok(), `${route} respondeu ${r?.status()}`);
@@ -379,13 +379,6 @@ async function main() {
           await p.screenshot({ path: `${SHOTS}/${label}-${name}.png`, fullPage: true });
         }
       }
-      // lightbox
-      await desktop.goto(`${BASE}/passados`);
-      await desktop.locator('button[aria-label^="ampliar foto"]').first().click();
-      await desktop.getByRole("dialog").waitFor();
-      await desktop.keyboard.press("ArrowRight");
-      await desktop.screenshot({ path: `${SHOTS}/desktop-lightbox.png` });
-      await desktop.keyboard.press("Escape");
       // sem rolagem horizontal no celular
       await visitor.goto(BASE);
       const overflow = await visitor.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

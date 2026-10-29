@@ -24,7 +24,7 @@ export default async function AboutPage() {
       </section>
 
       {/* história: dividida ao meio como na home — foto até a margem à esquerda, texto à direita */}
-      <section className="sobre-split">
+      <section className="sobre-split sobre-pagina">
         <div className="sobre-foto">
           <Photo src={c.about_image_1} alt="as fundadoras da nós" sizes="(min-width: 768px) 50vw, 100vw" className="h-full w-full" />
         </div>

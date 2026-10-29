@@ -599,3 +599,8 @@ mark.destaque { background: linear-gradient(transparent 52%, var(--lime) 52%, va
 .historia p { margin: 0; }
 .historia p:first-child { font-family: var(--font-slab); font-size: .72rem; letter-spacing: .24em; text-transform: uppercase; opacity: .8; }
 .historia p:nth-child(2) { font-family: var(--font-display); font-style: italic; font-size: clamp(1.4rem, 2.2vw, 1.8rem); line-height: 1.2; color: var(--green); }
+
+/* página "sobre": foto das fundadoras encostada na margem, ao lado do texto (igual à home) */
+.sobre-pagina { margin-bottom: clamp(4rem, 8vw, 7rem); }
+.sobre-pagina .sobre-foto { min-height: 110vw; }
+@media (min-width: 768px) { .sobre-pagina .sobre-foto { min-height: 0; } .sobre-pagina { min-height: min(95vh, 900px); } }

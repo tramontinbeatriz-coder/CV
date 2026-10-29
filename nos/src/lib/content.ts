@@ -67,7 +67,6 @@ export const CONTENT_FIELDS = {
     default: "não é necessário chegar acompanhada. a ideia é justamente criar um espaço em que novas conexões possam acontecer naturalmente.",
   },
   about_image_1: { group: "sobre", type: "image", label: "foto 1", default: "/samples/amostra-04.jpg" },
-  about_image_2: { group: "sobre", type: "image", label: "foto 2", default: "/samples/amostra-07.jpg" },
 
   // PARCERIAS
   partner_title: { group: "parcerias", type: "text", label: "título da página de parcerias", default: "vamos criar um encontro juntas?" },

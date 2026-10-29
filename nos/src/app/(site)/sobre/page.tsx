@@ -33,10 +33,7 @@ export default async function AboutPage() {
               <p key={i}>{p}</p>
             ))}
           </div>
-          <div className="reveal grid grid-cols-5 items-end gap-4">
-            <Photo src={c.about_image_2} alt="" sizes="25vw" className="col-span-3 aspect-[3/4] rotate-2" />
-            <Knot className="col-span-2 mb-6 w-20 text-pink wobble" />
-          </div>
+          <Knot className="reveal w-20 text-pink wobble" />
         </div>
       </section>
 

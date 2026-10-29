@@ -118,7 +118,9 @@ export async function sendRegistrationConfirmation(registration: Registration, e
     }),
   ]);
   for (const r of results) if (r.status === "rejected") console.error("[notificação]", r.reason);
-  return results[0].status === "fulfilled";
+  // com EMAIL_PROVIDER=console nada sai de verdade, então não conta como enviado
+  const emailOn = (process.env.EMAIL_PROVIDER ?? "console") !== "console";
+  return emailOn && results[0].status === "fulfilled";
 }
 
 /** Igual ao envio normal, mas devolve o motivo quando o e-mail falha (usado no painel). */

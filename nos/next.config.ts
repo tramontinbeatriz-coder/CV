@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
     localPatterns: [
       { pathname: "/media/**" }, // fotos enviadas pelo painel (armazenamento local)
       { pathname: "/samples/**" }, // fotos de exemplo
+      { pathname: "/fotos/**" }, // fotos dos encontros que já vêm no site
       { pathname: "/brand/**" },
     ],
     remotePatterns: [

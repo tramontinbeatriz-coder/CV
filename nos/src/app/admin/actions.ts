@@ -5,10 +5,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { and, eq, like, max, ne, sql } from "drizzle-orm";
 import { z } from "zod";
-import { changePassword, login, logout, requireAdmin } from "@/lib/auth";
+import { changePassword, hashPassword, login, logout, requireAdmin } from "@/lib/auth";
 import { CONTENT_FIELDS, type ContentKey } from "@/lib/content";
 import { db } from "@/lib/db";
-import { EVENT_STATUSES, PAYMENT_STATUSES, events, partnershipRequests, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
+import { EVENT_STATUSES, PAYMENT_STATUSES, adminUsers, events, partnershipRequests, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
 import { parsePriceToCents, slugify } from "@/lib/format";
 import { setPaymentStatus } from "@/lib/registrations";
 import { resendRegistrationConfirmation } from "@/lib/notifications";
@@ -52,6 +52,31 @@ export async function changePasswordAction(_prev: ActionState, fd: FormData): Pr
   if (next !== str(fd, "confirm")) return { error: "as senhas novas não conferem." };
   const r = await changePassword(session.sub, str(fd, "current"), next);
   return r.ok ? { ok: true, message: "senha alterada ✓" } : { error: r.error };
+}
+
+// ------------------------------------------------------- pessoas no painel
+export async function addAdminAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const email = str(fd, "email").toLowerCase();
+  const name = optional(fd, "name");
+  const password = str(fd, "password");
+  if (!z.string().email().safeParse(email).success) return { error: "e-mail inválido." };
+  if (password.length < 10) return { error: "a senha precisa ter pelo menos 10 caracteres." };
+  const [exists] = await db.select({ id: adminUsers.id }).from(adminUsers).where(eq(adminUsers.email, email)).limit(1);
+  if (exists) return { error: "esse e-mail já tem acesso ao painel." };
+  await db.insert(adminUsers).values({ email, name, passwordHash: await hashPassword(password) });
+  revalidatePath("/admin/conta");
+  return { ok: true, message: `acesso criado para ${email} ✓ — mande o link /admin e a senha para ela.` };
+}
+
+export async function removeAdminAction(id: string): Promise<ActionState> {
+  const session = await requireAdmin();
+  if (id === session.sub) return { error: "você não pode remover a sua própria conta." };
+  const [{ total }] = await db.select({ total: sql<number>`count(*)` }).from(adminUsers);
+  if (Number(total) <= 1) return { error: "o painel precisa ter pelo menos uma pessoa." };
+  await db.delete(adminUsers).where(eq(adminUsers.id, id));
+  revalidatePath("/admin/conta");
+  return { ok: true };
 }
 
 // ---------------------------------------------------------------- eventos

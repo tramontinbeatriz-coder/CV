@@ -66,6 +66,9 @@ export async function getSession(): Promise<Session | null> {
 export async function requireAdmin() {
   const session = await getSession();
   if (!session) redirect("/admin/login");
+  // quem foi removida do painel perde o acesso na hora, mesmo com a sessão aberta
+  const [user] = await db.select({ id: adminUsers.id }).from(adminUsers).where(eq(adminUsers.id, session.sub)).limit(1);
+  if (!user) redirect("/admin/login");
   return session;
 }
 

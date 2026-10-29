@@ -604,3 +604,23 @@ mark.destaque { background: linear-gradient(transparent 52%, var(--lime) 52%, va
 .sobre-pagina { margin-bottom: clamp(4rem, 8vw, 7rem); }
 .sobre-pagina .sobre-foto { min-height: 110vw; }
 @media (min-width: 768px) { .sobre-pagina .sobre-foto { min-height: 0; } .sobre-pagina { min-height: min(95vh, 900px); } }
+
+/* carrossel de fotos ("nós em fotos" na home) */
+.carrossel-trilho {
+  display: flex; gap: 12px; margin: 0; padding: 0; list-style: none;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.carrossel-trilho::-webkit-scrollbar { display: none; }
+.carrossel-trilho > li { flex: 0 0 78%; scroll-snap-align: start; aspect-ratio: 3 / 4; }
+@media (min-width: 640px) { .carrossel-trilho > li { flex-basis: 45%; } }
+@media (min-width: 768px) { .carrossel-trilho { gap: 20px; } .carrossel-trilho > li { flex-basis: calc((100% - 60px) / 3.4); } }
+@media (min-width: 1200px) { .carrossel-trilho > li { flex-basis: calc((100% - 60px) / 4); } }
+.carrossel-setas { margin-top: 28px; display: flex; justify-content: flex-end; gap: 10px; }
+.carrossel-seta {
+  width: 52px; height: 52px; border-radius: 999px; border: 1px solid currentColor;
+  background: transparent; color: inherit; font-size: 1.25rem; cursor: pointer;
+  transition: background-color .3s, color .3s, opacity .3s;
+}
+.carrossel-seta:hover:not(:disabled) { background: var(--lime); color: var(--green); border-color: var(--lime); }
+.carrossel-seta:disabled { opacity: .3; cursor: default; }

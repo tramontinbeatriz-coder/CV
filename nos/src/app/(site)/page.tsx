@@ -3,13 +3,14 @@ import { Knot, Lockup, Logo } from "@/components/brand/Logo";
 import { EventCalendar } from "@/components/site/EventCalendar";
 import { Marquee, Photo, RotatingBadge, SectionHeading } from "@/components/site/ui";
 import { InstagramSection } from "@/components/site/InstagramSection";
+import { PhotoCarousel } from "@/components/site/PhotoCarousel";
 import { getContent } from "@/lib/content";
 import { getUpcomingEvents, toCalendarEvent } from "@/lib/events";
 import { todayISO } from "@/lib/format";
 import { getFeaturedPhotos } from "@/lib/gallery";
 
 export default async function HomePage() {
-  const [c, events, featured] = await Promise.all([getContent(), getUpcomingEvents(), getFeaturedPhotos(7)]);
+  const [c, events, featured] = await Promise.all([getContent(), getUpcomingEvents(), getFeaturedPhotos(24)]);
   const calendarEvents = events.map(toCalendarEvent);
   const words = c.marquee_words.split(",").map((w) => w.trim()).filter(Boolean);
 
@@ -95,25 +96,13 @@ export default async function HomePage() {
             <div className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">
               <SectionHeading kicker="memórias" title={c.gallery_title} dashClass="dash-lime" />
             </div>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-5">
-              {featured.map((p, i) => {
-                const layout = [
-                  "col-span-2 md:col-span-5 md:row-span-2 aspect-[4/5]",
-                  "md:col-span-4 aspect-square md:mt-16",
-                  "md:col-span-3 aspect-[3/4]",
-                  "md:col-span-3 aspect-[3/4] md:-mt-10",
-                  "md:col-span-4 aspect-[4/3]",
-                  "col-span-2 md:col-span-4 aspect-[16/10] md:col-start-2",
-                  "md:col-span-6 aspect-[16/9]",
-                ][i % 7];
-                const tilt = ["", "md:rotate-1", "md:-rotate-1", "", "md:rotate-[0.6deg]", "", "md:-rotate-[0.6deg]"][i % 7];
-                return (
-                  <figure key={p.id} className={`reveal photo-zoom ${layout} ${tilt}`} style={{ ["--delay" as string]: `${(i % 3) * 100}ms` }}>
-                    <Photo src={p.url} alt={p.alt ?? p.eventTitle} sizes="(min-width: 768px) 40vw, 50vw" className="h-full w-full" />
-                  </figure>
-                );
-              })}
-            </div>
+            <PhotoCarousel label={c.gallery_title}>
+              {featured.map((p) => (
+                <li key={p.id} className="photo-zoom">
+                  <Photo src={p.url} alt={p.alt ?? p.eventTitle} sizes="(min-width: 1200px) 25vw, (min-width: 768px) 30vw, 78vw" className="h-full w-full" />
+                </li>
+              ))}
+            </PhotoCarousel>
           </div>
         </section>
       )}

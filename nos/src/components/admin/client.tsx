@@ -314,3 +314,26 @@ export function StatusSelect({ action, current, options }: { action: (fd: FormDa
     </select>
   );
 }
+
+/** Botão "reenviar confirmação" de uma inscrição paga. */
+export function ResendConfirmationButton({ action }: { action: () => Promise<ActionState> }) {
+  const [state, setState] = useState<ActionState>({});
+  const [pending, start] = useTransition();
+  return (
+    <span className="block">
+      <button
+        type="button"
+        className="a-btn a-btn-soft !px-3 !py-1 text-xs"
+        disabled={pending}
+        onClick={() => {
+          if (!window.confirm("reenviar o e-mail de confirmação para essa pessoa?")) return;
+          start(async () => setState(await action()));
+        }}
+      >
+        {pending ? "enviando…" : "reenviar confirmação"}
+      </button>
+      {state.message && <span className="mt-1 block text-xs text-green">✓ {state.message}</span>}
+      {state.error && <span className="mt-1 block text-xs text-red-700">{state.error}</span>}
+    </span>
+  );
+}

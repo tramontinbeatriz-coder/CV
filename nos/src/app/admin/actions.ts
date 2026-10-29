@@ -11,6 +11,7 @@ import { db } from "@/lib/db";
 import { EVENT_STATUSES, PAYMENT_STATUSES, events, partnershipRequests, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
 import { parsePriceToCents, slugify } from "@/lib/format";
 import { setPaymentStatus } from "@/lib/registrations";
+import { sendRegistrationConfirmation } from "@/lib/notifications";
 import { setPartnershipAnswered } from "@/lib/partnerships";
 import { deleteImage, saveImage } from "@/lib/storage";
 
@@ -312,6 +313,30 @@ export async function setRegistrationStatusAction(registrationId: string, fd: Fo
   const status = z.enum(PAYMENT_STATUSES).parse(str(fd, "status"));
   await setPaymentStatus(registrationId, status);
   refreshSite();
+}
+
+/** Manda de novo o e-mail (e WhatsApp, se ligado) de confirmação de uma inscrição paga. */
+export async function resendConfirmationAction(registrationId: string): Promise<ActionState> {
+  await requireAdmin();
+  const [row] = await db
+    .select({ r: registrations, e: events })
+    .from(registrations)
+    .innerJoin(events, eq(events.id, registrations.eventId))
+    .where(eq(registrations.id, registrationId))
+    .limit(1);
+  if (!row) return { error: "inscrição não encontrada" };
+  if (row.r.paymentStatus !== "paid") return { error: "só dá para reenviar para inscrições pagas" };
+  if ((process.env.EMAIL_PROVIDER ?? "console") === "console") {
+    return { error: "o envio de e-mails ainda está desligado (EMAIL_PROVIDER)" };
+  }
+  const sent = await sendRegistrationConfirmation(row.r, row.e);
+  if (!sent) return { error: "não foi possível enviar — veja os Logs da Vercel" };
+  await db
+    .update(registrations)
+    .set({ confirmationSentAt: new Date().toISOString() })
+    .where(eq(registrations.id, registrationId));
+  revalidatePath("/admin/inscricoes");
+  return { ok: true, message: `enviado para ${row.r.email}` };
 }
 
 export async function deleteWaitlistEntryAction(entryId: string) {

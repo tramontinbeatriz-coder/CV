@@ -5,8 +5,8 @@ import { events } from "@/lib/db/schema";
 import { listRegistrations, listWaitlist } from "@/lib/admin-queries";
 import { formatDateTime, formatPrice } from "@/lib/format";
 import { PAYMENT_LABEL, PaymentPill } from "@/components/admin/ui";
-import { StatusSelect } from "@/components/admin/client";
-import { setRegistrationStatusAction } from "@/app/admin/actions";
+import { ResendConfirmationButton, StatusSelect } from "@/components/admin/client";
+import { resendConfirmationAction, setRegistrationStatusAction } from "@/app/admin/actions";
 
 type Props = { searchParams: Promise<{ evento?: string; status?: string; q?: string; tipo?: string }> };
 
@@ -89,7 +89,7 @@ async function RegistrationsTable({ filters }: { filters: { eventId?: string; st
         <div className="overflow-x-auto">
           <table className="a-table">
             <thead>
-              <tr><th>nome</th><th>e-mail</th><th>telefone</th><th>encontro</th><th>pagamento</th><th>inscrição em</th><th>mudar status</th></tr>
+              <tr><th>nome</th><th>e-mail</th><th>telefone</th><th>encontro</th><th>pagamento</th><th>inscrição em</th><th>status e confirmação</th></tr>
             </thead>
             <tbody>
               {rows.map(({ r, eventTitle }) => (
@@ -110,7 +110,17 @@ async function RegistrationsTable({ filters }: { filters: { eventId?: string; st
                   <td>{eventTitle}</td>
                   <td><PaymentPill registration={r} /><span className="block text-xs text-muted">{formatPrice(r.amountCents)}</span></td>
                   <td className="whitespace-nowrap text-muted">{formatDateTime(r.createdAt)}</td>
-                  <td><StatusSelect action={setRegistrationStatusAction.bind(null, r.id)} current={r.paymentStatus} options={STATUS_OPTIONS} /></td>
+                  <td className="space-y-2">
+                    <StatusSelect action={setRegistrationStatusAction.bind(null, r.id)} current={r.paymentStatus} options={STATUS_OPTIONS} />
+                    {r.paymentStatus === "paid" && (
+                      <>
+                        <ResendConfirmationButton action={resendConfirmationAction.bind(null, r.id)} />
+                        <span className="block text-xs text-muted">
+                          {r.confirmationSentAt ? `confirmação enviada ${formatDateTime(r.confirmationSentAt)}` : "confirmação ainda não enviada"}
+                        </span>
+                      </>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

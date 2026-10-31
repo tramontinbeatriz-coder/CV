@@ -34,6 +34,17 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
             {first}, seu lugar na nós está confirmado.
           </p>
 
+          {/* aviso do e-mail: muitas confirmações caem no spam */}
+          <div className="rise mt-10 flex gap-4 rounded-sm border-2 border-lime bg-lime/10 p-5 md:p-6" style={{ ["--delay" as string]: "260ms" }}>
+            <span className="text-3xl leading-none" aria-hidden>📩</span>
+            <div>
+              <p className="label text-lime">confira seu e-mail</p>
+              <p className="mt-2 text-base md:text-lg">
+                enviamos a confirmação para <strong>{registration.email}</strong>. se não aparecer na caixa de entrada em alguns minutos, olhe no <strong>spam</strong> ou em <strong>promoções</strong>, e marque como &quot;não é spam&quot; pra receber nossos próximos e-mails.
+              </p>
+            </div>
+          </div>
+
           {/* "ingresso" */}
           <div className="rise mt-14 grid overflow-hidden rounded-sm bg-cream text-green md:grid-cols-[1fr_auto]" style={{ ["--delay" as string]: "320ms" }}>
             <div className="p-6 md:p-10">
@@ -88,7 +99,7 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
             </a>
           </div>
           <p className="mt-8 text-sm text-cream/70">
-            enviamos a confirmação para <strong>{registration.email}</strong>. guarde este link: ele é o seu comprovante.
+            guarde este link: ele é o seu comprovante.
           </p>
         </div>
       </section>

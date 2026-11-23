@@ -34,6 +34,7 @@ export default async function MockCheckoutPage({ params }: { params: Promise<{ t
           <Row k="quando" v={`${formatLongDate(event.date)}, ${formatTime(event.time)}`} />
           <Row k="nome" v={r.name} />
           <Row k="e-mail" v={r.email} />
+          {r.couponCode && <Row k="cupom" v={`${r.couponCode} (−${formatPrice(r.discountCents)})`} />}
           <Row k="valor" v={formatPrice(r.amountCents)} />
           <Row k="status" v={r.paymentStatus} />
         </dl>

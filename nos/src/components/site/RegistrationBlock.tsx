@@ -16,7 +16,7 @@ export function RegistrationBlock({ event, termsText, cancelled }: { event: Even
             o pagamento não foi concluído. sua vaga fica guardada por alguns minutos — é só tentar de novo.
           </p>
         )}
-        <RegistrationForm slug={event.slug} price={formatPrice(event.priceCents)} termsText={termsText} testMode={isTestMode()} />
+        <RegistrationForm slug={event.slug} price={formatPrice(event.priceCents)} acceptsCoupon={event.priceCents > 0} termsText={termsText} testMode={isTestMode()} />
       </>
     );
   }

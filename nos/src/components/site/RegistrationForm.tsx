@@ -64,7 +64,6 @@ function CouponField({
   serverError?: string;
   onPreview: (p: CouponPreview | null) => void;
 }) {
-  const [open, setOpen] = useState(Boolean(initial));
   const [code, setCode] = useState(initial ?? "");
   const [result, setResult] = useState<CouponPreview | null>(null);
   const [pending, start] = useTransition();
@@ -76,21 +75,15 @@ function CouponField({
       onPreview(r.ok ? r : null);
     });
 
-  if (!open) {
-    return (
-      <button type="button" className="link text-sm" onClick={() => setOpen(true)}>
-        tem um cupom de desconto?
-      </button>
-    );
-  }
   const error = result && !result.ok ? result.error : !result ? serverError : undefined;
   return (
-    <Field name="couponCode" label="cupom de desconto" optional error={error}>
+    <Field name="couponCode" label="tem um cupom de desconto?" optional error={error}>
       <span className="flex items-end gap-3">
         <input
           id="couponCode"
           name="couponCode"
           className="field uppercase"
+          placeholder="digite o código"
           autoCapitalize="characters"
           autoComplete="off"
           maxLength={40}

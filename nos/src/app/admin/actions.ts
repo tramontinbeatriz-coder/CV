@@ -8,11 +8,12 @@ import { z } from "zod";
 import { changePassword, hashPassword, login, logout, requireAdmin } from "@/lib/auth";
 import { CONTENT_FIELDS, type ContentKey } from "@/lib/content";
 import { db } from "@/lib/db";
-import { EVENT_STATUSES, PAYMENT_STATUSES, adminUsers, events, partnershipRequests, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
+import { COUPON_KINDS, EVENT_STATUSES, PAYMENT_STATUSES, adminUsers, coupons, events, partnershipRequests, pastEvents, photos, registrations, settings, waitlistEntries } from "@/lib/db/schema";
 import { parsePriceToCents, slugify } from "@/lib/format";
 import { setPaymentStatus } from "@/lib/registrations";
 import { resendRegistrationConfirmation } from "@/lib/notifications";
 import { setPartnershipAnswered } from "@/lib/partnerships";
+import { normalizeCouponCode } from "@/lib/coupons";
 import { deleteImage, saveImage } from "@/lib/storage";
 
 export type ActionState = { ok?: boolean; error?: string; message?: string };
@@ -428,4 +429,45 @@ export async function deletePartnershipAction(id: string) {
   await requireAdmin();
   await db.delete(partnershipRequests).where(eq(partnershipRequests.id, id));
   revalidatePath("/admin/parcerias");
+}
+
+// ------------------------------------------------------------------ cupons
+export async function createCouponAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const code = normalizeCouponCode(str(fd, "code"));
+  if (!/^[A-Z0-9_-]{3,30}$/.test(code)) return { error: "o código precisa ter de 3 a 30 letras ou números (sem espaço nem acento)" };
+  const kind = z.enum(COUPON_KINDS).safeParse(str(fd, "kind"));
+  if (!kind.success) return { error: "escolha o tipo de desconto" };
+  let value: number;
+  if (kind.data === "percent") {
+    value = Math.round(Number(str(fd, "value").replace(",", ".").replace("%", "")));
+    if (!Number.isFinite(value) || value < 1 || value > 100) return { error: "a porcentagem precisa ser de 1 a 100" };
+  } else {
+    value = parsePriceToCents(str(fd, "value"));
+    if (value <= 0) return { error: "coloque o valor do desconto em reais (ex.: 20,00)" };
+  }
+  const maxUsesRaw = str(fd, "maxUses");
+  const maxUses = maxUsesRaw ? Number.parseInt(maxUsesRaw, 10) : null;
+  if (maxUses != null && (!Number.isFinite(maxUses) || maxUses < 1)) return { error: "o limite de usos precisa ser 1 ou mais (ou deixe em branco)" };
+  const expiresOn = str(fd, "expiresOn") || null;
+  if (expiresOn && !/^\d{4}-\d{2}-\d{2}$/.test(expiresOn)) return { error: "data de validade inválida" };
+  const eventId = str(fd, "eventId") || null;
+
+  const [clash] = await db.select({ id: coupons.id }).from(coupons).where(eq(coupons.code, code)).limit(1);
+  if (clash) return { error: `já existe um cupom ${code}` };
+  await db.insert(coupons).values({ code, kind: kind.data, value, maxUses, expiresOn, eventId });
+  revalidatePath("/admin/cupons");
+  return { ok: true, message: `cupom ${code} criado ✓` };
+}
+
+export async function setCouponActiveAction(id: string, active: boolean) {
+  await requireAdmin();
+  await db.update(coupons).set({ active }).where(eq(coupons.id, id));
+  revalidatePath("/admin/cupons");
+}
+
+export async function deleteCouponAction(id: string) {
+  await requireAdmin();
+  await db.delete(coupons).where(eq(coupons.id, id));
+  revalidatePath("/admin/cupons");
 }

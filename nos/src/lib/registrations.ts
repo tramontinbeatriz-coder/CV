@@ -7,6 +7,7 @@ import { activeHoldsByEvent, toView } from "./events";
 import { canRegister } from "./spots";
 import { getPaymentProvider, type PaymentUpdate } from "./payments";
 import { sendRegistrationConfirmation } from "./notifications";
+import { checkCoupon } from "./coupons";
 
 export type RegistrationInput = {
   name: string;
@@ -16,11 +17,12 @@ export type RegistrationInput = {
   city?: string | null;
   discoverySource?: string | null;
   dietaryRestrictions?: string | null;
+  couponCode?: string | null;
 };
 
 export class RegistrationError extends Error {
   constructor(
-    readonly code: "not_found" | "unavailable" | "already_registered" | "payment_error",
+    readonly code: "not_found" | "unavailable" | "already_registered" | "payment_error" | "invalid_coupon",
     message: string,
   ) {
     super(message);
@@ -65,7 +67,11 @@ export async function startRegistration(eventSlug: string, input: RegistrationIn
         ),
       )
       .limit(1);
+    // Cupom: validado aqui dentro da transação, então o limite de usos não estoura.
+    const pricing = await priceWithCoupon(input.couponCode, event, tx, pendingHold?.id);
+
     if (pendingHold) {
+      const priceChanged = pendingHold.amountCents !== pricing.amountCents;
       const [updated] = await tx
         .update(registrations)
         .set({
@@ -76,6 +82,10 @@ export async function startRegistration(eventSlug: string, input: RegistrationIn
           discoverySource: input.discoverySource?.trim() || null,
           dietaryRestrictions: input.dietaryRestrictions?.trim() || null,
           holdExpiresAt: holdUntil,
+          ...pricing,
+          // valor mudou (cupom novo/removido): o checkout antigo não serve mais
+          ...(priceChanged ? { checkoutUrl: null, providerReference: null } : {}),
+          paymentProvider: pricing.amountCents > 0 ? (priceChanged ? config.paymentProvider : pendingHold.paymentProvider) : "gratuito",
           updatedAt: now.toISOString(),
         })
         .where(eq(registrations.id, pendingHold.id))
@@ -102,8 +112,8 @@ export async function startRegistration(eventSlug: string, input: RegistrationIn
         discoverySource: input.discoverySource?.trim() || null,
         dietaryRestrictions: input.dietaryRestrictions?.trim() || null,
         acceptedTermsAt: now.toISOString(),
-        amountCents: event.priceCents,
-        paymentProvider: event.priceCents > 0 ? config.paymentProvider : "gratuito",
+        ...pricing,
+        paymentProvider: pricing.amountCents > 0 ? config.paymentProvider : "gratuito",
         holdExpiresAt: holdUntil,
       })
       .returning();
@@ -112,8 +122,8 @@ export async function startRegistration(eventSlug: string, input: RegistrationIn
 
   const { event, registration } = result;
 
-  if (event.priceCents === 0) {
-    await confirmRegistration(registration.id, { reference: "gratuito" });
+  if (registration.amountCents === 0) {
+    await confirmRegistration(registration.id, { reference: registration.couponCode ? `cupom ${registration.couponCode}` : "gratuito" });
     return { redirectTo: `/confirmacao/${registration.publicToken}`, registration };
   }
 
@@ -143,6 +153,16 @@ export async function startRegistration(eventSlug: string, input: RegistrationIn
       .where(eq(registrations.id, registration.id));
     throw new RegistrationError("payment_error", "não conseguimos abrir o pagamento agora. tenta de novo em instantes?");
   }
+}
+
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+/** Valor a cobrar, com ou sem cupom. Cupom inválido interrompe a inscrição com a mensagem certa. */
+async function priceWithCoupon(code: string | null | undefined, event: typeof events.$inferSelect, tx: Tx, exceptRegistrationId?: string) {
+  if (!code?.trim()) return { amountCents: event.priceCents, couponId: null, couponCode: null, discountCents: 0 };
+  const check = await checkCoupon(code, event, tx, exceptRegistrationId);
+  if (!check.ok) throw new RegistrationError("invalid_coupon", check.error);
+  return { amountCents: check.finalCents, couponId: check.coupon.id, couponCode: check.coupon.code, discountCents: check.discountCents };
 }
 
 /**

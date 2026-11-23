@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
-import { registerAction, waitlistAction, type FormState } from "@/app/(site)/actions";
+import { previewCouponAction, registerAction, waitlistAction, type CouponPreview, type FormState } from "@/app/(site)/actions";
 import { Knot } from "../brand/Logo";
 
 const DISCOVERY = ["instagram", "uma amiga me contou", "whatsapp", "já participei antes", "google", "outro"];
@@ -52,18 +52,87 @@ function Submit({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** Campo "cupom de desconto": o botão aplicar mostra o novo valor; o servidor confere de novo ao enviar. */
+function CouponField({
+  slug,
+  initial,
+  serverError,
+  onPreview,
+}: {
+  slug: string;
+  initial?: string;
+  serverError?: string;
+  onPreview: (p: CouponPreview | null) => void;
+}) {
+  const [open, setOpen] = useState(Boolean(initial));
+  const [code, setCode] = useState(initial ?? "");
+  const [result, setResult] = useState<CouponPreview | null>(null);
+  const [pending, start] = useTransition();
+
+  const apply = () =>
+    start(async () => {
+      const r = await previewCouponAction(slug, code);
+      setResult(r);
+      onPreview(r.ok ? r : null);
+    });
+
+  if (!open) {
+    return (
+      <button type="button" className="link text-sm" onClick={() => setOpen(true)}>
+        tem um cupom de desconto?
+      </button>
+    );
+  }
+  const error = result && !result.ok ? result.error : !result ? serverError : undefined;
+  return (
+    <Field name="couponCode" label="cupom de desconto" optional error={error}>
+      <span className="flex items-end gap-3">
+        <input
+          id="couponCode"
+          name="couponCode"
+          className="field uppercase"
+          autoCapitalize="characters"
+          autoComplete="off"
+          maxLength={40}
+          value={code}
+          onChange={(ev) => {
+            setCode(ev.target.value);
+            if (result) {
+              setResult(null);
+              onPreview(null);
+            }
+          }}
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter") {
+              ev.preventDefault();
+              if (code.trim()) apply();
+            }
+          }}
+        />
+        <button type="button" className="btn btn-outline shrink-0 text-green" disabled={pending || !code.trim()} onClick={apply}>
+          {pending ? "…" : "aplicar"}
+        </button>
+      </span>
+      {result?.ok && <span className="mt-2 block text-sm text-green">✓ cupom {result.label} aplicado</span>}
+    </Field>
+  );
+}
+
 export function RegistrationForm({
   slug,
   price,
+  acceptsCoupon,
   termsText,
   testMode,
 }: {
   slug: string;
   price: string;
+  acceptsCoupon: boolean;
   termsText: string;
   testMode: boolean;
 }) {
   const [state, action] = useActionState<FormState, FormData>(registerAction.bind(null, slug), {});
+  const [preview, setPreview] = useState<CouponPreview | null>(null);
   const v = state.values ?? {};
   const e = state.fieldErrors ?? {};
 
@@ -109,6 +178,8 @@ export function RegistrationForm({
         </select>
       </Field>
 
+      {acceptsCoupon && <CouponField slug={slug} initial={v.couponCode} serverError={e.couponCode} onPreview={setPreview} />}
+
       <label className="flex cursor-pointer items-start gap-3 text-sm">
         <input type="checkbox" name="terms" className="mt-1 h-5 w-5 shrink-0 accent-[var(--green)]" defaultChecked={v.terms === "on"} />
         <span>
@@ -126,7 +197,14 @@ export function RegistrationForm({
 
       <div className="flex flex-col gap-4 border-t border-line pt-8 md:flex-row md:items-center md:justify-between">
         <p className="text-sm text-muted">
-          valor: <strong className="text-green">{price}</strong>
+          valor:{" "}
+          {preview?.ok ? (
+            <>
+              <s className="opacity-60">{preview.originalPrice}</s> <strong className="text-green">{preview.finalPrice}</strong>
+            </>
+          ) : (
+            <strong className="text-green">{price}</strong>
+          )}
           <br />
           {testMode ? "modo teste: nenhum valor será cobrado." : "pagamento seguro pelo provedor (pix ou cartão)."}
         </p>

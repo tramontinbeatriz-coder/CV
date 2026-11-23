@@ -5,6 +5,9 @@ import { z } from "zod";
 import { RegistrationError, confirmRegistration, getRegistrationByToken, joinWaitlist, setPaymentStatus, startRegistration } from "@/lib/registrations";
 import { isTestMode } from "@/lib/payments";
 import { createPartnershipRequest } from "@/lib/partnerships";
+import { checkCoupon, describeCoupon } from "@/lib/coupons";
+import { getEventBySlug } from "@/lib/events";
+import { formatPrice } from "@/lib/format";
 
 export type FormState = {
   ok?: boolean;
@@ -23,6 +26,7 @@ const registrationSchema = z.object({
   city: z.string().trim().min(2, "de qual cidade você é?").max(80),
   discoverySource: z.string().trim().max(80).optional(),
   dietaryRestrictions: z.string().trim().max(300).optional(),
+  couponCode: z.string().trim().max(40).optional(),
   terms: z.literal("on", { error: "é preciso aceitar para continuar" }),
 });
 
@@ -60,11 +64,30 @@ export async function registerAction(slug: string, _prev: FormState, formData: F
     });
     target = result.redirectTo;
   } catch (err) {
+    if (err instanceof RegistrationError && err.code === "invalid_coupon") {
+      return { ok: false, error: "confere o cupom de desconto.", fieldErrors: { couponCode: err.message }, values };
+    }
     if (err instanceof RegistrationError) return { ok: false, error: err.message, values };
     console.error(err);
     return { ok: false, error: "não conseguimos concluir agora. tenta de novo em instantes?", values };
   }
   redirect(target);
+}
+
+export type CouponPreview = { ok: true; label: string; finalPrice: string; originalPrice: string } | { ok: false; error: string };
+
+/** Botão "aplicar" do cupom: só mostra o novo valor. A validação que vale é a da inscrição. */
+export async function previewCouponAction(slug: string, code: string): Promise<CouponPreview> {
+  const event = await getEventBySlug(slug);
+  if (!event) return { ok: false, error: "encontro não encontrado" };
+  const check = await checkCoupon(String(code ?? "").slice(0, 40), event);
+  if (!check.ok) return check;
+  return {
+    ok: true,
+    label: `${check.coupon.code} · ${describeCoupon(check.coupon)}`,
+    finalPrice: formatPrice(check.finalCents),
+    originalPrice: formatPrice(event.priceCents),
+  };
 }
 
 export async function waitlistAction(slug: string, _prev: FormState, formData: FormData): Promise<FormState> {

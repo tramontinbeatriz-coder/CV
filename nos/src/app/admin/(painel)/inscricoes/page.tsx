@@ -108,7 +108,7 @@ async function RegistrationsTable({ filters }: { filters: { eventId?: string; st
                     <a className="underline" href={`https://wa.me/55${r.phone.replace(/\D/g, "").replace(/^55(?=\d{10,11}$)/, "")}`} target="_blank" rel="noreferrer">{r.phone}</a>
                   </td>
                   <td>{eventTitle}</td>
-                  <td><PaymentPill registration={r} /><span className="block text-xs text-muted">{formatPrice(r.amountCents)}</span></td>
+                  <td><PaymentPill registration={r} /><span className="block text-xs text-muted">{formatPrice(r.amountCents)}</span>{r.couponCode && <span className="block text-xs text-green">cupom {r.couponCode}</span>}</td>
                   <td className="whitespace-nowrap text-muted">{formatDateTime(r.createdAt)}</td>
                   <td className="space-y-2">
                     <StatusSelect action={setRegistrationStatusAction.bind(null, r.id)} current={r.paymentStatus} options={STATUS_OPTIONS} />

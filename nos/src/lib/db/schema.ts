@@ -80,7 +80,10 @@ export const registrations = sqliteTable(
     paymentProvider: text("payment_provider"),
     providerReference: text("provider_reference"), // id da sessão/preferência/pagamento no provedor
     checkoutUrl: text("checkout_url"),
-    amountCents: integer("amount_cents").notNull().default(0),
+    amountCents: integer("amount_cents").notNull().default(0), // valor cobrado (já com desconto)
+    couponId: text("coupon_id"), // cupom usado (sem FK: apagar o cupom não mexe na inscrição)
+    couponCode: text("coupon_code"),
+    discountCents: integer("discount_cents").notNull().default(0),
     holdExpiresAt: text("hold_expires_at"), // vaga reservada até (enquanto o pagamento está pendente)
     paidAt: text("paid_at"),
     confirmationSentAt: text("confirmation_sent_at"),
@@ -93,6 +96,30 @@ export const registrations = sqliteTable(
     index("registrations_event_idx").on(t.eventId),
     uniqueIndex("registrations_token_idx").on(t.publicToken),
   ],
+);
+
+/**
+ * Cupons de desconto (painel → cupons).
+ * - percent: value = porcentagem (1–100)
+ * - fixed: value = desconto em centavos
+ */
+export const COUPON_KINDS = ["percent", "fixed"] as const;
+export type CouponKind = (typeof COUPON_KINDS)[number];
+
+export const coupons = sqliteTable(
+  "coupons",
+  {
+    id: id(),
+    code: text("code").notNull(), // sempre em MAIÚSCULAS
+    kind: text("kind", { enum: COUPON_KINDS }).notNull(),
+    value: integer("value").notNull(),
+    eventId: text("event_id").references(() => events.id, { onDelete: "cascade" }), // null = vale para todos
+    maxUses: integer("max_uses"), // null = sem limite
+    expiresOn: text("expires_on"), // YYYY-MM-DD, vale até o fim do dia (Porto Alegre); null = sem validade
+    active: integer("active", { mode: "boolean" }).notNull().default(true),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("coupons_code_idx").on(t.code)],
 );
 
 /** Lista de espera: estrutura pronta, preenchida quando o evento esgota. */
@@ -187,3 +214,4 @@ export type PastEvent = typeof pastEvents.$inferSelect;
 export type Photo = typeof photos.$inferSelect;
 export type WaitlistEntry = typeof waitlistEntries.$inferSelect;
 export type PartnershipRequest = typeof partnershipRequests.$inferSelect;
+export type Coupon = typeof coupons.$inferSelect;

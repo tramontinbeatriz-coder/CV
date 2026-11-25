@@ -11,6 +11,7 @@ const ITEMS = [
   { href: "/admin/eventos", label: "encontros" },
   { href: "/admin/inscricoes", label: "inscrições" },
   { href: "/admin/cupons", label: "cupons de desconto" },
+  { href: "/admin/financeiro", label: "financeiro" },
   { href: "/admin/parcerias", label: "parcerias" },
   { href: "/admin/galeria", label: "fotos (nós em fotos)" },
   { href: "/admin/conteudo", label: "textos, contato e cores" },

@@ -42,6 +42,10 @@ Mudar o status manualmente:
 - **pago ✓** — ex.: alguém pagou por Pix direto. Ocupa a vaga e envia a confirmação.
 - **cancelado** / **reembolsado** — libera a vaga. (O estorno do dinheiro é feito no painel do Mercado Pago/Stripe.)
 
+## financeiro
+
+receita, gastos e lucro por encontro, juntando as vendas do site com a planilha de gastos no Google Sheets. como ligar a planilha e como preencher: `docs/FINANCEIRO.md`.
+
 ## excluir um encontro
 
 Só é possível excluir encontros **sem inscrições pagas** (para não perder registros). Para tirar um

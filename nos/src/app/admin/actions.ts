@@ -15,6 +15,7 @@ import { resendRegistrationConfirmation } from "@/lib/notifications";
 import { setPartnershipAnswered } from "@/lib/partnerships";
 import { normalizeCouponCode } from "@/lib/coupons";
 import { deleteImage, saveImage } from "@/lib/storage";
+import { FINANCE_SHEET_KEY, checkSheetUrl } from "@/lib/finance";
 
 export type ActionState = { ok?: boolean; error?: string; message?: string };
 
@@ -470,4 +471,27 @@ export async function deleteCouponAction(id: string) {
   await requireAdmin();
   await db.delete(coupons).where(eq(coupons.id, id));
   revalidatePath("/admin/cupons");
+}
+
+// ------------------------------------------------------------------ financeiro
+
+export async function saveFinanceSheetAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const raw = str(fd, "url");
+  if (!raw) return { error: "cole o link da planilha" };
+  const checked = checkSheetUrl(raw);
+  if ("error" in checked) return { error: checked.error };
+  const now = new Date().toISOString();
+  await db
+    .insert(settings)
+    .values({ key: FINANCE_SHEET_KEY, value: checked.url, updatedAt: now })
+    .onConflictDoUpdate({ target: settings.key, set: { value: checked.url, updatedAt: now } });
+  revalidatePath("/admin/financeiro");
+  return { ok: true, message: "planilha ligada ✓" };
+}
+
+export async function clearFinanceSheetAction() {
+  await requireAdmin();
+  await db.delete(settings).where(eq(settings.key, FINANCE_SHEET_KEY));
+  revalidatePath("/admin/financeiro");
 }

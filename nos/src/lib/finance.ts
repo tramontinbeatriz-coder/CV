@@ -47,16 +47,41 @@ export function checkSheetUrl(raw: string): { url: string; kind: "csv" | "sheet"
   return { url: u.toString(), kind: "sheet", id };
 }
 
-function serviceAccount() {
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  if (!raw) return null;
-  try {
-    const json = JSON.parse(raw) as { client_email?: string; private_key?: string };
-    if (!json.client_email || !json.private_key) return null;
-    return { email: json.client_email, key: json.private_key.replace(/\\n/g, "\n") };
-  } catch {
-    return null;
+type ServiceAccountStatus =
+  | { state: "missing" }
+  | { state: "invalid"; reason: string }
+  | { state: "ok"; email: string; key: string };
+
+/** Lê GOOGLE_SERVICE_ACCOUNT_JSON, tolerando aspas em volta, espaços e o JSON em base64. */
+export function serviceAccountStatus(): ServiceAccountStatus {
+  let raw = (process.env.GOOGLE_SERVICE_ACCOUNT_JSON ?? "").trim();
+  if (!raw) return { state: "missing" };
+  if ((raw.startsWith("'") && raw.endsWith("'")) || (raw.startsWith('"') && raw.endsWith('"') && !raw.startsWith('"{'))) {
+    raw = raw.slice(1, -1).trim();
   }
+  if (!raw.startsWith("{")) {
+    try {
+      const decoded = Buffer.from(raw, "base64").toString("utf8").trim();
+      if (decoded.startsWith("{")) raw = decoded;
+    } catch {
+      /* segue com o texto original */
+    }
+  }
+  let json: { client_email?: string; private_key?: string; type?: string };
+  try {
+    json = JSON.parse(raw);
+  } catch {
+    return { state: "invalid", reason: "o valor não é o conteúdo do arquivo .json (precisa começar com { e terminar com })" };
+  }
+  if (!json.client_email || !json.private_key) {
+    return { state: "invalid", reason: "o JSON não tem client_email/private_key. use a chave JSON da conta de serviço (Chaves → Adicionar chave → JSON)" };
+  }
+  return { state: "ok", email: json.client_email, key: json.private_key.replace(/\\n/g, "\n") };
+}
+
+function serviceAccount() {
+  const st = serviceAccountStatus();
+  return st.state === "ok" ? { email: st.email, key: st.key } : null;
 }
 
 export function serviceAccountEmail() {

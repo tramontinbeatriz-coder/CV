@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildFinance, matchEvent, parseCsv, parseLedger, parseMoney } from "../src/lib/finance-sheet";
+import { buildFinance, columnLetter, ledgerLayout, matchEvent, parseCsv, parseLedger, parseMoney } from "../src/lib/finance-sheet";
 
 // trecho da aba "Razão 🧠" como o Google entrega no CSV publicado
 const CSV = `Razão Nós,,,,,,"Todas as receitas e os gastos financeiros da Nós devem ser registradas nesta aba",,,
@@ -32,7 +32,8 @@ describe("planilha financeira", () => {
   it("acha o cabeçalho e ignora linhas vazias e o quadro de totais", () => {
     const ledger = parseLedger(parseCsv(CSV));
     expect(ledger).toHaveLength(7);
-    expect(ledger[0]).toEqual({ group: "Meninas Malvadas", description: "fichario", cents: 3148, kind: "gasto", method: "Pix" });
+    expect(ledger[0]).toEqual({ group: "Meninas Malvadas", description: "fichario", cents: 3148, kind: "gasto", method: "Pix", row: 3 });
+    expect(ledger.at(-1)!.row).toBe(10);
     expect(ledger.filter((e) => e.kind === "receita").map((e) => e.cents)).toEqual([450000, 120000]);
   });
 
@@ -91,5 +92,18 @@ describe("planilha financeira", () => {
     const evs = [{ id: "d", title: "Defesa Pessoal", slug: "defesa-pessoal", date: "2026-10-10" }];
     const f = buildFinance(ledger, evs, [{ eventId: "d", paid: 12, revenueCents: 120000 }], "2026-11-25");
     expect(f.rows.find((r) => r.eventId === "d")!.maybeDuplicate).toBe(true);
+  });
+
+  it("acha a próxima linha livre da tabela (ignorando o quadro de totais ao lado)", () => {
+    const rows = parseCsv(CSV + ",,,,,,,,,\n,,,,,,x,,,\n");
+    const l = ledgerLayout(rows);
+    expect(l.headerRow).toBe(2);
+    expect(l.nextRow).toBe(11);
+    expect([l.firstCol, l.lastCol]).toEqual([0, 4]);
+    expect(l.cols).toMatchObject({ group: 0, description: 1, value: 2, kind: 3, method: 4 });
+  });
+
+  it("converte número de coluna em letra", () => {
+    expect([0, 4, 25, 26, 27].map(columnLetter)).toEqual(["A", "E", "Z", "AA", "AB"]);
   });
 });

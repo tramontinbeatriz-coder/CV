@@ -31,16 +31,22 @@ O painel procura a linha de cabeçalho com as colunas abaixo (a ordem não impor
 
 Pronto, não precisa mexer na Vercel. Só a aba Razão fica publicada, e só quem tem o link (que é longo e aleatório) consegue ver. Para parar de publicar: mesmo menu, botão **Parar de publicar**.
 
-## jeito mais privado (opcional): conta de serviço do Google
+## lançar e apagar pelo painel: conta de serviço do Google
 
-Assim nada fica publicado: a planilha é compartilhada só com um "robô" do Google.
+Com isso o painel ganha o formulário **novo lançamento** (vai direto para a próxima linha livre da aba Razão) e um botão **apagar** em cada lançamento (a linha fica em branco na planilha; nada mais é mexido). Também deixa de precisar do link publicado: nada fica público e os números aparecem na hora.
 
-1. Em https://console.cloud.google.com crie um projeto (ex.: "nos-site").
-2. Ative a **Google Sheets API** (menu "APIs e serviços → Biblioteca").
-3. "APIs e serviços → Credenciais → Criar credenciais → Conta de serviço". Dê um nome e conclua.
-4. Abra a conta criada → aba **Chaves → Adicionar chave → JSON**. Um arquivo é baixado.
-5. Na Vercel (projeto nos → Settings → Environment Variables) crie `GOOGLE_SERVICE_ACCOUNT_JSON` e cole o conteúdo inteiro do arquivo. Faça um redeploy.
-6. Na planilha, **Compartilhar** com o e-mail da conta de serviço (termina com `iam.gserviceaccount.com`) como **Leitor**.
-7. No painel, cole o link normal da planilha (o da barra de endereço, `…/spreadsheets/d/…/edit`).
+A "conta de serviço" é um usuário-robô do Google que só acessa o que for compartilhado com ele.
 
-O painel lê a aba cujo nome começa com "Razão".
+1. Entre em https://console.cloud.google.com com a conta da Nós (thenossclub@gmail.com). Se pedir, aceite os termos.
+2. No topo, clique no seletor de projeto → **Novo projeto** → nome `nos-site` → **Criar**. Confira que ele ficou selecionado no topo.
+3. Na busca do topo, digite **Google Sheets API**, abra e clique em **Ativar**.
+4. Na busca, digite **Contas de serviço** (IAM e administrador) → **Criar conta de serviço** → nome `nos-site` → **Criar e continuar** → **Concluir** (pode pular as permissões).
+5. Clique na conta criada → aba **Chaves** → **Adicionar chave → Criar nova chave → JSON → Criar**. Um arquivo `.json` é baixado. Guarde-o bem: ele é a senha do robô.
+6. Na Vercel: projeto **nos → Settings → Environment Variables**. Nome `GOOGLE_SERVICE_ACCOUNT_JSON`, valor: abra o arquivo `.json` num editor de texto, copie **tudo** e cole. Salve.
+7. Ainda na Vercel: **Deployments** → no último, menu **⋯ → Redeploy**.
+8. Volte ao painel → financeiro. Agora o quadro "planilha ligada" mostra o e-mail do robô (termina com `iam.gserviceaccount.com`). Na planilha, clique em **Compartilhar**, adicione esse e-mail como **Editor** (desmarque "notificar").
+9. No painel, em **trocar link**, cole o link normal da planilha (o da barra de endereço, termina com `/edit…`).
+
+Pronto: o formulário de lançamento aparece. Se quiser, desfaça a publicação em CSV (Arquivo → Compartilhar → Publicar na Web → Parar de publicar).
+
+O painel lê e escreve na aba cujo nome começa com "Razão", usando as colunas do cabeçalho (Evento/Categoria, Tipo de Gasto/Receita, Valor, Categoria, Forma Pgto). O valor é gravado como número, então use a formatação de moeda na coluna Valor da planilha para ele aparecer como R$.

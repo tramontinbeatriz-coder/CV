@@ -15,7 +15,7 @@ import { resendRegistrationConfirmation } from "@/lib/notifications";
 import { setPartnershipAnswered } from "@/lib/partnerships";
 import { normalizeCouponCode } from "@/lib/coupons";
 import { deleteImage, saveImage } from "@/lib/storage";
-import { FINANCE_SHEET_KEY, checkSheetUrl } from "@/lib/finance";
+import { FINANCE_SHEET_KEY, addLedgerEntry, checkSheetUrl, clearLedgerEntry } from "@/lib/finance";
 
 export type ActionState = { ok?: boolean; error?: string; message?: string };
 
@@ -494,4 +494,37 @@ export async function clearFinanceSheetAction() {
   await requireAdmin();
   await db.delete(settings).where(eq(settings.key, FINANCE_SHEET_KEY));
   revalidatePath("/admin/financeiro");
+}
+
+export async function addLedgerEntryAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const group = str(fd, "group");
+  const description = str(fd, "description");
+  const kind = str(fd, "kind") === "receita" ? "receita" : "gasto";
+  const method = str(fd, "method");
+  const cents = parsePriceToCents(str(fd, "value"));
+  if (!group) return { error: "diga de qual encontro (ou categoria) é o lançamento" };
+  if (!description) return { error: "descreva o que foi (ex.: taças, zaffari, ingressos)" };
+  if (cents <= 0) return { error: "coloque o valor em reais (ex.: 120,50)" };
+  if ([group, description, method].some((v) => v.length > 200 || /^[=+\-@]/.test(v))) {
+    return { error: "texto inválido (não comece com =, +, - ou @)" };
+  }
+  try {
+    await addLedgerEntry({ group, description, cents, kind, method });
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "não deu para lançar" };
+  }
+  revalidatePath("/admin/financeiro");
+  return { ok: true, message: `${kind === "receita" ? "receita" : "gasto"} lançado na planilha ✓` };
+}
+
+export async function clearLedgerEntryAction(row: number, group: string, description: string, cents: number): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    await clearLedgerEntry(row, { group, description, cents });
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "não deu para apagar" };
+  }
+  revalidatePath("/admin/financeiro");
+  return { ok: true };
 }

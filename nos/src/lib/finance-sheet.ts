@@ -15,6 +15,7 @@ export type LedgerEntry = {
   cents: number; // sempre positivo
   kind: "gasto" | "receita";
   method: string;
+  row: number; // linha na planilha (1 = primeira), para apagar pelo painel
 };
 
 /** Minúsculas, sem acento, só letras/números separados por espaço. */
@@ -102,6 +103,32 @@ function findHeader(rows: string[][]): { index: number; cols: Columns } | null {
   return null;
 }
 
+/** Onde ficam as colunas e a linha do cabeçalho (para o painel escrever na planilha). */
+export function ledgerLayout(rows: (string | number | null | undefined)[][]) {
+  const text = rows.map((r) => r.map((c) => (c == null ? "" : String(c))));
+  const header = findHeader(text);
+  if (!header) throw new Error("não achei o cabeçalho (colunas \"Evento/Categoria\" e \"Valor\") na planilha");
+  const used = Object.values(header.cols).filter((c) => c >= 0);
+  // primeira linha livre depois da última linha com algo nas colunas da tabela
+  let last = header.index;
+  for (let i = header.index + 1; i < text.length; i++) {
+    if (used.some((c) => (text[i][c] ?? "").trim() !== "")) last = i;
+  }
+  return { cols: header.cols, headerRow: header.index + 1, nextRow: last + 2, firstCol: Math.min(...used), lastCol: Math.max(...used) };
+}
+
+/** Coluna 0 → "A", 25 → "Z", 26 → "AA". */
+export function columnLetter(index: number): string {
+  let n = index + 1;
+  let s = "";
+  while (n > 0) {
+    const m = (n - 1) % 26;
+    s = String.fromCharCode(65 + m) + s;
+    n = Math.floor((n - 1) / 26);
+  }
+  return s;
+}
+
 /**
  * Lê as linhas da aba "Razão" (vindas do CSV publicado ou da API do Google).
  * Linhas sem valor são ignoradas. Categoria "Receita"/"Entrada" = receita; o resto = gasto.
@@ -113,7 +140,8 @@ export function parseLedger(rows: (string | number | null | undefined)[][]): Led
   const { cols } = header;
   const at = (r: string[], i: number) => (i >= 0 ? (r[i] ?? "").trim() : "");
   const out: LedgerEntry[] = [];
-  for (const r of text.slice(header.index + 1)) {
+  for (let i = header.index + 1; i < text.length; i++) {
+    const r = text[i];
     const cents = parseMoney(at(r, cols.value));
     if (cents == null || cents === 0) continue;
     const kindText = normalize(at(r, cols.kind));
@@ -124,6 +152,7 @@ export function parseLedger(rows: (string | number | null | undefined)[][]): Led
       cents: Math.abs(cents),
       kind: isRevenue ? "receita" : "gasto",
       method: at(r, cols.method),
+      row: i + 1,
     });
   }
   return out;

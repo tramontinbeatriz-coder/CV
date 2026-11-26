@@ -4,7 +4,7 @@ import { SignJWT, importPKCS8 } from "jose";
 import { db } from "./db";
 import { events, registrations, settings } from "./db/schema";
 import { todayISO } from "./format";
-import { buildFinance, normalize, parseCsv, parseLedger, type FinanceSummary } from "./finance-sheet";
+import { buildFinance, columnLetter, ledgerLayout, normalize, parseCsv, parseLedger, type FinanceSummary } from "./finance-sheet";
 
 /**
  * Painel financeiro (admin → financeiro): lê a aba "Razão" da planilha "NÓS • Financial Dashboard"
@@ -13,7 +13,8 @@ import { buildFinance, normalize, parseCsv, parseLedger, type FinanceSummary } f
  * O link da planilha é colado no próprio painel (fica na tabela settings). Dois jeitos de ler:
  *  1. link "Publicar na Web" em CSV (…/pub?…output=csv): o site baixa direto. Mais simples.
  *  2. link normal da planilha (…/spreadsheets/d/<id>/edit) + conta de serviço do Google em
- *     GOOGLE_SERVICE_ACCOUNT_JSON (a planilha é compartilhada com o e-mail dessa conta). Mais privado.
+ *     GOOGLE_SERVICE_ACCOUNT_JSON (a planilha é compartilhada com o e-mail dessa conta como editora).
+ *     Mais privado, sem atraso, e o painel também consegue lançar e apagar linhas na aba Razão.
  * Passo a passo para os dois em docs/FINANCEIRO.md.
  */
 
@@ -64,7 +65,7 @@ export function serviceAccountEmail() {
 
 async function googleToken(sa: { email: string; key: string }) {
   const key = await importPKCS8(sa.key, "RS256");
-  const assertion = await new SignJWT({ scope: "https://www.googleapis.com/auth/spreadsheets.readonly" })
+  const assertion = await new SignJWT({ scope: "https://www.googleapis.com/auth/spreadsheets" })
     .setProtectedHeader({ alg: "RS256", typ: "JWT" })
     .setIssuer(sa.email)
     .setAudience("https://oauth2.googleapis.com/token")
@@ -81,28 +82,101 @@ async function googleToken(sa: { email: string; key: string }) {
   return ((await res.json()) as { access_token: string }).access_token;
 }
 
-async function fetchRowsWithServiceAccount(id: string): Promise<string[][]> {
+type SheetContext = { id: string; tab: string; auth: RequestInit };
+
+async function sheetContext(id: string): Promise<SheetContext> {
   const sa = serviceAccount();
   if (!sa) {
     throw new Error(
-      "esse é o link normal da planilha. para o site conseguir ler, use o link de \"Publicar na Web\" em CSV (veja o passo a passo abaixo)",
+      "esse é o link normal da planilha. para o site conseguir ler, use o link de \"Publicar na Web\" em CSV, ou configure a conta de serviço (docs/FINANCEIRO.md)",
     );
   }
   const token = await googleToken(sa);
-  const auth = { headers: { authorization: `Bearer ${token}` }, cache: "no-store" as const };
+  const auth: RequestInit = { headers: { authorization: `Bearer ${token}`, "content-type": "application/json" }, cache: "no-store" };
   const meta = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}?fields=sheets.properties.title`, auth);
   if (meta.status === 403 || meta.status === 404) {
-    throw new Error(`a planilha não está compartilhada com ${sa.email}. compartilhe com esse e-mail como leitor`);
+    throw new Error(`a planilha não está compartilhada com ${sa.email}. compartilhe com esse e-mail como editor`);
   }
   if (!meta.ok) throw new Error(`não consegui abrir a planilha (${meta.status})`);
   const titles = ((await meta.json()) as { sheets: { properties: { title: string } }[] }).sheets.map((s) => s.properties.title);
   const tab = titles.find((t) => normalize(t).startsWith("razao")) ?? titles[0];
-  const values = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${encodeURIComponent(`'${tab.replace(/'/g, "''")}'`)}`,
-    auth,
-  );
-  if (!values.ok) throw new Error(`não consegui ler a aba "${tab}" (${values.status})`);
-  return ((await values.json()) as { values?: string[][] }).values ?? [];
+  return { id, tab, auth };
+}
+
+const rangeOf = (ctx: SheetContext, a1: string) => encodeURIComponent(`'${ctx.tab.replace(/'/g, "''")}'!${a1}`);
+const valuesUrl = (ctx: SheetContext, a1: string) => `https://sheets.googleapis.com/v4/spreadsheets/${ctx.id}/values/${rangeOf(ctx, a1)}`;
+
+async function readTab(ctx: SheetContext): Promise<string[][]> {
+  const res = await fetch(valuesUrl(ctx, "A1:Z"), ctx.auth);
+  if (!res.ok) throw new Error(`não consegui ler a aba "${ctx.tab}" (${res.status})`);
+  return ((await res.json()) as { values?: string[][] }).values ?? [];
+}
+
+async function fetchRowsWithServiceAccount(id: string): Promise<string[][]> {
+  return readTab(await sheetContext(id));
+}
+
+/** O painel pode lançar na planilha? (link normal + conta de serviço) */
+export async function financeWritable() {
+  const url = await getFinanceSheetUrl();
+  const checked = url ? checkSheetUrl(url) : null;
+  return !!checked && !("error" in checked) && checked.kind === "sheet" && !!serviceAccount();
+}
+
+async function writableContext() {
+  const url = await getFinanceSheetUrl();
+  const checked = url ? checkSheetUrl(url) : null;
+  if (!checked || "error" in checked || checked.kind !== "sheet") {
+    throw new Error("para lançar pelo site, ligue o link normal da planilha (não o publicado) com a conta de serviço configurada");
+  }
+  return sheetContext(checked.id!);
+}
+
+export type NewLedgerEntry = { group: string; description: string; cents: number; kind: "gasto" | "receita"; method: string };
+
+/** Escreve um lançamento na primeira linha livre da aba Razão. */
+export async function addLedgerEntry(entry: NewLedgerEntry) {
+  const ctx = await writableContext();
+  const layout = ledgerLayout(await readTab(ctx));
+  const { cols, nextRow, firstCol, lastCol } = layout;
+  const line: (string | number)[] = Array.from({ length: lastCol - firstCol + 1 }, () => "");
+  const put = (col: number, v: string | number) => {
+    if (col >= 0) line[col - firstCol] = v;
+  };
+  put(cols.group, entry.group);
+  put(cols.description, entry.description);
+  put(cols.value, entry.cents / 100);
+  put(cols.kind, entry.kind === "receita" ? "Receita" : "Gasto");
+  put(cols.method, entry.method);
+  const a1 = `${columnLetter(firstCol)}${nextRow}:${columnLetter(lastCol)}${nextRow}`;
+  const res = await fetch(`${valuesUrl(ctx, a1)}?valueInputOption=USER_ENTERED`, {
+    ...ctx.auth,
+    method: "PUT",
+    body: JSON.stringify({ values: [line] }),
+  });
+  if (!res.ok) {
+    if (res.status === 403) throw new Error("a conta de serviço só pode ver a planilha. compartilhe com ela como editor");
+    throw new Error(`o Google não aceitou o lançamento (${res.status})`);
+  }
+  return nextRow;
+}
+
+/**
+ * Apaga (deixa em branco) um lançamento. Antes confere se a linha ainda é a mesma que
+ * apareceu na tela, para não apagar outra coisa se alguém mexeu na planilha no meio-tempo.
+ */
+export async function clearLedgerEntry(row: number, expected: { group: string; description: string; cents: number }) {
+  const ctx = await writableContext();
+  const rows = await readTab(ctx);
+  const layout = ledgerLayout(rows);
+  if (row <= layout.headerRow) throw new Error("linha inválida");
+  const current = parseLedger(rows).find((e) => e.row === row);
+  if (!current || current.group !== expected.group || current.description !== expected.description || current.cents !== expected.cents) {
+    throw new Error("essa linha mudou na planilha desde que a página abriu. recarregue e tente de novo");
+  }
+  const a1 = `${columnLetter(layout.firstCol)}${row}:${columnLetter(layout.lastCol)}${row}`;
+  const res = await fetch(`${valuesUrl(ctx, a1)}:clear`, { ...ctx.auth, method: "POST", body: "{}" });
+  if (!res.ok) throw new Error(`o Google não deixou apagar (${res.status})`);
 }
 
 async function fetchRowsFromCsv(url: string): Promise<string[][]> {

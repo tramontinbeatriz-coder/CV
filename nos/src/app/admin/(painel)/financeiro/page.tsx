@@ -1,7 +1,7 @@
 import { AdminForm, ConfirmButton } from "@/components/admin/client";
-import { clearFinanceSheetAction, saveFinanceSheetAction } from "@/app/admin/actions";
-import { getFinance, getFinanceSheetUrl, serviceAccountEmail } from "@/lib/finance";
-import type { FinanceRow } from "@/lib/finance-sheet";
+import { addLedgerEntryAction, clearFinanceSheetAction, clearLedgerEntryAction, saveFinanceSheetAction } from "@/app/admin/actions";
+import { financeWritable, getFinance, getFinanceSheetUrl, serviceAccountEmail } from "@/lib/finance";
+import type { FinanceRow, FinanceSummary } from "@/lib/finance-sheet";
 import { formatMonthYear } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +21,7 @@ function Stat({ label, value, help, tone }: { label: string; value: string; help
   );
 }
 
-function Entries({ row }: { row: FinanceRow }) {
+function Entries({ row, writable }: { row: FinanceRow; writable: boolean }) {
   if (row.entries.length === 0) return null;
   return (
     <details className="mt-1 text-xs">
@@ -35,8 +35,19 @@ function Entries({ row }: { row: FinanceRow }) {
               {e.description || <span className="text-muted">(sem descrição)</span>}
               {e.method && <span className="text-muted"> · {e.method}</span>}
             </span>
-            <span className={e.kind === "receita" ? "text-green" : ""}>
-              {e.kind === "receita" ? "+" : "−"} {brl(e.cents)}
+            <span className="flex items-start gap-2">
+              <span className={e.kind === "receita" ? "text-green" : ""}>
+                {e.kind === "receita" ? "+" : "−"} {brl(e.cents)}
+              </span>
+              {writable && (
+                <ConfirmButton
+                  action={clearLedgerEntryAction.bind(null, e.row, e.group, e.description, e.cents)}
+                  message={`apagar "${e.description || e.group}" (${brl(e.cents)}) da planilha? a linha ${e.row} fica em branco.`}
+                  className="text-muted hover:text-[#b23b5a]"
+                >
+                  apagar
+                </ConfirmButton>
+              )}
             </span>
           </li>
         ))}
@@ -45,7 +56,7 @@ function Entries({ row }: { row: FinanceRow }) {
   );
 }
 
-function Table({ rows, showSite }: { rows: FinanceRow[]; showSite: boolean }) {
+function Table({ rows, showSite, writable }: { rows: FinanceRow[]; showSite: boolean; writable: boolean }) {
   return (
     <div className="overflow-x-auto">
       <table className="a-table w-full">
@@ -77,7 +88,7 @@ function Table({ rows, showSite }: { rows: FinanceRow[]; showSite: boolean }) {
                     ⚠ tem &quot;ingresso&quot; lançado na planilha e também vendas no site. se for a mesma venda, ela está contada duas vezes.
                   </p>
                 )}
-                <Entries row={r} />
+                <Entries row={r} writable={writable} />
               </td>
               {showSite && (
                 <td className="whitespace-nowrap text-right">
@@ -93,6 +104,65 @@ function Table({ rows, showSite }: { rows: FinanceRow[]; showSite: boolean }) {
         </tbody>
       </table>
     </div>
+  );
+}
+
+function NewEntry({ summary }: { summary: FinanceSummary }) {
+  const names = [
+    ...new Set([
+      ...summary.rows.flatMap((r) => (r.sheetNames.length ? r.sheetNames : [r.title])),
+      ...summary.other.flatMap((r) => r.sheetNames),
+      "Investimento",
+      "Estoque",
+    ]),
+  ];
+  return (
+    <AdminForm action={addLedgerEntryAction} submitLabel="lançar na planilha" stickyFooter={false} resetOnSuccess>
+      <section className="a-card space-y-4">
+        <div>
+          <h2 className="text-lg font-semibold text-green">novo lançamento</h2>
+          <p className="text-xs text-muted">vai direto para a próxima linha livre da aba Razão, igual a digitar lá.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="a-label">encontro ou categoria</span>
+            <input name="group" list="fin-groups" className="a-input" placeholder="ex.: Harmonização" maxLength={200} autoComplete="off" required />
+            <datalist id="fin-groups">
+              {names.map((n) => (
+                <option key={n} value={n} />
+              ))}
+            </datalist>
+            <span className="a-help">use o mesmo nome de sempre para somar no mesmo encontro.</span>
+          </label>
+          <label className="block">
+            <span className="a-label">o que foi</span>
+            <input name="description" className="a-input" placeholder="ex.: taças, zaffari, ingressos" maxLength={200} autoComplete="off" required />
+          </label>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <label className="block">
+            <span className="a-label">valor (R$)</span>
+            <input name="value" inputMode="decimal" className="a-input" placeholder="120,50" required />
+          </label>
+          <label className="block">
+            <span className="a-label">tipo</span>
+            <select name="kind" className="a-input" defaultValue="gasto">
+              <option value="gasto">gasto</option>
+              <option value="receita">receita</option>
+            </select>
+          </label>
+          <label className="block">
+            <span className="a-label">forma de pagamento</span>
+            <input name="method" list="fin-methods" className="a-input" defaultValue="Pix" maxLength={60} autoComplete="off" />
+            <datalist id="fin-methods">
+              {["Pix", "Crédito", "Débito", "Dinheiro", "Pix e Crédito"].map((m) => (
+                <option key={m} value={m} />
+              ))}
+            </datalist>
+          </label>
+        </div>
+      </section>
+    </AdminForm>
   );
 }
 
@@ -112,6 +182,14 @@ function Setup({ current }: { current: string | null }) {
             desligar
           </ConfirmButton>
         </div>
+      ) : sa ? (
+        <ol className="list-decimal space-y-1 pl-5 text-sm">
+          <li>abra a planilha <b>NÓS • Financial Dashboard</b> logada na conta da Nós.</li>
+          <li>
+            clique em <b>Compartilhar</b>, adicione <b>{sa}</b> como <b>Editor</b> (pode desmarcar &quot;notificar&quot;).
+          </li>
+          <li>copie o endereço da barra do navegador (termina com /edit…) e cole aqui embaixo.</li>
+        </ol>
       ) : (
         <ol className="list-decimal space-y-1 pl-5 text-sm">
           <li>abra a planilha <b>NÓS • Financial Dashboard</b> logada na conta da Nós.</li>
@@ -128,13 +206,15 @@ function Setup({ current }: { current: string | null }) {
       <AdminForm action={saveFinanceSheetAction} submitLabel={current ? "trocar link" : "ligar planilha"} stickyFooter={false}>
         <label className="block">
           <span className="a-label">link da planilha</span>
-          <input name="url" className="a-input" placeholder="https://docs.google.com/spreadsheets/d/e/…/pub?gid=…&output=csv" autoComplete="off" />
+          <input name="url" className="a-input" placeholder={sa ? "https://docs.google.com/spreadsheets/d/…/edit" : "https://docs.google.com/spreadsheets/d/e/…/pub?gid=…&output=csv"} autoComplete="off" />
           <span className="a-help">
-            quem tem esse link consegue ver a aba publicada, então não compartilhe ele por aí.
             {sa ? (
-              <> a conta de serviço está configurada: também dá para colar o link normal da planilha, desde que ela esteja compartilhada com <b>{sa}</b>.</>
+              <>
+                a conta de serviço está configurada: cole o <b>link normal</b> da planilha (o da barra de endereço, …/edit) e compartilhe a
+                planilha com <b>{sa}</b> como <b>editor</b>. assim dá para lançar e apagar por aqui.
+              </>
             ) : (
-              <> quer mais privacidade? veja a opção com conta de serviço em docs/FINANCEIRO.md.</>
+              <>quem tem o link publicado consegue ver a aba, então não compartilhe ele por aí. para lançar pelo site, veja a conta de serviço em docs/FINANCEIRO.md.</>
             )}
           </span>
         </label>
@@ -144,7 +224,7 @@ function Setup({ current }: { current: string | null }) {
 }
 
 export default async function FinanceAdminPage() {
-  const [result, current] = await Promise.all([getFinance(), getFinanceSheetUrl()]);
+  const [result, current, writable] = await Promise.all([getFinance(), getFinanceSheetUrl(), financeWritable()]);
 
   return (
     <div className="max-w-5xl space-y-6">
@@ -175,6 +255,15 @@ export default async function FinanceAdminPage() {
             <Stat label="lucro" value={brl(result.summary.totals.profitCents)} tone={profitClass(result.summary.totals.profitCents)} />
           </div>
 
+          {writable ? (
+            <NewEntry summary={result.summary} />
+          ) : (
+            <p className="text-xs text-muted">
+              para lançar e apagar gastos por aqui (sem abrir a planilha), configure a conta de serviço do Google: passo a passo em
+              docs/FINANCEIRO.md. por enquanto, os lançamentos são feitos na planilha.
+            </p>
+          )}
+
           <section className="a-card">
             <h2 className="mb-1 text-lg font-semibold text-green">por encontro</h2>
             <p className="mb-4 text-xs text-muted">
@@ -184,7 +273,7 @@ export default async function FinanceAdminPage() {
             {result.summary.rows.length === 0 ? (
               <p className="text-sm text-muted">nenhum encontro com vendas ou lançamentos ainda.</p>
             ) : (
-              <Table rows={result.summary.rows} showSite />
+              <Table rows={result.summary.rows} showSite writable={writable} />
             )}
           </section>
 
@@ -192,7 +281,7 @@ export default async function FinanceAdminPage() {
             <section className="a-card">
               <h2 className="mb-1 text-lg font-semibold text-green">outros gastos</h2>
               <p className="mb-4 text-xs text-muted">categorias da planilha que não são um encontro (investimento, estoque…). entram no total.</p>
-              <Table rows={result.summary.other} showSite={false} />
+              <Table rows={result.summary.other} showSite={false} writable={writable} />
             </section>
           )}
         </>

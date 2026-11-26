@@ -55,21 +55,28 @@ export function AdminForm({
   className,
   submitLabel = "salvar",
   stickyFooter = true,
+  resetOnSuccess = false,
 }: {
   action: (prev: ActionState, fd: FormData) => Promise<ActionState>;
   children: React.ReactNode;
   className?: string;
   submitLabel?: string;
   stickyFooter?: boolean;
+  resetOnSuccess?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(action, {});
   const [, startTransition] = useTransition();
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
-    if (state.ok) router.refresh();
-  }, [state, router]);
+    if (state.ok) {
+      if (resetOnSuccess) formRef.current?.reset();
+      router.refresh();
+    }
+  }, [state, router, resetOnSuccess]);
   return (
     <form
+      ref={formRef}
       className={className}
       onSubmit={(e) => {
         e.preventDefault();

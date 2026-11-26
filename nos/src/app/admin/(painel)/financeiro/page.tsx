@@ -1,6 +1,6 @@
 import { AdminForm, ConfirmButton } from "@/components/admin/client";
 import { addLedgerEntryAction, clearFinanceSheetAction, clearLedgerEntryAction, saveFinanceSheetAction } from "@/app/admin/actions";
-import { financeWritable, getFinance, getFinanceSheetUrl, serviceAccountEmail } from "@/lib/finance";
+import { financeWritable, getFinance, getFinanceSheetUrl, serviceAccountEmail, serviceAccountStatus } from "@/lib/finance";
 import type { FinanceRow, FinanceSummary } from "@/lib/finance-sheet";
 import { formatMonthYear } from "@/lib/format";
 
@@ -166,11 +166,44 @@ function NewEntry({ summary }: { summary: FinanceSummary }) {
   );
 }
 
+function RobotStatus() {
+  const st = serviceAccountStatus();
+  if (st.state === "ok") {
+    return (
+      <div className="rounded-lg bg-lime/30 p-3 text-sm">
+        <p className="font-semibold text-green">conta de serviço configurada ✓</p>
+        <p className="mt-1">
+          e-mail do robô: <b className="select-all break-all font-mono">{st.email}</b>
+        </p>
+        <p className="mt-1 text-xs text-muted">compartilhe a planilha com esse e-mail como Editor e cole aqui o link normal da planilha.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="rounded-lg bg-pink/15 p-3 text-sm">
+      <p className="font-semibold text-green">conta de serviço: {st.state === "missing" ? "não encontrada" : "com problema"}</p>
+      <p className="mt-1 text-xs">
+        {st.state === "missing" ? (
+          <>
+            o site não está vendo a variável <code>GOOGLE_SERVICE_ACCOUNT_JSON</code>. na Vercel, confira se ela está marcada para{" "}
+            <b>Production</b> e se você fez o <b>Redeploy</b> depois de criar (variável nova só vale depois de um deploy novo).
+          </>
+        ) : (
+          <>
+            a variável <code>GOOGLE_SERVICE_ACCOUNT_JSON</code> existe, mas {st.reason}. depois de corrigir na Vercel, faça o Redeploy.
+          </>
+        )}
+      </p>
+    </div>
+  );
+}
+
 function Setup({ current }: { current: string | null }) {
   const sa = serviceAccountEmail();
   return (
     <section className="a-card space-y-4">
       <h2 className="text-lg font-semibold text-green">{current ? "planilha ligada" : "ligar a planilha"}</h2>
+      <RobotStatus />
       {current ? (
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
           <p className="min-w-0 truncate text-muted">{current}</p>
